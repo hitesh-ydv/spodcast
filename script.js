@@ -443,9 +443,6 @@ function showPopupform() {
 window.addEventListener("DOMContentLoaded", () => {
   showPopupform();
   const popupShown = localStorage.getItem("popupShown");
-  if (!popupShown) {
-    showPopup();
-  }
 
   // Add event listener to the OK button
   const okButton = document.getElementById("ok-button");
