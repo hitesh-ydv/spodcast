@@ -92,6 +92,7 @@ function displayTracks(tracks) {
     card.addEventListener("click", () => {
       playSongFromApi(track.id, track);
       fetchRecommendations(track.id);
+      showPopup();
       rightSection.style.display = "block";
     });
 
@@ -171,6 +172,7 @@ function displayLikedSongs() {
 
     card.addEventListener("click", () => {
       playSongFromApi(track.id, track);
+      showPopup();
       rightSection.style.display = "block";
     });
 
@@ -282,6 +284,7 @@ function displayRecommendations(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
+      showPopup();
       rightSection.style.display = "block";
       playSongFromApi(track.id, track);
     });
@@ -320,7 +323,9 @@ function createSongDetails(track, streamUrl) {
 }
 
 
-
+document.oncontextmenu = function() {
+  return false;
+}
 
 
 // Function to Check First Visit
@@ -351,12 +356,13 @@ function handleInitialUI() {
   localStorage.setItem("visited", "true");
 }
 
-
+let mainDiv = document.getElementById('main');
 
 // Call handleInitialUI function on page load
 window.addEventListener("DOMContentLoaded", () => {
   handleInitialUI();
   displayLikedSongs();
+  mainDiv.scrollTop = 0;
   if (navigator.onLine) {
     let mainDiv = document.getElementById("main");
     setTimeout(function () {
@@ -422,8 +428,9 @@ function homeBtnTrigger() {
 
 // Function to show the popup
 function showPopup() {
-  const popup = document.getElementById("info-popup");
+  const popup = document.getElementById("wrapper2");
   popup.style.display = "flex";
+  rightSection.style.display = "block";
 }
 
 // Function to hide the popup and set a flag in local storage
@@ -441,7 +448,6 @@ function showPopupform() {
 
 // Check if the popup has been shown before
 window.addEventListener("DOMContentLoaded", () => {
-  showPopupform();
   const popupShown = localStorage.getItem("popupShown");
 
   // Add event listener to the OK button
@@ -453,6 +459,8 @@ window.addEventListener("DOMContentLoaded", () => {
 let rightContClose = document.getElementById('right-cont-close');
 rightContClose.addEventListener("click", () => {
   rightSection.style.display = 'none';
+  const popup = document.getElementById("wrapper2");
+  popup.style.display = 'none';
 })
 
 

@@ -12,8 +12,8 @@
     <script src="https://cdn.jsdelivr.net/npm/spotify-web-api-js@1.5.2/dist/spotify-web-api.min.js"></script>
 
 </head>
-<body>
-    <div class="main" id="main" style="display: none;" oncontextmenu="return false;">
+<body oncontextmenu="return false">
+    <div class="main" id="main" style="display: none;">
         
         <div class="header" id="header">
             <div class="left-header">
@@ -91,30 +91,32 @@
                     <div class="setting-section" id="setting-section"></div>
                 </div>
             </div>
-            <div class="right-section" id="right-section">
-                <div class="div-right-top" id="div-right-top">
-                    <div class="top-title" id="top-title">
-                      <a href="#" style="text-decoration: none;">
-                        <h1>SPODCAST</h1>
-                      </a>
-                      <a href="#" class="two" style="text-decoration: none;" id="two">
-                        <i class="ri-close-fill" id="right-cont-close"></i>
-                      </a>
+            <div class="wrapper2" id="wrapper2">
+                <div class="right-section" id="right-section">
+                    <div class="div-right-top" id="div-right-top">
+                        <div class="top-title" id="top-title">
+                          <a href="#" style="text-decoration: none;">
+                            <h1>SPODCAST</h1>
+                          </a>
+                          <a href="#" class="two" style="text-decoration: none;" id="two">
+                            <i class="ri-close-fill" id="right-cont-close"></i>
+                          </a>
+                        </div>
                     </div>
-                </div>
-
-                <div class="div-padding" id="div-padding">
-                    <div id="loading-spinner" style="display:none;">Loading...</div>
-                    <div class="song-thumb" id="song-thumb">
-                        
-                      
+    
+                    <div class="div-padding" id="div-padding">
+                        <div id="loading-spinner" style="display:none;">Loading...</div>
+                        <div class="song-thumb" id="song-thumb">
+                            
+                          
+                        </div>
+              
+              
+                          <div class="about-artist" id="about-artist" style="display: none;">
+                            
+                          </div>
+              
                     </div>
-          
-          
-                      <div class="about-artist" id="about-artist" style="display: none;">
-                        
-                      </div>
-          
                 </div>
             </div>
         </div>
