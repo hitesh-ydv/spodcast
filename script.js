@@ -441,6 +441,7 @@ function showPopupform() {
 
 // Check if the popup has been shown before
 window.addEventListener("DOMContentLoaded", () => {
+  showPopupform();
   const popupShown = localStorage.getItem("popupShown");
 
   // Add event listener to the OK button
