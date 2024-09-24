@@ -201,7 +201,6 @@ async function playSongFromApi(songId, track) {
       audioPlayer.play();
       createSongDetails(track, streamUrl);
     } else {
-      audioPlayer.pause();
       alert("Audio stream not available for this track.");
     }
   } catch (error) {
@@ -303,7 +302,7 @@ function createSongDetails(track, streamUrl) {
   songThumb.innerHTML = "";
 
   const image = document.createElement("img");
-  image.src = track.album.images[0]?.url || "default-image-url";
+  image.src = track.album.images[0].url;
   image.alt = track.name;
 
   const detailsDiv = document.createElement("div");
@@ -363,7 +362,7 @@ let mainDiv = document.getElementById('main');
 window.addEventListener("DOMContentLoaded", () => {
   handleInitialUI();
   displayLikedSongs();
-  mainDiv.scrollTop = 0;
+  document.body.scrollTop = 0;
   if (navigator.onLine) {
     let mainDiv = document.getElementById("main");
     setTimeout(function () {
@@ -397,7 +396,7 @@ document.getElementById("search-input").addEventListener("keyup", (event) => {
     const searchFor = document.getElementById("search-for");
     searchFor.textContent = `Search from '${query}'`;
   } else {
-    document.getElementById("recommend-title").style.display = "block";
+    document.getElementById("recommend-title").style.display = "flex";
     document.getElementById("search-section").style.display = "none";
   }
 });
@@ -465,4 +464,16 @@ rightContClose.addEventListener("click", () => {
 })
 
 
-
+const headerCell = document.getElementById('header-cell');
+headerCell.addEventListener('click', () => {
+  
+  const songThumb = document.getElementById("song-thumb");
+  
+  if(songThumb.innerHTML){
+    const popup = document.getElementById("wrapper2");
+    popup.style.display = "flex";
+    rightSection.style.display = "block";
+  }else{
+    alert("No song found!")
+ }
+})

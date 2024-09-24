@@ -301,7 +301,7 @@ body,html{
   padding: 0px 16px;
   background-color: transparent;
   z-index: 1;
-  background-color: rgba(18, 18, 18, 0.4);
+  background-color: rgba(18, 18, 18, 0.5);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
 }
@@ -310,6 +310,8 @@ body,html{
   display: flex;
   gap: 10px;
   align-items: center;
+  position: relative;
+  width: 100%;
 }
 
 #header-all{
@@ -350,6 +352,8 @@ body,html{
 #header-podcast:hover{
   background-color: #282828;
 }
+
+
 
 .main-section{
   width: 100%;
@@ -615,6 +619,8 @@ body,html{
   height: 24px;
 }
 
+
+
 .nhome-svg{
   fill: #b2b2b2;
   width: 24px;
@@ -682,8 +688,11 @@ body,html{
     padding: 0px;
   }
   
-  .middle-header input{
+  .middle-header{
     width: 100%;
+  }
+  .middle-header .search-input-div{
+    width: calc(100% - 56px);
   }
 
   .middle-section{
@@ -762,10 +771,12 @@ body,html{
   top: 0;
   width: 100%; 
   height: 100%; 
-  background-color: rgba(0, 0, 0, 0.6);
   justify-content: center; 
   align-items: center; 
   z-index: 1000;
+  background-color: rgba(18, 18, 18, 0.4);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
 }
 
 .right-section{
@@ -779,6 +790,21 @@ body,html{
 
 .main-section .recommend-title h3{
     font-size: 20px;
+}
+
+.footer audio{
+  z-index: 5000;
+  width: 90%;
+}
+#header-cell{
+  position: absolute;
+  right: -2px;
+}
+
+#header-cell svg{
+  fill: white;
+  width: 24px;
+  height: 24px;
 }
 
 }
