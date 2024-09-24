@@ -207,6 +207,7 @@ async function playSongFromApi(songId, track) {
   } catch (error) {
     console.error("Error fetching the audio stream:", error);
     alert("Failed to load the audio stream.");
+    const loadingSpinner = document.getElementById("loading-spinner");
     loadingSpinner.style.display = "none";
   }
 }
@@ -419,7 +420,7 @@ function homeBtnTrigger() {
   document.getElementById("home-section").style.display = "none";
   let searchInput = document.getElementById("search-input");
   if (searchInput.value == 0) {
-    document.getElementById("recommend-title").style.display = "block";
+    document.getElementById("recommend-title").style.display = "flex";
   } else {
     document.getElementById("recommend-title").style.display = "none";
   }
