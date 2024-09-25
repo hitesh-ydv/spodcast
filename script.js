@@ -94,6 +94,7 @@ function displayTracks(tracks) {
       fetchRecommendations(track.id);
       showPopup();
       rightSection.style.display = "block";
+      document.getElementById('dYnaPI').style.fill = '#1db954';
     });
 
     container.appendChild(card);
@@ -174,6 +175,7 @@ function displayLikedSongs() {
       playSongFromApi(track.id, track);
       showPopup();
       rightSection.style.display = "block";
+      document.getElementById('dYnaPI').style.fill = '#1db954';
     });
 
     likedContainer.appendChild(card);
@@ -287,6 +289,7 @@ function displayRecommendations(tracks) {
       showPopup();
       rightSection.style.display = "block";
       playSongFromApi(track.id, track);
+      document.getElementById('dYnaPI').style.fill = '#1db954';
     });
 
     container.appendChild(card);
@@ -493,7 +496,7 @@ let leftCont = document.getElementById('left--');
 likedIcon.addEventListener('click', () => {
   document.getElementById('ri-heart-fill').style.color = "#1db954";
   middleSection.style.display = "none";
-  if (leftCont.style.display = 'none') {
+  if (likedIcon){
     leftCont.style.display = 'block'; // Show the div
 } else {
     leftCont.style.display = 'none'

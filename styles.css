@@ -738,6 +738,7 @@ body,html{
 .right-section{
   width: 100%;
   height: max-content;
+  box-shadow: 0 3px 10px rgba(255, 255, 255, 0.5);
 }
 
 .right-section .song-thumb img{
@@ -759,13 +760,29 @@ body,html{
 
 .footer audio{
   z-index: 5000;
-  width: 75%;
+  width: 78%;
 }
 
 #header-cell svg{
   fill: white;
   width: 24px;
   height: 24px;
+}
+
+#header-cell::after{
+  background-color: #1db954;
+  border-radius: 50%;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 4px;
+  left: 92.5%;
+  bottom: 24px;
+  position: absolute;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  width: 4px;
+  inline-size: 4px !important;
 }
 
 .left-section{
