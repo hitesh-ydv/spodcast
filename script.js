@@ -411,19 +411,25 @@ btnnHome.addEventListener("click", () => {
   document.getElementById("btn-nhome").style.display = "none";
   document.getElementById("recommend-title").style.display = "none";
   middleSection.scrollTop = 0;
+  leftCont.style.display = 'none';
+  middleSection.style.display = "block";
 });
 
 function homeBtnTrigger() {
+  
   document.getElementById("btn-home").style.display = "none";
   document.getElementById("btn-nhome").style.display = "block";
   document.getElementById("home-section").style.display = "none";
+  leftCont.style.display = 'none';
+  document.getElementById("recommend-title").style.display = "flex";
   let searchInput = document.getElementById("search-input");
   if (searchInput.value == 0) {
     document.getElementById("recommend-title").style.display = "flex";
   } else {
     document.getElementById("recommend-title").style.display = "none";
-  }
+  } 
 }
+
 
 
 // Function to show the popup
@@ -476,4 +482,15 @@ headerCell.addEventListener('click', () => {
   }else{
     alert("No song found!")
  }
+})
+
+
+let likedIcon = document.getElementById('liked-icon');
+let leftCont = document.getElementById('left--');
+
+likedIcon.addEventListener('click', () => {
+  middleSection.style.display = "none";
+  leftCont.style.display = 'block';
+  document.getElementById("btn-home").style.display = "none";
+  document.getElementById("btn-nhome").style.display = "block";
 })

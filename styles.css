@@ -195,6 +195,7 @@ body,html{
   min-height: 400px;
   padding: 12px 10px;
   overflow: auto;
+  min-width: 280px;
  
 }
 
@@ -627,42 +628,8 @@ body,html{
   height: 24px;
 }
 
-@media (min-width: 1024px){
-   .left-section{
-    min-width: 280px;
-   }
-}
 
 
-@media (max-width: 1024px) {
-  .left--{
-    width: 100px;
-  }
-
-  .library-div{
-    width: 40px;
-  }
-
-  .left-section-library{
-    width: 40px;
-  }
-
-  .library-div h4{
-    display: none;
-  }
-
-  .library-add i{
-    display: none;
-  }
-
-  .left-section-playlist{
-    display: none;
-  }
-
-  .liked-songs-container{
-    display: none;
-  }
-}
 
 
 @media (max-width: 425px){
@@ -792,19 +759,55 @@ body,html{
     font-size: 20px;
 }
 
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 25px;
+  padding-left: 10px;
+  width: 100%;
+}
+
 .footer audio{
   z-index: 5000;
-  width: 90%;
-}
-#header-cell{
-  position: absolute;
-  right: -2px;
+  width: 60%;
 }
 
 #header-cell svg{
   fill: white;
   width: 24px;
   height: 24px;
+}
+
+.left-section{
+  width: 100%;
+  background-color: transparent;
+  padding-top: 10px;
+  padding-bottom: 100px;
+}
+
+
+
+.library-div h4{
+  display: flex;
+}
+
+.library-add i{
+  display: block;
+}
+
+.left-section-playlist{
+  display: flex;
+}
+
+.liked-songs-container{
+  display: block;
+  padding: 0px;
+  
+}
+
+.liked-song-card .song-details{
+  width: 220px;
 }
 
 }
