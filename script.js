@@ -410,6 +410,7 @@ btnnHome.addEventListener("click", () => {
   document.getElementById("btn-home").style.display = "block";
   document.getElementById("btn-nhome").style.display = "none";
   document.getElementById("recommend-title").style.display = "none";
+  document.getElementById('ri-heart-fill').style.color = "#ffffff";
   middleSection.scrollTop = 0;
   leftCont.style.display = 'none';
   middleSection.style.display = "block";
@@ -421,6 +422,7 @@ function homeBtnTrigger() {
   document.getElementById("btn-nhome").style.display = "block";
   document.getElementById("home-section").style.display = "none";
   leftCont.style.display = 'none';
+  document.getElementById('ri-heart-fill').style.color = "#ffffff";
   document.getElementById("recommend-title").style.display = "flex";
   let searchInput = document.getElementById("search-input");
   if (searchInput.value == 0) {
@@ -489,6 +491,7 @@ let likedIcon = document.getElementById('liked-icon');
 let leftCont = document.getElementById('left--');
 
 likedIcon.addEventListener('click', () => {
+  document.getElementById('ri-heart-fill').style.color = "#1db954";
   middleSection.style.display = "none";
   if (leftCont.style.display = 'none') {
     leftCont.style.display = 'block'; // Show the div
