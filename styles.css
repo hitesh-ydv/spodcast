@@ -192,7 +192,7 @@ body,html{
   height: 100%;
   background-color: #121212;
   border-radius: 8px;
-  min-height: 400px;
+  
   padding: 12px 10px;
   overflow: auto;
   min-width: 280px;
@@ -770,7 +770,7 @@ body,html{
 
 .footer audio{
   z-index: 5000;
-  width: 60%;
+  width: 75%;
 }
 
 #header-cell svg{
@@ -784,6 +784,8 @@ body,html{
   background-color: transparent;
   padding-top: 10px;
   padding-bottom: 100px;
+  min-height: 0px;
+  height: 200px;
 }
 
 

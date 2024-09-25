@@ -490,7 +490,12 @@ let leftCont = document.getElementById('left--');
 
 likedIcon.addEventListener('click', () => {
   middleSection.style.display = "none";
-  leftCont.style.display = 'block';
+  if (leftCont.style.display = 'none') {
+    leftCont.style.display = 'block'; // Show the div
+} else {
+    leftCont.style.display = 'none'
+    middleSection.style.display = "block"; // Hide the div
+}
   document.getElementById("btn-home").style.display = "none";
   document.getElementById("btn-nhome").style.display = "block";
 })
