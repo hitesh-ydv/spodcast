@@ -674,6 +674,7 @@ body,html{
     min-height: 200px;
     overflow: auto;
     padding: 0px 0px 85px 0px;
+    min-height: 0px;
   }
 
   .main-header{
@@ -785,7 +786,6 @@ body,html{
   padding-top: 10px;
   padding-bottom: 100px;
   min-height: 0px;
-  height: 200px;
 }
 
 
