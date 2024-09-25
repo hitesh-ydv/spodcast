@@ -738,7 +738,7 @@ body,html{
 .right-section{
   width: 100%;
   height: max-content;
-  box-shadow: 0 3px 10px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0px 10px rgba(255, 255, 255, 0.5);
 }
 
 .right-section .song-thumb img{
