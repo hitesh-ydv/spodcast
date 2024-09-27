@@ -415,7 +415,10 @@ btnnHome.addEventListener("click", () => {
   document.getElementById("recommend-title").style.display = "none";
   document.getElementById('ri-heart-fill').style.color = "#ffffff";
   middleSection.scrollTop = 0;
-  leftCont.style.display = 'none';
+  var x = window.matchMedia("(max-width: 425px)")
+  if(x.matches){
+    leftCont.style.display = 'none';
+  }
   middleSection.style.display = "block";
 });
 
@@ -424,7 +427,10 @@ function homeBtnTrigger() {
   document.getElementById("btn-home").style.display = "none";
   document.getElementById("btn-nhome").style.display = "block";
   document.getElementById("home-section").style.display = "none";
-  leftCont.style.display = 'none';
+   var x = window.matchMedia("(max-width: 425px)")
+  if(x.matches){
+    leftCont.style.display = 'none';
+  }
   document.getElementById('ri-heart-fill').style.color = "#ffffff";
   document.getElementById("recommend-title").style.display = "flex";
   let searchInput = document.getElementById("search-input");
