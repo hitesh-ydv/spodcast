@@ -89,6 +89,12 @@ function displayTracks(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
+      gsap.from('.right-section',{
+        opacity:1,
+        duration:0.3,
+        ease:'ease',
+        y:400
+      });
       playSongFromApi(track.id, track);
       fetchRecommendations(track.id);
       showPopup();
@@ -292,7 +298,16 @@ function displayLikedSongs2() {
     card.appendChild(deleteIcon);
 
     card.addEventListener("click", () => {
-      playSongFromApi(track.id, track); // Play song from liked songs when clicked
+      gsap.from('.right-section',{
+        opacity:1,
+        duration:0.3,
+        ease:'ease',
+        y:400
+      });
+      playSongFromApi(track.id, track);
+      showPopup();
+      rightSection.style.display = "block";
+      document.getElementById('dYnaPI').style.fill = '#1db954'; // Play song from liked songs when clicked
     });
 
     // Prepend the new liked song at the start (reverse order)
@@ -403,6 +418,13 @@ function displayRecommendations(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
+      gsap.from('.right-section',{
+        opacity:1,
+        duration:0.4,
+        ease:'ease',
+        y:400
+      });
+      
       showPopup();
       rightSection.style.display = "block";
       playSongFromApi(track.id, track);
@@ -519,6 +541,44 @@ document.getElementById("search-input").addEventListener("keyup", (event) => {
   }
 });
 
+let btnnHome = document.getElementById("btn-nhome");
+
+btnnHome.addEventListener("click", () => {
+  document.getElementById("search-section").style.display = "none";
+  document.getElementById("home-section").style.display = "block";
+  document.getElementById("search-input").value = "";
+  document.getElementById("btn-home").style.display = "block";
+  document.getElementById("btn-nhome").style.display = "none";
+  document.getElementById("recommend-title").style.display = "none";
+  document.getElementById('ri-heart-fill').style.color = "#ffffff";
+  middleSection.scrollTop = 0;
+  let leftCont = document.getElementById('left--');
+  var x = window.matchMedia("(max-width: 425px)") 
+  if(x.matches){
+    leftCont.style.display = 'none';
+  }
+  middleSection.style.display = "block";
+});
+
+function homeBtnTrigger() {
+  
+  document.getElementById("btn-home").style.display = "none";
+  document.getElementById("btn-nhome").style.display = "block";
+  document.getElementById("home-section").style.display = "none";
+  var x = window.matchMedia("(max-width: 425px)")
+  let leftCont = document.getElementById('left--'); 
+  if(x.matches){
+    leftCont.style.display = 'none';
+  }
+  document.getElementById("recommend-title").style.display = "flex";
+  let searchInput = document.getElementById("search-input");
+  if (searchInput.value == 0) {
+    document.getElementById("recommend-title").style.display = "flex";
+  } else {
+    document.getElementById("recommend-title").style.display = "none";
+  } 
+}
+
 
 
 // Function to show the popup
@@ -553,6 +613,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
 let rightContClose = document.getElementById('right-cont-close');
 rightContClose.addEventListener("click", () => {
+  gsap.from('.right-section',{
+    opacity:1,
+    duration:0.2,
+    ease:'ease',
+    y:400
+  });
   rightSection.style.display = 'none';
   const popup = document.getElementById("wrapper2");
   popup.style.display = 'none';
@@ -565,6 +631,12 @@ headerCell.addEventListener('click', () => {
   const songThumb = document.getElementById("song-thumb");
   
   if(songThumb.innerHTML){
+    gsap.from('.right-section',{
+      opacity:1,
+      duration:0.3,
+      ease:'ease',
+      y:400
+    });
     const popup = document.getElementById("wrapper2");
     popup.style.display = "flex";
     rightSection.style.display = "block";
@@ -574,52 +646,4 @@ headerCell.addEventListener('click', () => {
 })
 
 
-let likedIcon = document.getElementById('liked-icon');
-let leftCont = document.getElementById('left--');
 
-likedIcon.addEventListener('click', () => {
-  document.getElementById('ri-heart-fill').style.color = "#1db954";
-  middleSection.style.display = "none";
-  if (likedIcon){
-    leftCont.style.display = 'block'; // Show the div
-} else {
-    leftCont.style.display = 'none'
-    middleSection.style.display = "block"; // Hide the div
-}
-  document.getElementById("btn-home").style.display = "none";
-  document.getElementById("btn-nhome").style.display = "block";
-})
-
-
-
-
-let btnnHome = document.getElementById("btn-nhome");
-
-btnnHome.addEventListener("click", () => {
-  document.getElementById("search-section").style.display = "none";
-  document.getElementById("home-section").style.display = "block";
-  document.getElementById("search-input").value = "";
-  document.getElementById("btn-home").style.display = "block";
-  document.getElementById("btn-nhome").style.display = "none";
-  document.getElementById("recommend-title").style.display = "none";
-  document.getElementById('ri-heart-fill').style.color = "#ffffff";
-  middleSection.scrollTop = 0;
-  leftCont.style.display = 'none';
-  middleSection.style.display = "block";
-});
-
-function homeBtnTrigger() {
-  
-  document.getElementById("btn-home").style.display = "none";
-  document.getElementById("btn-nhome").style.display = "block";
-  document.getElementById("home-section").style.display = "none";
-  leftCont.style.display = 'none';
-  document.getElementById('ri-heart-fill').style.color = "#ffffff";
-  document.getElementById("recommend-title").style.display = "flex";
-  let searchInput = document.getElementById("search-input");
-  if (searchInput.value == 0) {
-    document.getElementById("recommend-title").style.display = "flex";
-  } else {
-    document.getElementById("recommend-title").style.display = "none";
-  } 
-}

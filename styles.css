@@ -740,17 +740,27 @@ body,html{
 }
 
 .right-section{
-  width: 100%;
-  height: max-content;
-  box-shadow: 0 0px 10px rgba(255, 255, 255, 0.5);
+  min-width: 100%;
+  height: 100%;
+  border-radius: 0px;
+  padding: 10px;
+  background-color: black;
 }
 
 .right-section .song-thumb img{
-  border-radius: 0px;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 28px;
 }
 
+.right-section .div-right-top{
+  background-color: transparent;
+  margin-bottom: 18px;
+}
+
+
 .main-section .recommend-title h3{
-    font-size: 20px;
+    font-size: 25px;
 }
 
 .footer{
@@ -773,22 +783,6 @@ body,html{
   height: 24px;
   position: fixed;
   right: 20px;
-}
-
-#header-cell::after{
-  background-color: #1db954;
-  border-radius: 50%;
-  bottom: 0;
-  content: "";
-  display: block;
-  height: 4px;
-  left: 92.5%;
-  bottom: 24px;
-  position: fixed;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  width: 4px;
-  inline-size: 4px !important;
 }
 
 .left-section{
