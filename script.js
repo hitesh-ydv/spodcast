@@ -80,8 +80,7 @@ function displayTracks(tracks) {
 
     likeIcon.addEventListener("click", (event) => {
       event.stopPropagation();
-      toggleLikeSong(track);
-      updateLikeIcon(likeIcon, track.id);
+      handleTrackLike(track, likeIcon);
     });
 
     card.appendChild(image);
@@ -102,6 +101,83 @@ function displayTracks(tracks) {
 }
 
 
+// Function to toggle song like (centralized)
+function toggleLikeSong(track) {
+  if (isSongLiked(track.id)) {
+    // If the song is already liked, remove it from the likedSongs array
+    likedSongs = likedSongs.filter((song) => song.id !== track.id);
+  } else {
+    // If the song is not liked yet, add it to the likedSongs array
+    likedSongs.push(track);
+  }
+
+  // Save the updated likedSongs array to localStorage
+  localStorage.setItem("likedSongs", JSON.stringify(likedSongs));
+
+  // Update both the liked songs container and the recommendations/tracks containers
+  displayLikedSongs();
+  displayLikedSongs2(); // For the second container
+  updateAllLikeIcons(); // Updates the like icons in both containers
+}
+
+
+// Function to handle liking/unliking from the recommendations container
+function handleRecommendationLike(track, likeIcon) {
+  toggleLikeSong(track);
+  updateLikeIcon(likeIcon, track.id); // Update the like icon
+}
+
+// Function to handle liking/unliking from the tracks container
+function handleTrackLike(track, likeIcon) {
+  toggleLikeSong(track);
+  updateLikeIcon(likeIcon, track.id); // Update the like icon
+}
+
+// Function to update a specific like icon
+function updateLikeIcon(icon, trackId) {
+  if (isSongLiked(trackId)) {
+    icon.classList.replace("ri-add-circle-line", "ri-check-line");
+  } else {
+    icon.classList.replace("ri-check-line", "ri-add-circle-line");
+  }
+}
+
+// Function to update all like icons in both the tracks and recommendations containers
+function updateAllLikeIcons() {
+  // Update like icons in the tracks container
+  const trackCards = document.querySelectorAll("#tracks-container .track-card");
+  trackCards.forEach((card) => {
+    const likeIcon = card.querySelector(".liked-icon");
+    const trackId = card.getAttribute("data-track-id");
+    if (isSongLiked(trackId)) {
+      likeIcon.classList.replace("ri-add-circle-line", "ri-check-line");
+    } else {
+      likeIcon.classList.replace("ri-check-line", "ri-add-circle-line");
+    }
+  });
+
+  // Update like icons in the recommendations container
+  const recommendationCards = document.querySelectorAll("#recommendations-container .track-card");
+  recommendationCards.forEach((card) => {
+    const likeIcon = card.querySelector(".liked-icon");
+    const trackId = card.getAttribute("data-track-id");
+    if (isSongLiked(trackId)) {
+      likeIcon.classList.replace("ri-add-circle-line", "ri-check-line");
+    } else {
+      likeIcon.classList.replace("ri-check-line", "ri-add-circle-line");
+    }
+  });
+}
+
+
+
+ // Check if song is liked
+function isSongLiked(id) {
+  return likedSongs.some((song) => song.id === id);
+}
+
+
+
 // Function to toggle song like
 function toggleLikeSong(track) {
   if (isSongLiked(track.id)) {
@@ -111,23 +187,9 @@ function toggleLikeSong(track) {
   }
   localStorage.setItem("likedSongs", JSON.stringify(likedSongs));
   displayLikedSongs();
+  displayLikedSongs2();
 }
 
-
-// Function to update like icon
-function updateLikeIcon(icon, trackId) {
-  if (isSongLiked(trackId)) {
-    icon.classList.replace("ri-add-circle-line", "ri-check-line");
-  } else {
-    icon.classList.replace("ri-check-line", "ri-add-circle-line");
-  }
-}
-
-
-// Check if song is liked
-function isSongLiked(id) {
-  return likedSongs.some((song) => song.id === id);
-}
 
 
 // Function to Display Liked Songs
@@ -179,6 +241,62 @@ function displayLikedSongs() {
     });
 
     likedContainer.appendChild(card);
+  });
+}
+
+
+
+// Function to display liked songs in the second liked songs container in reverse order (horizontally)
+function displayLikedSongs2() {
+  const likedContainer2 = document.getElementById("liked-songs-container2");
+  likedContainer2.innerHTML = ""; // Clear the container before rendering
+
+
+  likedSongs.forEach((track) => {
+    const x = window.matchMedia("(max-width: 425px)")
+    if(track){
+      if(x.matches){
+        document.getElementById('liked-outer').style.display = 'block';
+      }
+    }else{
+      document.getElementById('liked-outer').style.display = 'none';
+    }
+
+    const card = document.createElement("div");
+    card.classList.add("track-card");
+
+    const songInfo = document.createElement("div");
+    songInfo.classList.add("song-details");
+
+    const image = document.createElement("img");
+    image.src = track.album.images[0]?.url || "default-image-url";
+    image.alt = track.name;
+
+    const songName = document.createElement("h4");
+    songName.textContent = track.name;
+
+    const artists = document.createElement("p");
+    artists.textContent = track.artists.map((artist) => artist.name).join(", ");
+
+    const deleteIcon = document.createElement("i");
+    deleteIcon.classList.add("ri-delete-bin-line", "delete-icon");
+    deleteIcon.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleLikeSong(track);  // Remove the song from liked songs
+    });
+
+    card.appendChild(image);
+    songInfo.appendChild(songName);
+    songInfo.appendChild(artists);
+    card.appendChild(songInfo);
+    card.appendChild(deleteIcon);
+
+    card.addEventListener("click", () => {
+      playSongFromApi(track.id, track); // Play song from liked songs when clicked
+    });
+
+    // Prepend the new liked song at the start (reverse order)
+    likedContainer2.prepend(card);
   });
 }
 
@@ -276,8 +394,7 @@ function displayRecommendations(tracks) {
 
     likeIcon.addEventListener("click", (event) => {
       event.stopPropagation();
-      toggleLikeSong(track);
-      updateLikeIcon(likeIcon, track.id);
+      handleRecommendationLike(track, likeIcon);
     });
 
     card.appendChild(image);
@@ -326,10 +443,6 @@ function createSongDetails(track, streamUrl) {
 }
 
 
-document.oncontextmenu = function() {
-  return false;
-}
-
 
 // Function to Check First Visit
 function isFirstVisit() {
@@ -365,6 +478,8 @@ let mainDiv = document.getElementById('main');
 window.addEventListener("DOMContentLoaded", () => {
   handleInitialUI();
   displayLikedSongs();
+  displayLikedSongs2(); // Display liked songs in both containers
+  updateAllLikeIcons();// Display liked songs in both containers
   document.body.scrollTop = 0;
   if (navigator.onLine) {
     let mainDiv = document.getElementById("main");
@@ -403,37 +518,6 @@ document.getElementById("search-input").addEventListener("keyup", (event) => {
     document.getElementById("search-section").style.display = "none";
   }
 });
-
-let btnnHome = document.getElementById("btn-nhome");
-
-btnnHome.addEventListener("click", () => {
-  document.getElementById("search-section").style.display = "none";
-  document.getElementById("home-section").style.display = "block";
-  document.getElementById("search-input").value = "";
-  document.getElementById("btn-home").style.display = "block";
-  document.getElementById("btn-nhome").style.display = "none";
-  document.getElementById("recommend-title").style.display = "none";
-  document.getElementById('ri-heart-fill').style.color = "#ffffff";
-  middleSection.scrollTop = 0;
-  leftCont.style.display = 'none';
-  middleSection.style.display = "block";
-});
-
-function homeBtnTrigger() {
-  
-  document.getElementById("btn-home").style.display = "none";
-  document.getElementById("btn-nhome").style.display = "block";
-  document.getElementById("home-section").style.display = "none";
-  leftCont.style.display = 'none';
-  document.getElementById('ri-heart-fill').style.color = "#ffffff";
-  document.getElementById("recommend-title").style.display = "flex";
-  let searchInput = document.getElementById("search-input");
-  if (searchInput.value == 0) {
-    document.getElementById("recommend-title").style.display = "flex";
-  } else {
-    document.getElementById("recommend-title").style.display = "none";
-  } 
-}
 
 
 
@@ -505,3 +589,37 @@ likedIcon.addEventListener('click', () => {
   document.getElementById("btn-home").style.display = "none";
   document.getElementById("btn-nhome").style.display = "block";
 })
+
+
+
+
+let btnnHome = document.getElementById("btn-nhome");
+
+btnnHome.addEventListener("click", () => {
+  document.getElementById("search-section").style.display = "none";
+  document.getElementById("home-section").style.display = "block";
+  document.getElementById("search-input").value = "";
+  document.getElementById("btn-home").style.display = "block";
+  document.getElementById("btn-nhome").style.display = "none";
+  document.getElementById("recommend-title").style.display = "none";
+  document.getElementById('ri-heart-fill').style.color = "#ffffff";
+  middleSection.scrollTop = 0;
+  leftCont.style.display = 'none';
+  middleSection.style.display = "block";
+});
+
+function homeBtnTrigger() {
+  
+  document.getElementById("btn-home").style.display = "none";
+  document.getElementById("btn-nhome").style.display = "block";
+  document.getElementById("home-section").style.display = "none";
+  leftCont.style.display = 'none';
+  document.getElementById('ri-heart-fill').style.color = "#ffffff";
+  document.getElementById("recommend-title").style.display = "flex";
+  let searchInput = document.getElementById("search-input");
+  if (searchInput.value == 0) {
+    document.getElementById("recommend-title").style.display = "flex";
+  } else {
+    document.getElementById("recommend-title").style.display = "none";
+  } 
+}

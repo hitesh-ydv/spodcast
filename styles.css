@@ -660,6 +660,10 @@ body,html{
     width: calc(100% - 56px);
   }
 
+  .search-input-div input{
+    width: 100%;
+  }
+
   .middle-section{
     width: 100%;
     height: 100%;
@@ -752,7 +756,7 @@ body,html{
 .footer{
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding-right: 10px;
   padding-left: 10px;
   width: 100%;
@@ -767,6 +771,8 @@ body,html{
   fill: white;
   width: 24px;
   height: 24px;
+  position: fixed;
+  right: 20px;
 }
 
 #header-cell::after{
@@ -778,7 +784,7 @@ body,html{
   height: 4px;
   left: 92.5%;
   bottom: 24px;
-  position: absolute;
+  position: fixed;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
   width: 4px;
@@ -816,6 +822,75 @@ body,html{
 
 .liked-song-card .song-details{
   width: 220px;
+}
+
+.recommend-outer #recommendations-container {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  padding: 0px;
+  overflow: scroll;
+  overflow-y: hidden;
+  margin-bottom: 30px;
+}
+
+#recommendations-container .track-card {
+  border-radius: 8px;  
+  padding: 10px;
+  flex: 0;
+  transition: transform 0.2s;
+  min-width: 170px;
+  min-height: 0px;
+  transition: all 0.2s;
+}
+
+#recommendations-container::-webkit-scrollbar
+
+{
+	display: none;
+}
+
+.liked-outer{
+  display: none;
+}
+
+.liked-outer #liked-songs-container2{
+
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  flex-wrap: nowrap;
+  padding: 0px;
+  overflow: scroll;
+  overflow-y: hidden;
+  margin-bottom: 30px;
+  white-space: nowrap; /* Prevent wrapping */
+  max-width: 100%;     /* Ensure container doesn't exceed screen width */
+  justify-content: flex-start; 
+}
+
+#liked-songs-container2 .track-card{  
+  padding: 10px;
+  flex: 0;
+  transition: transform 0.2s;
+  min-width: 170px;
+  min-height: 0px;
+  transition: all 0.2s;
+  
+}
+
+#liked-songs-container2 .track-card:hover{
+  background-color: transparent;
+}
+
+#liked-songs-container2 .track-card img{
+  border-radius: 0px;
+}
+
+#liked-songs-container2::-webkit-scrollbar
+
+{
+	display: none;
 }
 
 }
