@@ -388,7 +388,7 @@ async function playSongFromApi(songId, track) {
 
 
 
-function darkenColor(color, factor = 0.7) {
+function darkenColor(color, factor = 0.5) {
   // Darken the RGB values by the specified factor
   return color.map(value => Math.floor(value * factor));
 }
