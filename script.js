@@ -89,10 +89,10 @@ function displayTracks(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
-      openRightSection();
       playSongFromApi(track.id, track);
       fetchRecommendations(track.id);
       showPopup();
+      openBottomSheet();
       rightSection.style.display = "block";
       document.getElementById('dYnaPI').style.fill = '#1db954';
     });
@@ -293,9 +293,9 @@ function displayLikedSongs2() {
     card.appendChild(deleteIcon);
 
     card.addEventListener("click", () => {
-      openRightSection();
       playSongFromApi(track.id, track);
       showPopup();
+      openBottomSheet();
       rightSection.style.display = "block";
       document.getElementById('dYnaPI').style.fill = '#1db954'; // Play song from liked songs when clicked
     });
@@ -356,13 +356,15 @@ async function playSongFromApi(songId, track) {
       
         img.onload = function() {
           // Extract the dominant color
-          const dominantColor = colorThief.getPalette(img, 5);
+          const dominantColor = colorThief.getPalette(img, 10);
 
           const secondArray = dominantColor[2];
           console.log(secondArray);
+
+          const darkColor = darkenColor(secondArray);
           
           // Convert RGB array to CSS color
-         const rgbColor = `rgb(${secondArray[0]}, ${secondArray[1]}, ${secondArray[2]})`;
+         const rgbColor = `rgb(${darkColor[0]}, ${darkColor[1]}, ${darkColor[2]})`;
           
           // Set the background color of the right section
           document.getElementById('right-section').style.backgroundColor = rgbColor;
@@ -385,6 +387,11 @@ async function playSongFromApi(songId, track) {
 }
 
 
+
+function darkenColor(color, factor = 0.7) {
+  // Darken the RGB values by the specified factor
+  return color.map(value => Math.floor(value * factor));
+}
 // Function to Save Current Song to Local Storage
 function saveCurrentSong(track, streamUrl) {
   const songData = {
@@ -455,9 +462,9 @@ function displayRecommendations(tracks) {
     card.appendChild(artists);
     card.appendChild(likeIcon);
 
-    card.addEventListener("click", () => {
-      openRightSection();    
+    card.addEventListener("click", () => {   
       showPopup();
+      openBottomSheet();
       rightSection.style.display = "block";
       playSongFromApi(track.id, track);
       document.getElementById('dYnaPI').style.fill = '#1db954';
@@ -643,17 +650,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 let rightContClose = document.getElementById('right-cont-close');
-rightContClose.addEventListener("click", closeRightSection)
+rightContClose.addEventListener("click", closeBottomSheet)
+
+
 const songThumb = document.getElementById("song-thumb")
 
 const headerCell = document.getElementById('header-cell');
 headerCell.addEventListener('click', () => {
   
   if(songThumb.innerHTML){
-    openRightSection();
     const popup = document.getElementById('wrapper2');
     popup.style.display = 'block';
-    
+    openBottomSheet();
   }else{
     alert("No song found!")
  }
@@ -661,3 +669,42 @@ headerCell.addEventListener('click', () => {
 
 
 
+const wrapper2 = document.getElementById('wrapper2');
+let isOpen = false;
+
+// Function to open the bottom sheet
+function openBottomSheet() {
+  if (isOpen) return; // Prevents multiple clicks
+
+  // Set display to block so the element is visible before animating
+  wrapper2.style.display = 'block';
+
+  // Animate from bottom to top
+  gsap.to(wrapper2, {
+    y: 0,
+    duration: 0.2,
+    ease: "power2.out",
+    onStart: function() {
+      wrapper2.style.transform = 'translateY(0%)';
+    }
+  });
+
+  isOpen = true;
+}
+
+// Function to close the bottom sheet
+function closeBottomSheet() {
+  if (!isOpen) return; // Prevents closing if already closed
+
+  // Animate from top to bottom
+  gsap.to(wrapper2, {
+    y: "100%",
+    duration: 0.2,
+    ease: "power2.in",
+    onComplete: () => {
+      // After animation is complete, hide the element again
+      wrapper2.style.transform = 'translateY(100%)';
+      isOpen = false;
+    }
+  });
+}

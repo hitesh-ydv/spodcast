@@ -727,17 +727,17 @@ body,html{
 }
 
 .wrapper2{
-  display: none; 
-  position: fixed; 
-  left: 0;
-  top: 0;
-  width: 100%; 
-  height: 100%; 
-  justify-content: center; 
-  align-items: center; 
-  z-index: 1000;
-  background-color: transparent ;
+  position: fixed;
+      bottom: 0; /* Bottom position */
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: transparent; /* Spotify green */
+      z-index: 5000;
+      transform: translateY(100%); /* Initially hidden */
+
 }
+
 
 .right-section{
   min-width: 100%;
@@ -757,13 +757,17 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 }
 
 .right-section .song-thumb p{
-  color: rgb(216, 216, 216);
+  color: #b2b2b2;
   font-size: 18px;
 }
 
 .right-section .div-right-top{
   background-color: transparent;
-  margin-bottom: 7%;
+  margin-bottom: 5%;
+}
+
+body,html{
+  overflow: hidden;
 }
 
 #right-cont-close{
