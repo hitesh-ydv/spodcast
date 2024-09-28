@@ -89,12 +89,7 @@ function displayTracks(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
-      gsap.from('.right-section',{
-        opacity:1,
-        duration:0.3,
-        ease:'ease',
-        y:400
-      });
+      openRightSection();
       playSongFromApi(track.id, track);
       fetchRecommendations(track.id);
       showPopup();
@@ -298,12 +293,7 @@ function displayLikedSongs2() {
     card.appendChild(deleteIcon);
 
     card.addEventListener("click", () => {
-      gsap.from('.right-section',{
-        opacity:1,
-        duration:0.3,
-        ease:'ease',
-        y:400
-      });
+      openRightSection();
       playSongFromApi(track.id, track);
       showPopup();
       rightSection.style.display = "block";
@@ -312,6 +302,28 @@ function displayLikedSongs2() {
 
     // Prepend the new liked song at the start (reverse order)
     likedContainer2.prepend(card);
+  });
+}
+
+const wrap = document.getElementById("wrapper2");
+
+function openRightSection() {
+  gsap.from('.wrapper2', {
+    y: 800, // Moves it back down to the bottom
+    ease: "ease", // Easing effect for smooth transition
+    duration: 0.2, 
+  });
+
+
+  
+}
+
+// Function to close the right-section
+function closeRightSection() {
+  gsap.to('.wrapper2', {
+    display: "none", // Moves it back down to the bottom
+    ease: "ease", // Easing effect for smooth transition
+    duration: 0.2// Duration of the animation
   });
 }
 
@@ -335,6 +347,32 @@ async function playSongFromApi(songId, track) {
       audioPlayer.src = streamUrl;
       audioPlayer.play();
       createSongDetails(track, streamUrl);
+      setBackgroundColorFromImage(track);
+      function setBackgroundColorFromImage(imageUrl) {
+        const colorThief = new ColorThief();
+        const img = new Image();
+        img.crossOrigin = "Anonymous"; // Ensure the image is fetched with CORS support
+        img.src = track.album.images[0].url;
+      
+        img.onload = function() {
+          // Extract the dominant color
+          const dominantColor = colorThief.getPalette(img, 5);
+
+          const secondArray = dominantColor[2];
+          console.log(secondArray);
+          
+          // Convert RGB array to CSS color
+         const rgbColor = `rgb(${secondArray[0]}, ${secondArray[1]}, ${secondArray[2]})`;
+          
+          // Set the background color of the right section
+          document.getElementById('right-section').style.backgroundColor = rgbColor;
+        };
+      
+        img.onerror = function() {
+          console.log("Error loading image for color extraction");
+        };
+      }
+      
     } else {
       alert("Audio stream not available for this track.");
     }
@@ -418,13 +456,7 @@ function displayRecommendations(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
-      gsap.from('.right-section',{
-        opacity:1,
-        duration:0.4,
-        ease:'ease',
-        y:400
-      });
-      
+      openRightSection();    
       showPopup();
       rightSection.style.display = "block";
       playSongFromApi(track.id, track);
@@ -550,7 +582,6 @@ btnnHome.addEventListener("click", () => {
   document.getElementById("btn-home").style.display = "block";
   document.getElementById("btn-nhome").style.display = "none";
   document.getElementById("recommend-title").style.display = "none";
-  document.getElementById('ri-heart-fill').style.color = "#ffffff";
   middleSection.scrollTop = 0;
   let leftCont = document.getElementById('left--');
   var x = window.matchMedia("(max-width: 425px)") 
@@ -612,34 +643,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 let rightContClose = document.getElementById('right-cont-close');
-rightContClose.addEventListener("click", () => {
-  gsap.from('.right-section',{
-    opacity:1,
-    duration:0.2,
-    ease:'ease',
-    y:400
-  });
-  rightSection.style.display = 'none';
-  const popup = document.getElementById("wrapper2");
-  popup.style.display = 'none';
-})
-
+rightContClose.addEventListener("click", closeRightSection)
+const songThumb = document.getElementById("song-thumb")
 
 const headerCell = document.getElementById('header-cell');
 headerCell.addEventListener('click', () => {
   
-  const songThumb = document.getElementById("song-thumb");
-  
   if(songThumb.innerHTML){
-    gsap.from('.right-section',{
-      opacity:1,
-      duration:0.3,
-      ease:'ease',
-      y:400
-    });
-    const popup = document.getElementById("wrapper2");
-    popup.style.display = "flex";
-    rightSection.style.display = "block";
+    openRightSection();
+    const popup = document.getElementById('wrapper2');
+    popup.style.display = 'block';
+    
   }else{
     alert("No song found!")
  }
