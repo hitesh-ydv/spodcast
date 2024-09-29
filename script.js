@@ -9,6 +9,8 @@ let rightSection = document.getElementById("right-section");
 rightSection.style.display = "none";
 
 let middleSection = document.getElementById('middle-section');
+let currentlyPlayingSongId = null;
+let isPlaying = false; 
 
 
 // Default song ID to use when recommended tracks = 0 or on the first visit
@@ -358,8 +360,7 @@ async function playSongFromApi(songId, track) {
           // Extract the dominant color
           const dominantColor = colorThief.getPalette(img, 10);
 
-          const secondArray = dominantColor[2];
-          console.log(secondArray);
+          const secondArray = dominantColor[3];
 
           const darkColor = darkenColor(secondArray);
           
@@ -377,6 +378,7 @@ async function playSongFromApi(songId, track) {
       
     } else {
       alert("Audio stream not available for this track.");
+      loadingSpinner.style.display = "none";
     }
   } catch (error) {
     console.error("Error fetching the audio stream:", error);
@@ -385,6 +387,7 @@ async function playSongFromApi(songId, track) {
     loadingSpinner.style.display = "none";
   }
 }
+
 
 
 
@@ -491,8 +494,10 @@ function createSongDetails(track, streamUrl) {
 
   const songName = document.createElement("h3");
   songName.textContent = track.name;
+  songName.classList.add("marquee");
 
   const artists = document.createElement("p");
+  artists.classList.add("marquee");
   artists.textContent = track.artists.map((artist) => artist.name).join(", ");
 
   detailsDiv.appendChild(songName);
@@ -682,7 +687,7 @@ function openBottomSheet() {
   // Animate from bottom to top
   gsap.to(wrapper2, {
     y: 0,
-    duration: 0.2,
+    duration: 0.25,
     ease: "power2.out",
     onStart: function() {
       wrapper2.style.transform = 'translateY(0%)';
@@ -699,7 +704,7 @@ function closeBottomSheet() {
   // Animate from top to bottom
   gsap.to(wrapper2, {
     y: "100%",
-    duration: 0.2,
+    duration: 0.25,
     ease: "power2.in",
     onComplete: () => {
       // After animation is complete, hide the element again
@@ -708,3 +713,7 @@ function closeBottomSheet() {
     }
   });
 }
+
+
+
+

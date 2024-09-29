@@ -264,7 +264,11 @@
   background-color: rgba(0, 0, 0, 0.5);
   justify-content: center; 
   align-items: center; 
-  z-index: 1000;
+  z-index: 10000;
+  background-color: rgba(18, 18, 18, 0.5);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+
 }
 
 form{
@@ -283,4 +287,12 @@ form{
 
 .wrapper h3{
   font-weight: 450;
+}
+
+
+.dHyafv .track-card .song-details p{
+  display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
 }
