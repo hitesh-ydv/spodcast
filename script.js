@@ -96,6 +96,7 @@ function displayTracks(tracks) {
     card.addEventListener("click", () => {
       playSongFromApi(track.id, track);
       fetchRecommendations(track.id);
+      fetchArtistRecommendations(track.artists[0].id)
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
@@ -406,6 +407,46 @@ async function fetchRecommendations(trackId = defaultSongId) {
 }
 
 
+// Function to Fetch Recommended Tracks Based on Selected Track or Default Song
+async function fetchArtistRecommendations(trackId = defaultArtistId) {
+  const token = await getAccessToken();
+  const response = await fetch(
+    `https://api.spotify.com/v1/artists/${trackId}/related-artists`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+  displayArtists(data.artists);
+}
+
+
+
+
+
+// Display artists in the artist-container with images and names
+function displayArtists(artists) {
+  const artistContainer = document.getElementById('artist-container');
+  artistContainer.innerHTML = ''; // Clear existing artists
+
+  artists.forEach(artist => {
+    const artistCard = document.createElement('div');
+    artistCard.classList.add('track-card');
+
+    artistCard.innerHTML = `
+      <img src="${artist.images[0].url}">
+      <div class="song-details">
+        <h3>${artist.name}</h3>
+        <p>${artist.type.toUpperCase()}</p>
+      </div>
+    `;
+    artistContainer.appendChild(artistCard);
+  });
+}
 
 
 
@@ -525,6 +566,7 @@ window.addEventListener("DOMContentLoaded", () => {
   displayLikedSongs();
   displayLikedSongs2(); // Display liked songs in both containers
   updateAllLikeIcons();
+  fetchArtistRecommendations();
   // Display liked songs in both containers
   document.body.scrollTop = 0;
   if (navigator.onLine) {
