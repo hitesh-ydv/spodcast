@@ -693,44 +693,47 @@ function closeBottomSheet() {
   });
 }
 
-let wrapper3 = document.getElementById('wrapper3');
-wrapper3.addEventListener('click', () => {
-  closeBottomSheetNav();
-})
+const wrapper3 = document.getElementById('wrapper3');
+        const wrapper3Inner = document.getElementById('wrapper3-inner');
+        const headerImg = document.getElementById('header-img');
 
-function openBottomSheetNav() {
-  if (isOpen) return; // Prevents multiple clicks
+        let isWrapperOpen = false; // Track if wrapper is open
 
-  // Set display to block so the element is visible before animating
-  wrapper3.style.display = 'block';
+        // Function to open wrapper3 with background fade
+        function openWrapper3() {
+            gsap.to(wrapper3, {
+                duration: 0.2,
+                left: '0%', // Bring wrapper into view
+                ease: 'power2.out',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fade-in background color
+            });
+            isWrapperOpen = true;
+        }
 
-  // Animate from bottom to top
-  gsap.from(wrapper3, {
-    x: 0,
-    duration: 0.2,
-    ease: "power2.out",
-  });
+        // Function to close wrapper3 with background fade-out
+        function closeWrapper3() {
+            gsap.to(wrapper3, {
+                duration: 0.2,
+                left: '-100%', // Move wrapper out of view
+                ease: 'power2.in',
+                backgroundColor: 'rgba(0, 0, 0, 0)', // Fade-out background color
+            });
+            isWrapperOpen = false;
+        }
 
-  isOpen = true;
-}
+        // Toggle open/close wrapper3 when clicking on header-img
+        headerImg.addEventListener('click', () => {
+            if (isWrapperOpen) {
+                closeWrapper3();
+            } else {
+                openWrapper3();
+            }
+        });
 
+        // Prevent wrapper3 from closing when clicking inside wrapper3-inner
+        wrapper3Inner.addEventListener('click', (event) => {
+            event.stopPropagation(); // Stop click event from reaching wrapper3
+        });
 
-function closeBottomSheetNav() {
-  if (!isOpen) return; // Prevents closing if already closed
-
-  // Animate from top to bottom
-  gsap.to(wrapper3, {
-    x: "100%",
-    duration: 0.2,
-    ease: "power2.in",
-    onComplete: () => {
-      // After animation is complete, hide the element again
-      wrapper3.style.transform = 'translateX(-100%)';
-      isOpen = false;
-    }
-  });
-}
-
-
-let headerImage = document.getElementById('header-img');
-headerImage.addEventListener('click', openBottomSheetNav);
+        // Close wrapper when clicking on the wrapper itself (not inner)
+        wrapper3.addEventListener('click', closeWrapper3);
