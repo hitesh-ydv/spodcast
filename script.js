@@ -494,10 +494,8 @@ function createSongDetails(track, streamUrl) {
 
   const songName = document.createElement("h3");
   songName.textContent = track.name;
-  songName.classList.add("marquee");
 
   const artists = document.createElement("p");
-  artists.classList.add("marquee");
   artists.textContent = track.artists.map((artist) => artist.name).join(", ");
 
   detailsDiv.appendChild(songName);
@@ -713,7 +711,6 @@ function closeBottomSheet() {
     }
   });
 }
-
 
 
 

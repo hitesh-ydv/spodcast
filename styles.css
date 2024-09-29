@@ -750,18 +750,6 @@ body,html{
   background-color: black;
 }
 
-.right-section .song-thumb{
-  overflow: hidden; /* Hide the overflowing text */
-    white-space: nowrap; /* Prevent text from wrapping */
-    position: relative;
-}
-
-.song-deatils2 {
-  width: 100%; /* Adjust width as needed */
-  overflow: hidden; /* Hide the overflowing text */
-  white-space: nowrap; /* Prevent text from wrapping */
-  position: relative;
-}
 
 
 .right-section .song-thumb img{
@@ -774,38 +762,6 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 }
 
 
-.marquee {
-  display: inline-block;
-  white-space: nowrap;
-  animation: marquee 10s linear infinite;
-  animation-delay: 2s; /* Wait 2 seconds before starting */
-  animation-play-state: paused; /* Start paused and trigger on hover or active state */
-}
-
-/* Keyframes for scrolling effect */
-@keyframes marquee {
-  0% {
-      transform: translateX(0); /* Start at the initial position */
-  }
-  20% {
-      transform: translateX(0); /* Pause briefly at the start */
-  }
-  50% {
-      transform: translateX(-100%); /* Move to the left, hiding the text */
-  }
-  80% {
-      transform: translateX(-100%); /* Pause briefly at the end */
-  }
-  100% {
-      transform: translateX(0); /* Move back to the starting position */
-  }
-}
-
-
-.song-details2:hover .marquee,
-.song-details2.active .marquee {
-    animation-play-state: running; /* Start animation when hovering or active */
-}
 
 .right-section .div-right-top{
   background-color: transparent;
