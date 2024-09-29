@@ -96,7 +96,6 @@ function displayTracks(tracks) {
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
-      document.getElementById('dYnaPI').style.fill = '#1db954';
     });
 
     container.appendChild(card);
@@ -240,7 +239,6 @@ function displayLikedSongs() {
       playSongFromApi(track.id, track);
       showPopup();
       rightSection.style.display = "block";
-      document.getElementById('dYnaPI').style.fill = '#1db954';
     });
 
     likedContainer.appendChild(card);
@@ -298,37 +296,13 @@ function displayLikedSongs2() {
       playSongFromApi(track.id, track);
       showPopup();
       openBottomSheet();
-      rightSection.style.display = "block";
-      document.getElementById('dYnaPI').style.fill = '#1db954'; // Play song from liked songs when clicked
+      rightSection.style.display = "block"; // Play song from liked songs when clicked
     });
 
     // Prepend the new liked song at the start (reverse order)
     likedContainer2.prepend(card);
   });
 }
-
-const wrap = document.getElementById("wrapper2");
-
-function openRightSection() {
-  gsap.from('.wrapper2', {
-    y: 800, // Moves it back down to the bottom
-    ease: "ease", // Easing effect for smooth transition
-    duration: 0.2, 
-  });
-
-
-  
-}
-
-// Function to close the right-section
-function closeRightSection() {
-  gsap.to('.wrapper2', {
-    display: "none", // Moves it back down to the bottom
-    ease: "ease", // Easing effect for smooth transition
-    duration: 0.2// Duration of the animation
-  });
-}
-
 
 // Function to Fetch and Play Song Audio from External API
 
@@ -349,6 +323,7 @@ async function playSongFromApi(songId, track) {
       audioPlayer.src = streamUrl;
       audioPlayer.play();
       createSongDetails(track, streamUrl);
+      document.getElementById('dYnaPI').style.fill = '#1db954';
       setBackgroundColorFromImage(track);
       function setBackgroundColorFromImage(imageUrl) {
         const colorThief = new ColorThief();
@@ -470,7 +445,6 @@ function displayRecommendations(tracks) {
       openBottomSheet();
       rightSection.style.display = "block";
       playSongFromApi(track.id, track);
-      document.getElementById('dYnaPI').style.fill = '#1db954';
     });
 
     container.appendChild(card);
@@ -606,7 +580,7 @@ function homeBtnTrigger() {
   document.getElementById("btn-home").style.display = "none";
   document.getElementById("btn-nhome").style.display = "block";
   document.getElementById("home-section").style.display = "none";
-  var x = window.matchMedia("(max-width: 425px)")
+  let x = window.matchMedia("(max-width: 425px)")
   let leftCont = document.getElementById('left--'); 
   if(x.matches){
     leftCont.style.display = 'none';
@@ -652,8 +626,15 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
+let x = window.matchMedia("(max-width: 425px)")
 let rightContClose = document.getElementById('right-cont-close');
-rightContClose.addEventListener("click", closeBottomSheet)
+rightContClose.addEventListener("click", () => {
+  if(x.matches){
+    closeBottomSheet();
+  }else{
+    rightSection.style.display = 'none';
+  }
+})
 
 
 const songThumb = document.getElementById("song-thumb")
@@ -685,7 +666,7 @@ function openBottomSheet() {
   // Animate from bottom to top
   gsap.to(wrapper2, {
     y: 0,
-    duration: 0.25,
+    duration: 0.2,
     ease: "power2.out",
     onStart: function() {
       wrapper2.style.transform = 'translateY(0%)';
@@ -702,7 +683,7 @@ function closeBottomSheet() {
   // Animate from top to bottom
   gsap.to(wrapper2, {
     y: "100%",
-    duration: 0.25,
+    duration: 0.2,
     ease: "power2.in",
     onComplete: () => {
       // After animation is complete, hide the element again

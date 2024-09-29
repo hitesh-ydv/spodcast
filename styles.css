@@ -720,6 +720,9 @@ body,html{
   cursor: pointer;
 }
 
+
+
+
 .tracks-container .track-card img{
   border-radius: 0px;
 }
@@ -738,7 +741,6 @@ body,html{
       background-color: transparent; /* Spotify green */
       z-index: 5000;
       transform: translateY(100%); /* Initially hidden */
-
 }
 
 
@@ -849,22 +851,23 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 
 .recommend-outer #recommendations-container {
   display: flex;
-  gap: 6px;
+  gap: 16px;
   flex-wrap: nowrap;
   padding: 0px;
   overflow: scroll;
   overflow-y: hidden;
   margin-bottom: 30px;
+  margin-left: 10px;
 }
 
 #recommendations-container .track-card {
   border-radius: 8px;  
-  padding: 10px;
+  padding: 0px;
   flex: 0;
   transition: transform 0.2s;
-  min-width: 170px;
+  min-width: 140px;
   min-height: 0px;
-  transition: all 0.2s;
+  transition: all 0.2s ease-in-out;
 }
 
 #recommendations-container::-webkit-scrollbar
@@ -881,7 +884,7 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 
   display: flex;
   flex-direction: row;
-  gap: 6px;
+  gap: 18px;
   flex-wrap: nowrap;
   padding: 0px;
   overflow: scroll;
@@ -889,18 +892,26 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
   margin-bottom: 30px;
   white-space: nowrap; /* Prevent wrapping */
   max-width: 100%;     /* Ensure container doesn't exceed screen width */
-  justify-content: flex-start; 
+  justify-content: flex-start;
+  margin-left: 10px; 
 }
 
 #liked-songs-container2 .track-card{  
-  padding: 10px;
+  padding: 0px;
   flex: 0;
   transition: transform 0.2s;
-  min-width: 170px;
+  min-width: 140px;
   min-height: 0px;
-  transition: all 0.2s;
-  
+  transition: all 0.2s; 
 }
+
+.liked-songs-container2 .track-card .song-details h4,p{
+  display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+
 
 #liked-songs-container2 .track-card:hover{
   background-color: transparent;
@@ -929,5 +940,7 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 {
 	display: none;
 }
+
+
 
 }

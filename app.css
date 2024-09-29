@@ -56,7 +56,7 @@
     transition: transform 0.2s;
     cursor: pointer;
     flex: 1;
-    min-width: 150px;
+    min-width: 170px;
     min-height: 220px;
     transition: all 0.2s;
   }
@@ -119,7 +119,11 @@
 
 
 .liked-songs-container {
-  padding: 8px 4px 0px;
+  padding: 18px 4px 0px;
+}
+
+.liked-outer{
+  display: none;
 }
 
 .liked-song-card {
