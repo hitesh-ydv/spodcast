@@ -51,6 +51,7 @@ async function fetchTracks(query) {
   );
 
   const data = await response.json();
+  console.log(data)
   displayTracks(data.tracks.items);
 }
 
@@ -95,6 +96,7 @@ function displayTracks(tracks) {
     card.addEventListener("click", () => {
       playSongFromApi(track.id, track);
       fetchRecommendations(track.id);
+      fetchArtistRecommendations(track.artists[0].id)
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
@@ -549,6 +551,7 @@ function handleInitialUI() {
 
   if (isFirstVisit() || hasNoRecommendedSongs()) {
     fetchRecommendations(defaultSongId);
+    fetchArtistRecommendations(defaultArtistId);
     homeSection.style.display = "block";
   } else {
     homeSection.style.display = "block";
