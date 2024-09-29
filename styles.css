@@ -779,6 +779,10 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
   font-size: 20px;
 }
 
+.div-right-top .top-title #right-cont-close{
+  font-size: 34px;
+}
+
 .main-section .recommend-title h3{
     font-size: 25px;
 }
@@ -944,7 +948,7 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
   left: -100%; /* Initially off-screen to the left */
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
   z-index: 188899;
   transition: transform 0.5s ease;
 }
@@ -991,14 +995,13 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 
 .user-name h4{
   color: white;
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: -5px;
-  font-weight: 520;
+  font-weight: 500;
 }
 .user-name p{
   color: #b2b2b2;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 15px;
 }
 
 .line-tag{
@@ -1059,6 +1062,35 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 .setting h4{
   font-weight: 500;
   font-size: 16px;
+}
+
+.artist-outer #artist-container{
+  display: flex;
+  gap: 18px;
+  flex-wrap: nowrap;
+  padding: 0px;
+  overflow: scroll;
+  overflow-y: hidden;
+  margin-bottom: 30px;
+  margin-left: 10px;
+}
+
+#artist-container .track-card{
+  padding: 0px;
+  flex: 0;
+  transition: transform 0.2s;
+  min-width: 140px;
+  min-height: 0px;
+  transition: all 0.2s; 
+  text-align: center;
+}
+
+#artist-container::-webkit-scrollbar{
+  display: none;
+}
+
+#artist-container .track-card img{
+  border-radius: 50%;
 }
 
 }

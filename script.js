@@ -11,6 +11,7 @@ rightSection.style.display = "none";
 let middleSection = document.getElementById('middle-section');
 let currentlyPlayingSongId = null;
 let isPlaying = false; 
+let defaultArtistId = '6DARBhWbfcS9E4yJzcliqQ';
 
 
 // Default song ID to use when recommended tracks = 0 or on the first visit
@@ -31,6 +32,7 @@ async function getAccessToken() {
   const data = await result.json();
   return data.access_token;
 }
+
 
 
 // Function to Fetch Tracks Based on Search Query
@@ -335,7 +337,7 @@ async function playSongFromApi(songId, track) {
           // Extract the dominant color
           const dominantColor = colorThief.getPalette(img, 10);
 
-          const secondArray = dominantColor[4];
+          const secondArray = dominantColor[2];
 
           const darkColor = darkenColor(secondArray);
           
@@ -401,6 +403,51 @@ async function fetchRecommendations(trackId = defaultSongId) {
   displayRecommendations(data.tracks);
   localStorage.setItem("recommendedSongs", JSON.stringify(data.tracks));
 }
+
+
+// Function to Fetch Recommended Tracks Based on Selected Track or Default Song
+async function fetchArtistRecommendations(trackId = defaultArtistId) {
+  const token = await getAccessToken();
+  const response = await fetch(
+    `https://api.spotify.com/v1/artists/${trackId}/related-artists`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+  console.log(data)
+  displayArtists(data.artists);
+}
+
+
+
+
+
+// Display artists in the artist-container with images and names
+function displayArtists(artists) {
+  const artistContainer = document.getElementById('artist-container');
+  artistContainer.innerHTML = ''; // Clear existing artists
+
+  artists.forEach(artist => {
+    const artistCard = document.createElement('div');
+    artistCard.classList.add('track-card');
+
+    artistCard.innerHTML = `
+      <img src="${artist.images[0].url}">
+      <div class="song-details">
+        <h3>${artist.name}</h3>
+        <p>${artist.type.toUpperCase()}</p>
+      </div>
+    `;
+    artistContainer.appendChild(artistCard);
+  });
+}
+
+
 
 
 // Function to Display Recommended Tracks
@@ -517,7 +564,9 @@ window.addEventListener("DOMContentLoaded", () => {
   handleInitialUI();
   displayLikedSongs();
   displayLikedSongs2(); // Display liked songs in both containers
-  updateAllLikeIcons();// Display liked songs in both containers
+  updateAllLikeIcons();
+  fetchArtistRecommendations();
+  // Display liked songs in both containers
   document.body.scrollTop = 0;
   if (navigator.onLine) {
     let mainDiv = document.getElementById("main");
@@ -736,4 +785,4 @@ const wrapper3 = document.getElementById('wrapper3');
         });
 
         // Close wrapper when clicking on the wrapper itself (not inner)
-        wrapper3.addEventListener('click', closeWrapper3);
+        wrapper3.addEventListener('click', closeWrapper3);       
