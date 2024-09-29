@@ -1,8 +1,8 @@
 const client_id = "4fed9d932c7840a292b8f10a34a8a892";
 const client_secret = "fa138e9b886743a9970fccbad0bf5150";
 let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
-let recommendedSongs =
-  JSON.parse(localStorage.getItem("recommendedSongs")) || [];
+let recommendedSongs = JSON.parse(localStorage.getItem("recommendedSongs")) || [];
+let savedArtists = JSON.parse(localStorage.getItem('savedArtists'));
 let currentSong = JSON.parse(localStorage.getItem("currentSong")) || null;
 let rightSection = document.getElementById("right-section");
 
@@ -421,7 +421,6 @@ async function fetchArtistRecommendations(trackId = defaultArtistId) {
   );
 
   const data = await response.json();
-  console.log(data)
   displayArtists(data.artists);
 }
 
@@ -539,7 +538,8 @@ function isFirstVisit() {
 
 // Function to Check if No Recommended Songs
 function hasNoRecommendedSongs() {
-  return recommendedSongs.length === 0;
+   recommendedSongs.length === 0; 
+   savedArtists.length === 0;
 }
 
 
@@ -551,7 +551,6 @@ function handleInitialUI() {
 
   if (isFirstVisit() || hasNoRecommendedSongs()) {
     fetchRecommendations(defaultSongId);
-    fetchArtistRecommendations(defaultArtistId);
     homeSection.style.display = "block";
   } else {
     homeSection.style.display = "block";
