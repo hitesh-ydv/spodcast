@@ -335,7 +335,7 @@ async function playSongFromApi(songId, track) {
           // Extract the dominant color
           const dominantColor = colorThief.getPalette(img, 10);
 
-          const secondArray = dominantColor[3];
+          const secondArray = dominantColor[4];
 
           const darkColor = darkenColor(secondArray);
           
@@ -693,5 +693,44 @@ function closeBottomSheet() {
   });
 }
 
+let wrapper3 = document.getElementById('wrapper3');
+wrapper3.addEventListener('click', () => {
+  closeBottomSheetNav();
+})
+
+function openBottomSheetNav() {
+  if (isOpen) return; // Prevents multiple clicks
+
+  // Set display to block so the element is visible before animating
+  wrapper3.style.display = 'block';
+
+  // Animate from bottom to top
+  gsap.from(wrapper3, {
+    x: 0,
+    duration: 0.2,
+    ease: "power2.out",
+  });
+
+  isOpen = true;
+}
 
 
+function closeBottomSheetNav() {
+  if (!isOpen) return; // Prevents closing if already closed
+
+  // Animate from top to bottom
+  gsap.to(wrapper3, {
+    x: "100%",
+    duration: 0.2,
+    ease: "power2.in",
+    onComplete: () => {
+      // After animation is complete, hide the element again
+      wrapper3.style.transform = 'translateX(-100%)';
+      isOpen = false;
+    }
+  });
+}
+
+
+let headerImage = document.getElementById('header-img');
+headerImage.addEventListener('click', openBottomSheetNav);

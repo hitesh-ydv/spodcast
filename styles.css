@@ -921,26 +921,145 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
   border-radius: 0px;
 }
 
-.dHyafv .track-card .song-details h4{
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-}
-
-.dHyafv .track-card .song-details p{
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-}
-
 #liked-songs-container2::-webkit-scrollbar
 
 {
 	display: none;
 }
 
+#header-img{
+  background-color: rgb(105, 105, 255);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
 
+.wrapper3{
+  position: fixed;
+      left: -100%;/* Bottom position */
+      top: 0;
+      width: 100%;
+      height: 100%; /* Spotify green */
+      z-index: 5001;
+      transform: translateX(100%);
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+}
+
+.wrapper3-inner{
+  height: 100%;
+  width: 80%;
+  background-color: #242424;
+}
+
+.user-details{
+  width: 100%;
+  height: 80px;
+  background-color: transparent;
+  display: flex;
+}
+
+.user-img-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 100%;
+
+}
+
+.user-img{
+  background-color: rgb(105, 105, 255);
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;font-size: 22px;
+}
+
+.user-name{
+  width: calc(100% - 80px);
+  align-items: center;
+  padding: 18px 0px 25px 0px ;
+  
+}
+
+.user-name h4{
+  color: white;
+  font-size: 16px;
+  margin-bottom: -5px;
+  font-weight: 520;
+}
+.user-name p{
+  color: #b2b2b2;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.line-tag{
+  width: 100%;
+  height: 0.5px;
+  background-color: #454545;
+}
+
+.whats-new{
+  display: flex;
+  color: white;
+  padding: 16px 0px 6px 16px;;
+  width: 100%;
+  gap: 8px;
+  align-items: center;
+}
+
+.whats-new i{
+  font-size: 26px;
+}
+
+.whats-new h4{
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.listen-history{
+  display: flex;
+  color: white;
+  padding: 16px 0px 6px 16px;
+  width: 100%;
+  gap: 8px;
+  align-items: center;
+}
+
+.listen-history i{
+  font-size: 26px;
+}
+
+.listen-history h4{
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.setting{
+  display: flex;
+  color: white;
+  padding: 16px 0px 6px 16px;
+  width: 100%;
+  gap: 8px;
+  align-items: center;
+}
+
+.setting i{
+  font-size: 26px;
+}
+
+.setting h4{
+  font-weight: 500;
+  font-size: 16px;
+}
 
 }
