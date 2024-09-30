@@ -786,4 +786,41 @@ const wrapper3 = document.getElementById('wrapper3');
         });
 
         // Close wrapper when clicking on the wrapper itself (not inner)
-        wrapper3.addEventListener('click', closeWrapper3);       
+        wrapper3.addEventListener('click', closeWrapper3);     
+
+
+
+const toggleUpdateWrapper = () => {
+  const wrapper = document.getElementById('update-wrapper');
+
+  if (!isOpen) {
+    // Slide in from the right
+    gsap.to(wrapper, {
+      duration: 0.1, // Animation duration
+      x: '-100%', // Move to full width on the left side
+      ease: 'power1.out', // Smooth easing
+    });
+  } else {
+    // Slide out to the right
+    gsap.to(wrapper, {
+      duration: 0.1, 
+      x: '0%', // Move back to the right (hidden)
+      ease: 'power1.in',
+    });
+  }
+
+  isOpen = !isOpen; // Toggle the state
+};
+
+// Add event listener to the "What's New" button
+document.getElementById('whats-new').addEventListener('click', () => {
+  closeWrapper3();
+  toggleUpdateWrapper();
+});
+
+// Add event listener to the "Update Icon" button for closing
+document.getElementById('update-icon').addEventListener('click', () => {
+  if (isOpen) {
+    toggleUpdateWrapper(); // Close the update-wrapper
+  }
+});

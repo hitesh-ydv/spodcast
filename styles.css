@@ -1097,4 +1097,41 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
   border-radius: 50%;
 }
 
+.update-wrapper{
+  position: fixed;
+  top: 0;
+  right: -100%; /* Initially off-screen to the left */
+  width: 100%;
+  height: 100%;
+  background-color: #121212;
+  z-index: 198899;
+  transition: transform 0.5s ease;
+}
+
+.update-header{
+  color: white;
+  padding: 20px 20px 0px;
+}
+
+.update-header i{
+  font-size: 35px;
+  display: inline-block;
+  margin-left: -10px;
+  margin-bottom: 10px;
+}
+
+.update-header p{
+  color: #b2b2b2;
+  display: inline-block;
+}
+
+.update-section{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100% - 148px);
+  color: white;
+}
+
 }
