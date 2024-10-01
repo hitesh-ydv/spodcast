@@ -171,7 +171,7 @@
             </div>
 
             <div class="div-padding" id="div-padding">
-              <div id="loading-spinner" style="display: none">Loading...</div>
+              <div class="loading-outer"><div id="loading-spinner" style="display: none"></div></div>
               <div class="song-thumb" id="song-thumb"></div>
 
               <div
@@ -196,7 +196,7 @@
               <i class="ri-flashlight-line"></i>
               <h4>What's new</h4>
             </div>
-            <div class="listen-history">
+            <div class="listen-history" id="listen-history">
               <i class="ri-history-line"></i>
               <h4>Listening history</h4>
             </div>
@@ -214,6 +214,13 @@
             
           </div>
           <div class="update-section" id="update-section"><h3>No updates yet!</h3></div>
+        </div>
+        <div class="recently-played" id="recently-played">
+          <div class="recently-header">
+            <span id="recently-icon"><i class="ri-arrow-left-s-line"></i></span>
+            <h4>Recently Played</h4>
+          </div>
+          <div class="recently-played-songs" id="recently-played-songs"></div>
         </div>
       </div>
 

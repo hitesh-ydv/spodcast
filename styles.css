@@ -756,6 +756,27 @@ body,html{
   background-color: black;
 }
 
+.loading-outer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#loading-spinner{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: conic-gradient(#0000 10%, #1db954);
+  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 6px),#000 0);
+  -webkit-animation: spinner-zp9dbg 1.5s infinite linear;
+}
+
+@keyframes spinner-zp9dbg {
+  to {
+     -webkit-transform: rotate(1turn);
+  }
+}
+
 
 
 .right-section .song-thumb img{
@@ -1123,6 +1144,7 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 .update-header p{
   color: #b2b2b2;
   display: inline-block;
+  font-size: 14px;
 }
 
 .update-section{
@@ -1132,6 +1154,68 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
   width: 100%;
   height: calc(100% - 148px);
   color: white;
+}
+
+.recently-played{
+  position: fixed;
+  top: 0;
+  right: -100%; /* Initially off-screen to the left */
+  width: 100%;
+  height: 100%;
+  background-color: #121212;
+  z-index: 198899;
+  transition: transform 0.5s ease;
+  overflow: scroll;
+  
+}
+.recently-header{
+  color: white;
+  padding: 15px 15px 15px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky;
+  top: 0px;
+  background-color: rgba(18, 18, 18, 0.5);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+}
+
+
+.recently-header i{
+  font-size: 35px;
+}
+
+.recently-header h4{
+  font-size: 18px;
+}
+
+#recently-played-songs{
+  padding: 16px;
+  gap: 0px;
+  
+}
+
+#recently-played-songs .track-card{
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  cursor: pointer;
+  min-height: max-content; 
+}
+
+#recently-played-songs .track-card:hover{
+  background-color: transparent;
+}
+
+#recently-played-songs .track-card img {
+  width: 48px;
+  height: 48px;
+  margin-right: 10px;
+  border-radius: 0px;
+  object-fit: cover;
 }
 
 }

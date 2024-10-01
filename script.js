@@ -263,8 +263,6 @@ function displayLikedSongs2() {
       if(x.matches){
         document.getElementById('liked-outer').style.display = 'block';
       }
-    }else{
-      document.getElementById('liked-outer').style.display = 'none';
     }
 
     const card = document.createElement("div");
@@ -287,7 +285,10 @@ function displayLikedSongs2() {
     deleteIcon.classList.add("ri-delete-bin-line", "delete-icon");
     deleteIcon.addEventListener("click", (event) => {
       event.stopPropagation();
-      toggleLikeSong(track);  // Remove the song from liked songs
+      toggleLikeSong(track);
+      if(!track){
+        document.getElementById('liked-outer').style.display = 'none';
+      }  // Remove the song from liked songs
     });
 
     card.appendChild(image);
@@ -329,6 +330,7 @@ async function playSongFromApi(songId, track) {
       createSongDetails(track, streamUrl);
       document.getElementById('dYnaPI').style.fill = '#1db954';
       setBackgroundColorFromImage(track);
+      addToRecentlyPlayed(track);
       function setBackgroundColorFromImage(imageUrl) {
         const colorThief = new ColorThief();
         const img = new Image();
@@ -362,8 +364,6 @@ async function playSongFromApi(songId, track) {
   } catch (error) {
     console.error("Error fetching the audio stream:", error);
     alert("Failed to load the audio stream.");
-    const loadingSpinner = document.getElementById("loading-spinner");
-    loadingSpinner.style.display = "none";
   }
 }
 
@@ -567,6 +567,8 @@ window.addEventListener("DOMContentLoaded", () => {
   displayLikedSongs2(); // Display liked songs in both containers
   updateAllLikeIcons();
   fetchArtistRecommendations();
+  loadRecentlyPlayedFromLocalStorage();
+  
   // Display liked songs in both containers
   document.body.scrollTop = 0;
   if (navigator.onLine) {
@@ -798,7 +800,7 @@ const toggleUpdateWrapper = () => {
     gsap.to(wrapper, {
       duration: 0.1, // Animation duration
       x: '-100%', // Move to full width on the left side
-      ease: 'power1.out', // Smooth easing
+      ease: 'power1.in', // Smooth easing
     });
   } else {
     // Slide out to the right
@@ -824,3 +826,134 @@ document.getElementById('update-icon').addEventListener('click', () => {
     toggleUpdateWrapper(); // Close the update-wrapper
   }
 });
+
+
+
+
+
+
+const toggleListenWrapper = () => {
+  const wrapper = document.getElementById('recently-played');
+
+  if (!isOpen) {
+    // Slide in from the right
+    gsap.to(wrapper, {
+      duration: 0.1, // Animation duration
+      x: '-100%', // Move to full width on the left side
+      ease: 'power1.in', // Smooth easing
+    });
+  } else {
+    // Slide out to the right
+    gsap.to(wrapper, {
+      duration: 0.1, 
+      x: '0%', // Move back to the right (hidden)
+      ease: 'power1.in',
+    });
+  }
+
+  isOpen = !isOpen; // Toggle the state
+};
+
+
+
+// Add event listener to the "What's New" button
+document.getElementById('listen-history').addEventListener('click', () => {
+  closeWrapper3();
+  toggleListenWrapper();
+  const wrapper = document.getElementById('recently-played');
+  wrapper.scrollTop = 0;
+  
+});
+
+// Add event listener to the "Update Icon" button for closing
+document.getElementById('recently-icon').addEventListener('click', () => {
+  if (isOpen) {
+    toggleListenWrapper(); // Close the update-wrapper
+  }
+});
+
+
+
+
+
+const recentlyPlayedContainer = document.getElementById('recently-played-songs');
+
+function createSongCard(track) {
+  const songCard = document.createElement('div');
+  songCard.classList.add('track-card');
+  
+  // Create song image
+  const img = document.createElement('img');
+  img.src = track.album.images[0].url;
+  songCard.appendChild(img);
+  
+  // Create song details container
+  const songDetails = document.createElement('div');
+  songDetails.classList.add('song-details2');
+
+  // Create song name
+  const songName = document.createElement('h3');
+  songName.textContent = track.name;
+  songDetails.appendChild(songName);
+
+  // Create artist name
+  const artistName = document.createElement('p');
+  artistName.textContent = track.artists.map((artist) => artist.name).join(", ");
+  songDetails.appendChild(artistName);
+
+  songCard.addEventListener('click', () => {
+    if (isOpen) {
+      toggleListenWrapper(); // Close the update-wrapper
+    }
+    playSongFromApi(track.id, track);
+    showPopup();
+    openBottomSheet();
+    rightSection.style.display = "block";
+  })
+
+  songCard.appendChild(songDetails);
+  return songCard;
+}
+
+
+// Function to add a song to the recently played container
+function addToRecentlyPlayed(track) {
+  const songCard = createSongCard(track);
+
+  // Add the new song at the top (most recent first)
+  recentlyPlayedContainer.prepend(songCard);
+  saveRecentlyPlayed(track);
+
+}
+
+// Function to save Recently Played songs in local storage
+function saveRecentlyPlayed(track) {
+  let recentlyPlayed = JSON.parse(localStorage.getItem('recentlyPlayed')) || [];
+  
+  // Check if the song is already present using its id
+  const songExists = recentlyPlayed.some(item => item.id === track.id);
+
+  if (!songExists) {
+    // Add the new song at the beginning of the array
+    recentlyPlayed.unshift(track);
+
+    // Limit the number of recently played songs to 10
+    if (recentlyPlayed.length > 10) {
+      recentlyPlayed.pop(); // Remove the oldest entry if there are more than 10 songs
+    }
+
+    // Save updated list to local storage
+    localStorage.setItem('recentlyPlayed', JSON.stringify(recentlyPlayed));
+  }
+}
+
+function loadRecentlyPlayedFromLocalStorage() {
+  const recentlyPlayed = JSON.parse(localStorage.getItem('recentlyPlayed')) || [];
+  
+  recentlyPlayed.forEach(track => {
+    const songCard = createSongCard(track);
+    recentlyPlayedContainer.appendChild(songCard);
+  });
+}
+
+
