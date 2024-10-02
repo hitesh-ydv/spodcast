@@ -300,3 +300,7 @@ form{
     -webkit-line-clamp: 1;
     overflow: hidden;
 }
+
+.update-wrapper ,.wrapper3, .recently-played{
+  display: none;
+}

@@ -751,6 +751,7 @@ const wrapper3 = document.getElementById('wrapper3');
 
         let isWrapperOpen = false; // Track if wrapper is open
 
+
         // Function to open wrapper3 with background fade
         function openWrapper3() {
             gsap.to(wrapper3, {
@@ -760,6 +761,7 @@ const wrapper3 = document.getElementById('wrapper3');
                 backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fade-in background color
             });
             isWrapperOpen = true;
+            wrapper3.style.display = 'block';
         }
 
         // Function to close wrapper3 with background fade-out
@@ -775,8 +777,11 @@ const wrapper3 = document.getElementById('wrapper3');
 
         // Toggle open/close wrapper3 when clicking on header-img
         headerImg.addEventListener('click', () => {
+
             if (isWrapperOpen) {
+              
                 closeWrapper3();
+                
             } else {
                 openWrapper3();
             }
@@ -816,6 +821,8 @@ const toggleUpdateWrapper = () => {
 
 // Add event listener to the "What's New" button
 document.getElementById('whats-new').addEventListener('click', () => {
+  const wrapper = document.getElementById('update-wrapper');
+  wrapper.style.display = 'block';
   closeWrapper3();
   toggleUpdateWrapper();
 });
@@ -862,6 +869,7 @@ document.getElementById('listen-history').addEventListener('click', () => {
   toggleListenWrapper();
   const wrapper = document.getElementById('recently-played');
   wrapper.scrollTop = 0;
+  wrapper.style.display = 'block';
   
 });
 
@@ -930,22 +938,20 @@ function addToRecentlyPlayed(track) {
 function saveRecentlyPlayed(track) {
   let recentlyPlayed = JSON.parse(localStorage.getItem('recentlyPlayed')) || [];
   
-  // Check if the song is already present using its id
-  const songExists = recentlyPlayed.some(item => item.id === track.id);
+  recentlyPlayed = recentlyPlayed.filter(item => item.id !== track.id);
 
-  if (!songExists) {
     // Add the new song at the beginning of the array
     recentlyPlayed.unshift(track);
 
     // Limit the number of recently played songs to 10
-    if (recentlyPlayed.length > 10) {
+    if (recentlyPlayed.length > 15) {
       recentlyPlayed.pop(); // Remove the oldest entry if there are more than 10 songs
     }
 
     // Save updated list to local storage
     localStorage.setItem('recentlyPlayed', JSON.stringify(recentlyPlayed));
-  }
 }
+
 
 function loadRecentlyPlayedFromLocalStorage() {
   const recentlyPlayed = JSON.parse(localStorage.getItem('recentlyPlayed')) || [];
@@ -955,5 +961,4 @@ function loadRecentlyPlayedFromLocalStorage() {
     recentlyPlayedContainer.appendChild(songCard);
   });
 }
-
 
