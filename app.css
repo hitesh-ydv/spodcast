@@ -32,13 +32,27 @@
   font-weight: 550;
 }
 
-#loading-spinner{
-  color: white;
-  margin-left: 8px;
-  margin-bottom: 8px;
-  font-size: 22px;
-  font-weight: 550;
+.loading-outer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+#loading-spinner{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: conic-gradient(#0000 10%, #ffffff);
+  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 6px),#000 0);
+  -webkit-animation: spinner-zp9dbg 1.5s infinite linear;
+}
+
+@keyframes spinner-zp9dbg {
+  to {
+     -webkit-transform: rotate(1turn);
+  }
+}
+
 
 
 /* Track Container */
