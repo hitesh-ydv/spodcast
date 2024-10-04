@@ -417,14 +417,12 @@ async function fetchArtistRecommendations(trackId = defaultArtistId) {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    } 
   );
 
   const data = await response.json();
   displayArtists(data.artists);
 }
-
-
 
 
 
@@ -447,7 +445,6 @@ function displayArtists(artists) {
     artistContainer.appendChild(artistCard);
   });
 }
-
 
 
 
@@ -568,7 +565,8 @@ window.addEventListener("DOMContentLoaded", () => {
   updateAllLikeIcons();
   fetchArtistRecommendations();
   loadRecentlyPlayedFromLocalStorage();
-  
+
+
   // Display liked songs in both containers
   document.body.scrollTop = 0;
   if (navigator.onLine) {
