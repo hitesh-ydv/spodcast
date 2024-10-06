@@ -372,7 +372,7 @@ async function playSongFromApi(songId, track) {
 
 
 
-function darkenColor(color, factor = 0.9) {
+function darkenColor(color, factor = 1) {
   // Darken the RGB values by the specified factor
   return color.map(value => Math.floor(value * factor));
 }
@@ -499,6 +499,43 @@ function displayRecommendations(tracks) {
 }
 
 
+function createMarqueeEffect(element, container) {
+  const containerWidth = container.offsetWidth;
+  const elementWidth = element.scrollWidth;
+
+  // Check if the text overflows the container
+  if (elementWidth > containerWidth) {
+    // Set initial position and animation duration based on the overflow size
+    const distanceToScroll = elementWidth - containerWidth; // The distance to scroll
+    const scrollDuration = distanceToScroll / 20; // Adjust the speed of scroll
+
+    // Function to start the marquee effect
+    function startMarquee() {
+      // Reset to initial position
+      element.style.transition = 'transform 0s';
+      element.style.transform = 'translateX(0)';
+
+      setTimeout(() => {
+        // Scroll to the left with animation
+        element.style.transition = `transform ${scrollDuration}s linear`;
+        element.style.transform = `translateX(-${distanceToScroll}px)`;
+
+        // After scrolling left, pause for 2 seconds and then scroll back
+        setTimeout(() => {
+          // After 2-second pause, scroll back to start smoothly
+          element.style.transition = `transform ${scrollDuration}s linear`;
+          element.style.transform = 'translateX(0)';
+        }, scrollDuration * 1000 + 3000); // Pause for 2 seconds after scrolling left
+      }, 3000); // Start immediately
+    }
+
+    // Start the animation and repeat after the cycle completes
+    setInterval(startMarquee, (scrollDuration * 2 + 2) * 1000 + 3000); // Adjust timing to include the 2-second pause
+    startMarquee();
+  }
+}
+
+
 
 // Function to Save and Display Song Details in Song Thumb Container
 
@@ -517,12 +554,18 @@ function createSongDetails(track, streamUrl) {
   songName.textContent = track.name;
 
   const artists = document.createElement("p");
+  artists.classList.add('current-song-artist');
   artists.textContent = track.artists.map((artist) => artist.name).join(", ");
 
   detailsDiv.appendChild(songName);
   detailsDiv.appendChild(artists);
   songThumb.appendChild(image);
   songThumb.appendChild(detailsDiv);
+
+  createMarqueeEffect(songName, songThumb);
+
+  // Check if artist name overflows, apply marquee effect
+  createMarqueeEffect(artists, songThumb);
 
   saveCurrentSong(track, streamUrl);
 }

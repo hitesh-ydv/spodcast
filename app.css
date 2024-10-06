@@ -166,25 +166,29 @@
   width: 140px;
 }
 
-.song-details2{
+#song-thumb .song-details2{
   width: 100%;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
+.marquee-text {
+  display: inline-block;
+  transform: translateX(0);
+  transition: transform 0s;
+}
+
+.marquee-scroll {
+  transition: transform 10s linear; /* Controls the scroll speed */
+}
 
 .song-details h4{
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   color: white;
   font-weight: 450;
 }
 
 .song-details p{
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   color: #b2b2b2;
 }
 
