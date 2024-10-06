@@ -2,7 +2,6 @@ const client_id = "4fed9d932c7840a292b8f10a34a8a892";
 const client_secret = "fa138e9b886743a9970fccbad0bf5150";
 let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
 let recommendedSongs = JSON.parse(localStorage.getItem("recommendedSongs")) || [];
-let savedArtists = JSON.parse(localStorage.getItem('savedArtists'));
 let currentSong = JSON.parse(localStorage.getItem("currentSong")) || null;
 let rightSection = document.getElementById("right-section");
 
@@ -51,7 +50,7 @@ async function fetchTracks(query) {
   );
 
   const data = await response.json();
-  console.log(data)
+  
   displayTracks(data.tracks.items);
 }
 
@@ -405,6 +404,8 @@ async function fetchRecommendations(trackId = defaultSongId) {
 
   const data = await response.json();
   displayRecommendations(data.tracks);
+  isSongsLoaded = true;
+  checkAllDataLoaded(); 
   localStorage.setItem("recommendedSongs", JSON.stringify(data.tracks));
 }
 
@@ -424,6 +425,8 @@ async function fetchArtistRecommendations(trackId = defaultArtistId) {
 
   const data = await response.json();
   displayArtists(data.artists);
+  isArtistsLoaded = true;
+  checkAllDataLoaded(); 
 }
 
 
@@ -618,7 +621,7 @@ window.addEventListener("DOMContentLoaded", () => {
     let mainDiv = document.getElementById("main");
     setTimeout(function () {
       mainDiv.style.display = "block";
-    }, 1500);
+    }, 0);
   } else {
     mainDiv.style.display = "block";
   }
@@ -1004,3 +1007,29 @@ function loadRecentlyPlayedFromLocalStorage() {
     recentlyPlayedContainer.appendChild(songCard);
   });
 }
+
+
+
+let isSongsLoaded = false;
+let isArtistsLoaded = false;
+
+// Show the loading screen when the page starts loading
+document.body.classList.remove('loaded');
+
+
+// Check if both the songs and artists have been loaded
+function checkAllDataLoaded() {
+  if (isSongsLoaded && isArtistsLoaded) {
+    hideLoadingScreen();
+  }
+}
+
+// Hide the loading screen
+function hideLoadingScreen() {
+  document.body.classList.add('loaded');
+}
+
+window.onload = function() {
+  fetchArtistRecommendations();
+  fetchRecommendations();
+};
