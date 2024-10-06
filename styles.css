@@ -394,6 +394,10 @@ body,html{
   display: none;
 }
 
+#header-img{
+  display: none;
+}
+
 .top-title {
   width: 100%;
   height: 64px;
@@ -756,12 +760,17 @@ body,html{
   border-radius: 0px;
   padding: 10px;
   background-color: black;
+  position: relative;
+  transition: background 2s ease-in-out; /* Smooth transition for 1 second */
 }
 
-.loading-outer{
+
+
+#loading-outer{
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 20000;
 }
 
 #loading-spinner{
@@ -771,6 +780,7 @@ body,html{
   background: conic-gradient(#0000 10%, #ffffff);
   -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 6px),#000 0);
   -webkit-animation: spinner-zp9dbg 1.5s infinite linear;
+  z-index: 20000;
 }
 
 @keyframes spinner-zp9dbg {
@@ -778,7 +788,6 @@ body,html{
      -webkit-transform: rotate(1turn);
   }
 }
-
 
 
 .right-section .song-thumb img{

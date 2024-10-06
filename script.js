@@ -347,9 +347,11 @@ async function playSongFromApi(songId, track) {
           
           // Convert RGB array to CSS color
          const rgbColor = `rgb(${darkColor[0]}, ${darkColor[1]}, ${darkColor[2]})`;
+
+         const gradientBackground = `linear-gradient(to bottom, ${rgbColor} 20%, rgb(0,0,0) 115%)`;
           
           // Set the background color of the right section
-          document.getElementById('right-section').style.backgroundColor = rgbColor;
+          document.getElementById('right-section').style.background = gradientBackground;
         };
       
         img.onerror = function() {
@@ -358,19 +360,19 @@ async function playSongFromApi(songId, track) {
       }
       
     } else {
-      alert("Audio stream not available for this track.");
+      alert("This song is not available for this region.");
       loadingSpinner.style.display = "none";
+      closeBottomSheet();
     }
   } catch (error) {
     console.error("Error fetching the audio stream:", error);
-    alert("Failed to load the audio stream.");
   }
 }
 
 
 
 
-function darkenColor(color, factor = 0.7) {
+function darkenColor(color, factor = 0.9) {
   // Darken the RGB values by the specified factor
   return color.map(value => Math.floor(value * factor));
 }
@@ -959,4 +961,3 @@ function loadRecentlyPlayedFromLocalStorage() {
     recentlyPlayedContainer.appendChild(songCard);
   });
 }
-
