@@ -17,6 +17,75 @@ let defaultArtistId = '6DARBhWbfcS9E4yJzcliqQ';
 const defaultSongId = "30m1Wyp7zzpOYsBqvM7gYM";
 
 
+async function playSongFromApi(songId, track) {
+  const apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify`;
+  const audioPlayer = document.getElementById("audio-player");
+
+  try {
+    const loadingSpinner = document.getElementById("loading-spinner");
+    loadingSpinner.style.display = "block";
+
+    const response = await fetch(apiUrl);
+    if (response.ok) {
+      const data = await response.json();
+      const streamUrl = data.directUrl;
+
+      loadingSpinner.style.display = "none";
+      audioPlayer.src = streamUrl;
+      audioPlayer.play();
+      createSongDetails(track, streamUrl);
+      if(track){
+        document.title = `${track.name} • ${track.artists[0].name}`
+      }
+      
+      document.getElementById('dYnaPI').style.fill = '#1db954';
+      setBackgroundColorFromImage(track);
+      addToRecentlyPlayed(track);
+      function setBackgroundColorFromImage(imageUrl) {
+        const colorThief = new ColorThief();
+        const img = new Image();
+        img.crossOrigin = "Anonymous"; // Ensure the image is fetched with CORS support
+        img.src = track.album.images[0].url;
+      
+        img.onload = function() {
+          // Extract the dominant color
+          const dominantColor = colorThief.getPalette(img, 10);
+
+          const secondArray = dominantColor[3];
+
+          const darkColor = darkenColor(secondArray);
+          
+          // Convert RGB array to CSS color
+         const rgbColor = `rgb(${darkColor[0]}, ${darkColor[1]}, ${darkColor[2]})`;
+
+         const gradientBackground = `linear-gradient(to bottom, ${rgbColor} 20%, rgb(0,0,0) 115%)`;
+          
+          // Set the background color of the right section
+          document.getElementById('right-section').style.background = gradientBackground;
+        };
+      
+        img.onerror = function() {
+          console.log("Error loading image for color extraction");
+        };
+      }
+      
+    } else {
+      alert("This song is not available for this region.");
+      loadingSpinner.style.display = "none";
+      var x = window.matchMedia("(max-width: 425px)") 
+        if(x.matches){
+          closeBottomSheet()
+
+       }else{
+        rightSection.style.display = 'none';
+       }
+    }
+  } catch (error) {
+    console.error("Error fetching the audio stream:", error);
+  }
+}
+
+
 // Function to Get Access Token
 async function getAccessToken() {
   const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -308,69 +377,7 @@ function displayLikedSongs2() {
   });
 }
 
-// Function to Fetch and Play Song Audio from External API
 
-async function playSongFromApi(songId, track) {
-  const apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify`;
-  const audioPlayer = document.getElementById("audio-player");
-
-  try {
-    const loadingSpinner = document.getElementById("loading-spinner");
-    loadingSpinner.style.display = "block";
-
-    const response = await fetch(apiUrl);
-    if (response.ok) {
-      const data = await response.json();
-      const streamUrl = data.directUrl;
-
-      loadingSpinner.style.display = "none";
-      audioPlayer.src = streamUrl;
-      audioPlayer.play();
-      createSongDetails(track, streamUrl);
-      if(track){
-        document.title = `${track.name} • ${track.artists[0].name}`
-      }
-      
-      document.getElementById('dYnaPI').style.fill = '#1db954';
-      setBackgroundColorFromImage(track);
-      addToRecentlyPlayed(track);
-      function setBackgroundColorFromImage(imageUrl) {
-        const colorThief = new ColorThief();
-        const img = new Image();
-        img.crossOrigin = "Anonymous"; // Ensure the image is fetched with CORS support
-        img.src = track.album.images[0].url;
-      
-        img.onload = function() {
-          // Extract the dominant color
-          const dominantColor = colorThief.getPalette(img, 10);
-
-          const secondArray = dominantColor[3];
-
-          const darkColor = darkenColor(secondArray);
-          
-          // Convert RGB array to CSS color
-         const rgbColor = `rgb(${darkColor[0]}, ${darkColor[1]}, ${darkColor[2]})`;
-
-         const gradientBackground = `linear-gradient(to bottom, ${rgbColor} 20%, rgb(0,0,0) 115%)`;
-          
-          // Set the background color of the right section
-          document.getElementById('right-section').style.background = gradientBackground;
-        };
-      
-        img.onerror = function() {
-          console.log("Error loading image for color extraction");
-        };
-      }
-      
-    } else {
-      alert("This song is not available for this region.");
-      loadingSpinner.style.display = "none";
-      closeBottomSheet();
-    }
-  } catch (error) {
-    console.error("Error fetching the audio stream:", error);
-  }
-}
 
 
 
