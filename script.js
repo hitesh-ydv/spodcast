@@ -1,20 +1,3 @@
-const client_id = "4fed9d932c7840a292b8f10a34a8a892";
-const client_secret = "fa138e9b886743a9970fccbad0bf5150";
-let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
-let recommendedSongs = JSON.parse(localStorage.getItem("recommendedSongs")) || [];
-let currentSong = JSON.parse(localStorage.getItem("currentSong")) || null;
-let rightSection = document.getElementById("right-section");
-
-rightSection.style.display = "none";
-
-let middleSection = document.getElementById('middle-section');
-let currentlyPlayingSongId = null;
-let isPlaying = false; 
-let defaultArtistId = '6DARBhWbfcS9E4yJzcliqQ';
-
-
-// Default song ID to use when recommended tracks = 0 or on the first visit
-const defaultSongId = "30m1Wyp7zzpOYsBqvM7gYM";
 
 
 async function playSongFromApi(songId, track) {
@@ -84,6 +67,25 @@ async function playSongFromApi(songId, track) {
     console.error("Error fetching the audio stream:", error);
   }
 }
+
+const client_id = "4fed9d932c7840a292b8f10a34a8a892";
+const client_secret = "fa138e9b886743a9970fccbad0bf5150";
+let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
+let recommendedSongs = JSON.parse(localStorage.getItem("recommendedSongs")) || [];
+let currentSong = JSON.parse(localStorage.getItem("currentSong")) || null;
+let rightSection = document.getElementById("right-section");
+
+rightSection.style.display = "none";
+
+let middleSection = document.getElementById('middle-section');
+let currentlyPlayingSongId = null;
+let isPlaying = false; 
+let defaultArtistId = '6DARBhWbfcS9E4yJzcliqQ';
+
+
+// Default song ID to use when recommended tracks = 0 or on the first visit
+const defaultSongId = "30m1Wyp7zzpOYsBqvM7gYM";
+
 
 
 // Function to Get Access Token
