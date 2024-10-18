@@ -166,12 +166,16 @@
   width: 140px;
 }
 
+
 #song-thumb .song-details2{
   width: 100%;
   position: relative;
   overflow: hidden;
   white-space: nowrap;
 }
+
+
+
 
 .marquee-text {
   display: inline-block;
