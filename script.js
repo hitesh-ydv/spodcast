@@ -93,7 +93,7 @@ function displayTracks(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
-      playSongFromApi(track.id, track);
+      playSongFromApi(track.external_urls.spotify, track);
       fetchRecommendations(track.id);
       fetchArtistRecommendations(track.artists[0].id)
       showPopup();
@@ -239,7 +239,7 @@ function displayLikedSongs() {
     card.appendChild(deleteIcon);
 
     card.addEventListener("click", () => {
-      playSongFromApi(track.id, track);
+      playSongFromApi(track.external_urls.spotify, track);
       showPopup();
       rightSection.style.display = "block";
     });
@@ -297,7 +297,7 @@ function displayLikedSongs2() {
     card.appendChild(deleteIcon);
 
     card.addEventListener("click", () => {
-      playSongFromApi(track.id, track);
+      playSongFromApi(track.external_urls.spotify, track);
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block"; // Play song from liked songs when clicked
@@ -311,7 +311,7 @@ function displayLikedSongs2() {
 // Function to Fetch and Play Song Audio from External API
 
 async function playSongFromApi(songId, track) {
-  const apiUrl = `https://paxsenix.serv00.net/v1/spotify.php?stream=${songId}&serv=yt`;
+  const apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify`;
   const audioPlayer = document.getElementById("audio-player");
 
   try {
@@ -321,12 +321,16 @@ async function playSongFromApi(songId, track) {
     const response = await fetch(apiUrl);
     if (response.ok) {
       const data = await response.json();
-      const streamUrl = data.url;
+      const streamUrl = data.directUrl;
 
       loadingSpinner.style.display = "none";
       audioPlayer.src = streamUrl;
       audioPlayer.play();
       createSongDetails(track, streamUrl);
+      if(track){
+        document.title = `${track.name} • ${track.artists[0].name}`
+      }
+      
       document.getElementById('dYnaPI').style.fill = '#1db954';
       setBackgroundColorFromImage(track);
       addToRecentlyPlayed(track);
@@ -404,9 +408,9 @@ async function fetchRecommendations(trackId = defaultSongId) {
 
   const data = await response.json();
   displayRecommendations(data.tracks);
+  localStorage.setItem("recommendedSongs", JSON.stringify(data.tracks));
   isSongsLoaded = true;
   checkAllDataLoaded(); 
-  localStorage.setItem("recommendedSongs", JSON.stringify(data.tracks));
 }
 
 
@@ -494,7 +498,8 @@ function displayRecommendations(tracks) {
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
-      playSongFromApi(track.id, track);
+      playSongFromApi(track.external_urls.spotify, track);
+      console.log(track)
     });
 
     container.appendChild(card);
@@ -533,7 +538,7 @@ function createMarqueeEffect(element, container) {
     }
 
     // Start the animation and repeat after the cycle completes
-    setInterval(startMarquee, (scrollDuration * 2 + 2) * 1000 + 3000); // Adjust timing to include the 2-second pause
+    setInterval(startMarquee, (scrollDuration * 2 + 2) * 1000 + 5000);   // Adjust timing to include the 2-second pause
     startMarquee();
   }
 }
@@ -583,7 +588,7 @@ function isFirstVisit() {
 
 // Function to Check if No Recommended Songs
 function hasNoRecommendedSongs() {
-  return recommendedSongs.length === 0; 
+  return recommendedSongs.length === 0;
 }
 
 
@@ -959,7 +964,7 @@ function createSongCard(track) {
     if (isOpen) {
       toggleListenWrapper(); // Close the update-wrapper
     }
-    playSongFromApi(track.id, track);
+    playSongFromApi(track.external_urls.spotify, track);
     showPopup();
     openBottomSheet();
     rightSection.style.display = "block";
