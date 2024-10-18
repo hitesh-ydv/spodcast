@@ -1186,8 +1186,22 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
   background-color: rgba(18, 18, 18, 0.5);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
+  height: 55px;
 }
 
+.recently-header2{
+  color: white;
+  padding: 0px 20px;
+  margin-top: 20px;
+}
+.recently-header2 h4{
+  font-size: 18px;
+}
+
+.recently-header h4 .display{
+  display: flex;
+
+}
 
 .recently-header i{
   font-size: 35px;
@@ -1195,6 +1209,7 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 
 .recently-header h4{
   font-size: 18px;
+  display: none;
 }
 
 #recently-played-songs{
@@ -1315,6 +1330,71 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 body.loaded #loading-screen {
   display: none;
 }
+
+/* Hidden by default */
+.hidden {
+  display: none;
+}
+
+/* Popup container */
+#sponsored-container {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 11110000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#sponsored-container .popup-content{
+  width: 90%;
+}
+
+/* Song image */
+#sponsor-img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* Song and artist details */
+.sponsor-details h3, .sponsor-details p {
+  margin: 5px 0;
+  color: black;
+  text-align: center;
+}
+
+/* Buttons */
+.sponsor-buttons {
+  display: inline-block;
+  gap: 10px;
+}
+
+.sponsor-buttons button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+}
+
+#play-now-btn {
+  background-color: #1db954; /* Spotify Green */
+}
+
+#not-now-btn {
+  background-color: #ff4d4d; /* Red */
+}
+
 
 
 }
