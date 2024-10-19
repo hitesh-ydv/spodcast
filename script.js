@@ -1,3 +1,20 @@
+const client_id = "4fed9d932c7840a292b8f10a34a8a892";
+const client_secret = "fa138e9b886743a9970fccbad0bf5150";
+let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
+let recommendedSongs = JSON.parse(localStorage.getItem("recommendedSongs")) || [];
+let currentSong = JSON.parse(localStorage.getItem("currentSong")) || null;
+let rightSection = document.getElementById("right-section");
+
+rightSection.style.display = "none";
+
+let middleSection = document.getElementById('middle-section');
+let currentlyPlayingSongId = null;
+let isPlaying = false; 
+let defaultArtistId = '6DARBhWbfcS9E4yJzcliqQ';
+
+
+// Default song ID to use when recommended tracks = 0 or on the first visit
+const defaultSongId = "0biuGbhZwYnuUwMOi4fvaN";
 
 
 async function playSongFromApi(songId, track) {
@@ -7,6 +24,8 @@ async function playSongFromApi(songId, track) {
   try {
     const loadingSpinner = document.getElementById("loading-spinner");
     loadingSpinner.style.display = "block";
+    const videoElement = document.getElementById('canvas-player');
+               
 
     const response = await fetch(apiUrl);
     if (response.ok) {
@@ -16,14 +35,37 @@ async function playSongFromApi(songId, track) {
       loadingSpinner.style.display = "none";
       audioPlayer.src = streamUrl;
       audioPlayer.play();
+      
       createSongDetails(track, streamUrl);
+      fetchSongCanvas(track.id)
+      
+      
       if(track){
-        document.title = `${track.name} • ${track.artists[0].name}`
+        document.title = `${track.name} • ${track.artists[0].name}`;
+        const videoElement = document.getElementById('canvas-player');
+        videoElement.style.display = 'block';;
+        let canvasOuter = document.getElementById('canvas-outer');
+        canvasOuter.style.display = 'block';
       }
+
+      audioPlayer.addEventListener('play', () => {
+        videoElement.play();
+    });
+
+    // Pause video when audio pauses
+    audioPlayer.addEventListener('pause', () => {
+        videoElement.pause();
+    });
+
+    // Pause video when audio ends
+    audioPlayer.addEventListener('ended', () => {
+        videoElement.pause();
+    });
       
       document.getElementById('dYnaPI').style.fill = '#1db954';
       setBackgroundColorFromImage(track);
-      addToRecentlyPlayed(track);
+      addToRecentlyPlayed(track); // Show the video player
+      
       function setBackgroundColorFromImage(imageUrl) {
         const colorThief = new ColorThief();
         const img = new Image();
@@ -67,25 +109,6 @@ async function playSongFromApi(songId, track) {
     console.error("Error fetching the audio stream:", error);
   }
 }
-
-const client_id = "4fed9d932c7840a292b8f10a34a8a892";
-const client_secret = "fa138e9b886743a9970fccbad0bf5150";
-let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
-let recommendedSongs = JSON.parse(localStorage.getItem("recommendedSongs")) || [];
-let currentSong = JSON.parse(localStorage.getItem("currentSong")) || null;
-let rightSection = document.getElementById("right-section");
-
-rightSection.style.display = "none";
-
-let middleSection = document.getElementById('middle-section');
-let currentlyPlayingSongId = null;
-let isPlaying = false; 
-let defaultArtistId = '6DARBhWbfcS9E4yJzcliqQ';
-
-
-// Default song ID to use when recommended tracks = 0 or on the first visit
-const defaultSongId = "30m1Wyp7zzpOYsBqvM7gYM";
-
 
 
 // Function to Get Access Token
@@ -165,6 +188,7 @@ function displayTracks(tracks) {
 
     card.addEventListener("click", () => {
       playSongFromApi(track.external_urls.spotify, track);
+
       fetchRecommendations(track.id);
       fetchArtistRecommendations(track.artists[0].id)
       showPopup();
@@ -503,11 +527,13 @@ function displayRecommendations(tracks) {
     card.appendChild(artists);
     card.appendChild(likeIcon);
 
-    card.addEventListener("click", () => {   
+    card.addEventListener("click", () => {
+      playSongFromApi(track.external_urls.spotify, track);
+      fetchSongCanvas(track.id)   
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
-      playSongFromApi(track.external_urls.spotify, track);
+      
       console.log(track)
     });
 
@@ -627,8 +653,9 @@ window.addEventListener("DOMContentLoaded", () => {
   updateAllLikeIcons();
   fetchArtistRecommendations();
   loadRecentlyPlayedFromLocalStorage();
+  fetchArtistRecommendations();
 
-
+  displayRecommendations(recommendedSongs);
   // Display liked songs in both containers
   document.body.scrollTop = 0;
   if (navigator.onLine) {
@@ -640,9 +667,6 @@ window.addEventListener("DOMContentLoaded", () => {
     mainDiv.style.display = "block";
   }
 
-  if (recommendedSongs.length > 0) {
-    displayRecommendations(recommendedSongs);
-  }
 
   const savedSong = JSON.parse(localStorage.getItem("currentSong"));
   if (savedSong) {
@@ -1033,7 +1057,7 @@ document.body.classList.remove('loaded');
 
 // Check if both the songs and artists have been loaded
 function checkAllDataLoaded() {
-  if (isSongsLoaded && isArtistsLoaded) {
+  if (isArtistsLoaded) {
     hideLoadingScreen();
   }
 }
@@ -1043,7 +1067,35 @@ function hideLoadingScreen() {
   document.body.classList.add('loaded');
 }
 
-window.onload = function() {
-  fetchArtistRecommendations();
-  fetchRecommendations();
-};
+
+
+
+async function fetchSongCanvas(songId) {
+  try {
+      const response = await fetch(`https://api.paxsenix.biz.id/spotify/canvas?id=${songId}`);
+      const data = await response.json();
+ 
+      console.log(data.data.canvasesList[0].canvasUrl)
+      // Check if a canvas URL exists
+      if (data.data.canvasesList[0].canvasUrl) {
+          const canvasUrl = data.data.canvasesList[0].canvasUrl;
+          
+          
+          if (canvasUrl) {
+              // Hide the song image and display the video canvas
+              const videoElement = document.getElementById('canvas-player');
+              videoElement.src = canvasUrl;
+          }
+      }else{
+        let canvasOuter = document.getElementById('canvas-outer');
+        canvasOuter.style.display = 'none';
+        document.getElementById('canvas-player').style.display = 'none';
+      }
+  } catch (error) {
+      console.error('Error fetching canvas:', error);
+      let canvasOuter = document.getElementById('canvas-outer');
+        canvasOuter.style.display = 'none';
+        document.getElementById('canvas-player').style.display = 'none';
+      
+  }
+}
