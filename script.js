@@ -542,8 +542,7 @@ function displayRecommendations(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
-      playSongFromApi(track.external_urls.spotify, track);
-      fetchSongCanvas(track.id)   
+      playSongFromApi(track.external_urls.spotify, track);  
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
