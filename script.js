@@ -23,7 +23,9 @@ async function playSongFromApi(songId, track) {
 
   try {
     const loadingSpinner = document.getElementById("loading-spinner");
+    const loadingSpinner2 = document.getElementById("loading-outer");
     loadingSpinner.style.display = "block";
+    loadingSpinner2.style.display = 'flex'
     const videoElement = document.getElementById('canvas-player');
                
 
@@ -33,6 +35,7 @@ async function playSongFromApi(songId, track) {
       const streamUrl = data.directUrl;
 
       loadingSpinner.style.display = "none";
+      loadingSpinner2.style.display = "none";
       audioPlayer.src = streamUrl;
       audioPlayer.play();
       
@@ -42,10 +45,6 @@ async function playSongFromApi(songId, track) {
       
       if(track){
         document.title = `${track.name} • ${track.artists[0].name}`;
-        const videoElement = document.getElementById('canvas-player');
-        videoElement.style.display = 'block';;
-        let canvasOuter = document.getElementById('canvas-outer');
-        canvasOuter.style.display = 'block';
       }
 
       audioPlayer.addEventListener('play', () => {
@@ -466,7 +465,22 @@ async function fetchArtistRecommendations(trackId = defaultArtistId) {
   checkAllDataLoaded(); 
 }
 
+// Function to Fetch Recommended Tracks Based on Selected Track or Default Song
+async function fetchArtist(trackId) {
+  const token = await getAccessToken();
+  const response = await fetch(
+    `https://api.spotify.com/v1/artists/${artistId}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${getAccessToken}`,
+      },
+    } 
+  );
 
+  const data = await response.json();
+  console.log(data) 
+}
 
 // Display artists in the artist-container with images and names
 function displayArtists(artists) {
@@ -1085,17 +1099,19 @@ async function fetchSongCanvas(songId) {
               // Hide the song image and display the video canvas
               const videoElement = document.getElementById('canvas-player');
               videoElement.src = canvasUrl;
-          }
-      }else{
+        videoElement.style.display = 'block';;
         let canvasOuter = document.getElementById('canvas-outer');
-        canvasOuter.style.display = 'none';
-        document.getElementById('canvas-player').style.display = 'none';
+        canvasOuter.style.display = 'block';
+        let songThumb = document.getElementById('song-thumb');
+        songThumb.style.marginTop = "80px";
+          }
       }
   } catch (error) {
       console.error('Error fetching canvas:', error);
       let canvasOuter = document.getElementById('canvas-outer');
         canvasOuter.style.display = 'none';
         document.getElementById('canvas-player').style.display = 'none';
+        songThumb.style.marginTop = "0px";
       
   }
 }
