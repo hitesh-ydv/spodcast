@@ -379,7 +379,7 @@ body,html{
   background-color: #121212;
   border-radius: 8px;
   min-height: 400px;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .div-right-top {
@@ -497,6 +497,68 @@ body,html{
   width: 100%;
 }
 
+.about-artist {
+  height: 320px;
+  width: 100%;
+  background-color: #242424;
+  color: white;
+  border-radius: 10px;
+  z-index: 250;
+}
+
+.about-artist h3{
+  color: white;
+  position: absolute;
+  bottom: 155px;
+  left: 16px;
+  filter: drop-shadow(0 0 4mm rgb(0, 0, 0));
+}
+
+.about-artist img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+
+}
+
+.div-right-song-info{
+  width: 100%;
+  padding: 8px 16px;
+  height: 100px;
+}
+
+
+
+.listeners {
+  font-size: 16px;
+  color: #b2b2b2b3;
+  width: 150px;
+  line-height: 18px;
+}
+
+.div-right-song-info button {
+  border: 2px solid #454545;
+  height: 36px;
+  width: 75px;
+  padding: 3px 15px;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  background-color: #212121;
+  border-radius: 20px;
+  margin-top: 8px;
+  cursor: pointer;
+
+
+}
+
+.about-artist h3 {
+  font-size: 16px;
+}
+
 #canvas-outer{
   position: absolute;
   top: 0px;
@@ -507,6 +569,7 @@ body,html{
   height: 100%;
   z-index: 199;
   transition: all 0.3s;
+  overflow: auto;
 }
 
 .right-section:hover #canvas-outer{
@@ -524,13 +587,14 @@ body,html{
   outline: none;
   border: none;
   object-fit: cover; /* Ensure the video covers the background */
-  display: none; /* Hidden initially */
+  display: none;
+  overflow: auto; /* Hidden initially */
 }
 
 .about-artist {
   height: 320px;
   width: 100%;
-  background-color: #242424;
+  background-color: #121212;
   color: white;
   border-radius: 10px;
   position: relative;
