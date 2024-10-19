@@ -388,6 +388,7 @@ body,html{
   position: sticky;
   top: 0px;
   background-color: transparent;
+  z-index: 200;
 
 }
 
@@ -455,14 +456,19 @@ body,html{
 
 .div-padding {
   padding: 0px 16px 16px;
+  z-index: 20;
 }
 
 .song-thumb {
-
   width: 100%;
   background-size: cover;
   border-radius: 6px;
   margin-bottom: 20px;
+  z-index: 201;
+}
+
+.right-section .song-thumb .song-details2{
+  z-index: 20000;
 }
 
 .song-thumb img {
@@ -477,19 +483,49 @@ body,html{
   font-weight: 500;
   font-size: 20px;
   width: 100%;
+  z-index: 200;
 }
 
 .song-thumb p{
   color: #b2b2b2;
   width: 100%;
   white-space: nowrap;
+  z-index: 200;
 }
 
 .song-details{
   width: 100%;
 }
 
+#canvas-outer{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+  z-index: 199;
+  transition: all 0.3s;
+}
 
+.right-section:hover #canvas-outer{
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#canvas-player {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 150;
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  object-fit: cover; /* Ensure the video covers the background */
+  display: none; /* Hidden initially */
+}
 
 .about-artist {
   height: 320px;
@@ -637,7 +673,109 @@ body,html{
 }
 
 
+/* Loading screen styling */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1); /* Semi-transparent black */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+
+.blob {
+	border-radius: 50%;
+	background-color: white;
+	display: block;
+	float: left;
+	margin: 5px 2px;
+	position: relative;
+	top: 5px;
+	height: 20px;
+	width: 20px;
+
+	-webkit-animation: loading-blob 1s infinite;
+	-moz-animation:    loading-blob 1s infinite;
+	-o-animation:      loading-blob 1s infinite;
+	animation:         loading-blob 1s infinite;
+
+	-webkit-animation-timing-function: ease-in-out;
+	-moz-animation-timing-function: ease-in-out;
+	-ms-animation-timing-function: ease-in-out;
+	-o-animation-timing-function: ease-in-out;
+	animation-timing-function: ease-in-out;
+
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
+
+@-webkit-keyframes loading-blob {
+	0% { height: 20px; top: 5px; width: 20px; }
+	25% { height: 30px; top: 0; width: 30px; }
+	50% { height: 20px; top: 5px; width: 20px; }
+	100% { height: 20px; width: 20px; }
+}
+
+@-moz-keyframes loading-blob {
+	0% { height: 20px; top: 5px; width: 20px; }
+	25% { height: 30px; top: 0; width: 30px; }
+	50% { height: 20px; top: 5px; width: 20px; }
+	100% { height: 20px; width: 20px; }
+}
+
+@-o-keyframes loading-blob {
+	0% { height: 20px; top: 5px; width: 20px; }
+	25% { height: 30px; top: 0; width: 30px; }
+	50% { height: 20px; top: 5px; width: 20px; }
+	100% { height: 20px; width: 20px; }
+}
+
+@keyframes loading-blob {
+	0% { height: 20px; top: 5px; width: 20px; }
+	25% { height: 30px; top: 0; width: 30px; }
+	50% { height: 20px; top: 5px; width: 20px; }
+	100% { height: 20px; width: 20px; }
+}
+
+.blob2 {
+	-webkit-animation-delay: 150ms;
+	-moz-animation-delay: 150ms;
+	-o-animation-delay: 150ms;
+	animation-delay: 150ms;
+}
+
+.blob3 {
+	-webkit-animation-delay: 300ms;
+	-moz-animation-delay: 300ms;
+	-o-animation-delay: 300ms;
+	animation-delay: 300ms;
+}
+
+
+
+/* Hide loading screen when not needed */
+body.loaded #loading-screen {
+  display: none;
+}
+
+/* Hidden by default */
+.hidden {
+  display: none;
+}
+
+
+#right-cont-close{
+  color: white;
+  font-size: 30px;
+}
 
 
 @media (max-width: 425px){
@@ -813,10 +951,6 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
   margin-bottom: 4%;
 }
 
-#right-cont-close{
-  color: white;
-  font-size: 30px;
-}
 
 .div-right-top .top-title a h1{
   font-size: 20px;
@@ -1248,160 +1382,9 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
   object-fit: cover;
 }
 
-/* Loading screen styling */
-#loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 1); /* Semi-transparent black */
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 
-.blob {
-	border-radius: 50%;
-	background-color: white;
-	display: block;
-	float: left;
-	margin: 5px 2px;
-	position: relative;
-	top: 5px;
-	height: 20px;
-	width: 20px;
 
-	-webkit-animation: loading-blob 1s infinite;
-	-moz-animation:    loading-blob 1s infinite;
-	-o-animation:      loading-blob 1s infinite;
-	animation:         loading-blob 1s infinite;
-
-	-webkit-animation-timing-function: ease-in-out;
-	-moz-animation-timing-function: ease-in-out;
-	-ms-animation-timing-function: ease-in-out;
-	-o-animation-timing-function: ease-in-out;
-	animation-timing-function: ease-in-out;
-
-	-webkit-transform: translate3d(0, 0, 0);
-	-moz-transform: translate3d(0, 0, 0);
-	-ms-transform: translate3d(0, 0, 0);
-	-o-transform: translate3d(0, 0, 0);
-	transform: translate3d(0, 0, 0);
-}
-
-@-webkit-keyframes loading-blob {
-	0% { height: 20px; top: 5px; width: 20px; }
-	25% { height: 30px; top: 0; width: 30px; }
-	50% { height: 20px; top: 5px; width: 20px; }
-	100% { height: 20px; width: 20px; }
-}
-
-@-moz-keyframes loading-blob {
-	0% { height: 20px; top: 5px; width: 20px; }
-	25% { height: 30px; top: 0; width: 30px; }
-	50% { height: 20px; top: 5px; width: 20px; }
-	100% { height: 20px; width: 20px; }
-}
-
-@-o-keyframes loading-blob {
-	0% { height: 20px; top: 5px; width: 20px; }
-	25% { height: 30px; top: 0; width: 30px; }
-	50% { height: 20px; top: 5px; width: 20px; }
-	100% { height: 20px; width: 20px; }
-}
-
-@keyframes loading-blob {
-	0% { height: 20px; top: 5px; width: 20px; }
-	25% { height: 30px; top: 0; width: 30px; }
-	50% { height: 20px; top: 5px; width: 20px; }
-	100% { height: 20px; width: 20px; }
-}
-
-.blob2 {
-	-webkit-animation-delay: 150ms;
-	-moz-animation-delay: 150ms;
-	-o-animation-delay: 150ms;
-	animation-delay: 150ms;
-}
-
-.blob3 {
-	-webkit-animation-delay: 300ms;
-	-moz-animation-delay: 300ms;
-	-o-animation-delay: 300ms;
-	animation-delay: 300ms;
-}
-
-/* Hide loading screen when not needed */
-body.loaded #loading-screen {
-  display: none;
-}
-
-/* Hidden by default */
-.hidden {
-  display: none;
-}
-
-/* Popup container */
-#sponsored-container {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  z-index: 11110000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#sponsored-container .popup-content{
-  width: 90%;
-}
-
-/* Song image */
-#sponsor-img {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-/* Song and artist details */
-.sponsor-details h3, .sponsor-details p {
-  margin: 5px 0;
-  color: black;
-  text-align: center;
-}
-
-/* Buttons */
-.sponsor-buttons {
-  display: inline-block;
-  gap: 10px;
-}
-
-.sponsor-buttons button {
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  color: white;
-  font-size: 14px;
-}
-
-#play-now-btn {
-  background-color: #1db954; /* Spotify Green */
-}
-
-#not-now-btn {
-  background-color: #ff4d4d; /* Red */
-}
 
 
 
