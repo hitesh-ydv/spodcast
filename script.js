@@ -18,7 +18,7 @@ const defaultSongId = "0biuGbhZwYnuUwMOi4fvaN";
 
 
 async function playSongFromApi(songId, track) {
-  const apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify`;
+  const apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=yt2`;
   const audioPlayer = document.getElementById("audio-player");
 
   try {
@@ -546,8 +546,6 @@ function displayRecommendations(tracks) {
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
-      
-      console.log(track)
     });
 
     container.appendChild(card);
@@ -1087,8 +1085,6 @@ async function fetchSongCanvas(songId) {
   try {
       const response = await fetch(`https://api.paxsenix.biz.id/spotify/canvas?id=${songId}`);
       const data = await response.json();
- 
-      console.log(data.data.canvasesList[0].canvasUrl)
       // Check if a canvas URL exists
       if (data.data.canvasesList[0].canvasUrl) {
           const canvasUrl = data.data.canvasesList[0].canvasUrl;
@@ -1106,7 +1102,6 @@ async function fetchSongCanvas(songId) {
           }
       }
   } catch (error) {
-      console.error('Error fetching canvas:', error);
       let canvasOuter = document.getElementById('canvas-outer');
         canvasOuter.style.display = 'none';
         document.getElementById('canvas-player').style.display = 'none';
