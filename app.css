@@ -35,25 +35,24 @@
 #loading-outer{
   display: flex;
   justify-content: center;
+  align-items: center;
   position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 260;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 40000;
   
 }
 
 #loading-spinner{
-  width: 80px;
-  height: 80px;
-  position: absolute;
-  top: 150px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background: conic-gradient(#0000 6%, #ffffff);
-  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
-  -webkit-animation: spinner-zp9dbg 2s infinite linear;
+  background: conic-gradient(#0000 8%, #ffffff);
+  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 4px),#000 0);
+  -webkit-animation: spinner-zp9dbg 1.5s infinite linear;
   z-index: 201;
 }
 
