@@ -1098,7 +1098,7 @@ async function fetchSongCanvas(songId) {
         let canvasOuter = document.getElementById('canvas-outer');
         canvasOuter.style.display = 'block';
         let songThumb = document.getElementById('song-thumb');
-        songThumb.style.marginTop = "80px";
+        songThumb.style.marginTop = "40px";
           }
       }
   } catch (error) {
