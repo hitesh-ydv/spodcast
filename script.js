@@ -46,6 +46,7 @@ if (platform === 'iOS') {
             }
             
   const audioPlayer = document.getElementById("audio-player");
+  console.log(apiUrl);
 
   try {
     const loadingSpinner = document.getElementById("loading-spinner");
