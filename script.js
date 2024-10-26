@@ -16,6 +16,24 @@ let defaultArtistId = '6DARBhWbfcS9E4yJzcliqQ';
 // Default song ID to use when recommended tracks = 0 or on the first visit
 const defaultSongId = "0biuGbhZwYnuUwMOi4fvaN";
 
+        // Function to detect the user's platform
+        function getPlatform() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            // Detect iOS
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                return 'iOS';
+            }
+
+            // Detect Android
+            if (/android/i.test(userAgent)) {
+                return 'Android';
+            }
+
+            // Default to Windows or other
+            return 'Windows';
+        }
+
 
 async function playSongFromApi(songId, track) {
   const platform = getPlatform();
@@ -58,23 +76,7 @@ if (platform === 'iOS') {
       audioPlayer.addEventListener('play', () => {
         videoElement.play();
 
-        // Function to detect the user's platform
-        function getPlatform() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-            // Detect iOS
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                return 'iOS';
-            }
-
-            // Detect Android
-            if (/android/i.test(userAgent)) {
-                return 'Android';
-            }
-
-            // Default to Windows or other
-            return 'Windows';
-        }
     });
 
     // Pause video when audio pauses
