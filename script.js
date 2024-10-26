@@ -18,7 +18,15 @@ const defaultSongId = "0biuGbhZwYnuUwMOi4fvaN";
 
 
 async function playSongFromApi(songId, track) {
-  const apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify`;
+  const platform = getPlatform();
+  let apiUrl;
+
+if (platform === 'iOS') {
+                apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=yt2`; // iOS-specific API
+            } else if (platform === 'Android' || platform === 'Windows') {
+                apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify`; // Android & Windows API
+            }
+            
   const audioPlayer = document.getElementById("audio-player");
 
   try {
