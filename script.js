@@ -42,7 +42,7 @@ async function playSongFromApi(songId, track) {
 if (platform === 'iOS') {
                 apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=yt2`; // iOS-specific API
             } else if (platform === 'Android' || platform === 'Windows') {
-                apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify`; // Android & Windows API
+                apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=yt2`; // Android & Windows API
             }
             
   const audioPlayer = document.getElementById("audio-player");
