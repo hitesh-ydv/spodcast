@@ -1,0 +1,22 @@
+{
+    "name": "Spodcast : Web Music Player",
+    "short_name": "Spodcast",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#007aff",
+    "description": "A description of my web app.",
+    "icons": [
+      {
+        "src": "/icons/logo2.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/logo.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  
