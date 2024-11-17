@@ -1,5 +1,5 @@
 {
-    "name": "Spodcast : Web Music Player",
+    "name": "Spodcast",
     "short_name": "Spodcast",
     "start_url": "/",
     "display": "standalone",
