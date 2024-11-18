@@ -40,9 +40,9 @@ async function playSongFromApi(songId, track) {
   let apiUrl;
 
 if (platform === 'iOS') {
-                apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=yt2`; // iOS-specific API
+                apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify3`; // iOS-specific API
             } else if (platform === 'Android' || platform === 'Windows') {
-                apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=yt2`; // Android & Windows API
+                apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify3`; // Android & Windows API
             }
             
   const audioPlayer = document.getElementById("audio-player");
@@ -63,7 +63,7 @@ if (platform === 'iOS') {
       loadingSpinner.style.display = "none";
       loadingSpinner2.style.display = "none";
       audioPlayer.src = streamUrl;
-      audioPlayer.play();
+
       
       createSongDetails(track, streamUrl);
       fetchSongCanvas(track.id)
@@ -214,7 +214,23 @@ function displayTracks(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
-      playSongFromApi(track.external_urls.spotify, track);
+      const audioAd = document.getElementById("audio-ad");
+      const audioPlayer = document.getElementById("audio-player");
+      const playAd = () => {
+        // Set the audio source to the ad audio
+        audioAd.src = "audio/spodcast_ad2.mp3";
+        audioAd.play();
+        audioAd.loop = false;
+        playSongFromApi(track.external_urls.spotify, track);
+        audioPlayer.pause();
+  
+        // When the ad finishes, switch to the song
+        audioAd.onended = function() {
+          audioPlayer.play();
+          audioPlayer.loop = true;
+        };
+      }
+       playAd()
 
       fetchRecommendations(track.id);
       fetchArtistRecommendations(track.artists[0].id)
@@ -570,7 +586,24 @@ function displayRecommendations(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
-      playSongFromApi(track.external_urls.spotify, track);  
+      const audioAd = document.getElementById("audio-ad");
+      const audioPlayer = document.getElementById("audio-player");
+      const playAd = () => {
+        // Set the audio source to the ad audio
+        audioAd.src = "audio/spodcast_ad2.mp3";
+        audioAd.play();
+        audioAd.loop = false;
+        playSongFromApi(track.external_urls.spotify, track);
+        audioPlayer.pause();
+  
+        // When the ad finishes, switch to the song
+        audioAd.onended = function() {
+          audioPlayer.play();
+          audioPlayer.loop = true;
+        };
+      }
+      playAd();
+        
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
@@ -1122,11 +1155,13 @@ async function fetchSongCanvas(songId) {
               // Hide the song image and display the video canvas
               const videoElement = document.getElementById('canvas-player');
               videoElement.src = canvasUrl;
-        videoElement.style.display = 'block';;
+              document.getElementById('right-section').style.background = "#121212";
+        videoElement.style.display = 'block';
         let canvasOuter = document.getElementById('canvas-outer');
         canvasOuter.style.display = 'block';
         let songThumb = document.getElementById('song-thumb');
         songThumb.style.marginTop = "40px";
+        
           }
       }
   } catch (error) {
@@ -1137,3 +1172,15 @@ async function fetchSongCanvas(songId) {
       
   }
 }
+
+
+// Register service worker in main JS file
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then(function(registration) {
+    console.log('Service Worker registered with scope:', registration.scope);
+  }).catch(function(error) {
+    console.log('Service Worker registration failed:', error);
+  });
+} 
+
+
