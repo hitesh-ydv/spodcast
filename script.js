@@ -216,21 +216,44 @@ function displayTracks(tracks) {
     card.addEventListener("click", () => {
       const audioAd = document.getElementById("audio-ad");
       const audioPlayer = document.getElementById("audio-player");
+      let adAudioUrls = ["audio/spodcast_ad.mp3", "audio/spodcast_ad2.mp3","audio/spodcast_ad3.mp3"];
+      const videoAd = document.getElementById('video-ad')
+
+      function getRandomAd() {
+        const randomIndex = Math.floor(Math.random() * adAudioUrls.length);
+        return adAudioUrls[randomIndex];
+      }  
+      function disableAudioPlayer() {
+        audioPlayer.style.pointerEvents = "none"; // Disable pointer events
+        audioPlayer.style.opacity = "0.5"; // Optional: dim the audio tag for visual feedback
+      }
+      
+      // Function to enable interaction with the song audio tag
+      function enableAudioPlayer() {
+        audioPlayer.style.pointerEvents = "auto"; // Re-enable pointer events
+        audioPlayer.style.opacity = "1"; // Restore original opacity
+      }
       const playAd = () => {
+        videoAd.style.display = "block";
+        const randomAdUrl = getRandomAd();
         // Set the audio source to the ad audio
-        audioAd.src = "audio/spodcast_ad2.mp3";
+        audioAd.src = randomAdUrl;
         audioAd.play();
         audioAd.loop = false;
+        audioPlayer.src = '';
         playSongFromApi(track.external_urls.spotify, track);
         audioPlayer.pause();
+        disableAudioPlayer();
   
         // When the ad finishes, switch to the song
         audioAd.onended = function() {
+          videoAd.style.display = "none"
           audioPlayer.play();
           audioPlayer.loop = true;
+          enableAudioPlayer();
         };
       }
-       playAd()
+      playAd();
 
       fetchRecommendations(track.id);
       fetchArtistRecommendations(track.artists[0].id)
@@ -588,18 +611,42 @@ function displayRecommendations(tracks) {
     card.addEventListener("click", () => {
       const audioAd = document.getElementById("audio-ad");
       const audioPlayer = document.getElementById("audio-player");
+      let adAudioUrls = ["audio/spodcast_ad.mp3", "audio/spodcast_ad2.mp3","audio/spodcast_ad3.mp3"];
+      const videoAd = document.getElementById('video-ad')
+
+      function getRandomAd() {
+        const randomIndex = Math.floor(Math.random() * adAudioUrls.length);
+        return adAudioUrls[randomIndex];
+      }  
+       
+      function disableAudioPlayer() {
+        audioPlayer.style.pointerEvents = "none"; // Disable pointer events
+        audioPlayer.style.opacity = "0.5"; // Optional: dim the audio tag for visual feedback
+      }
+      
+      // Function to enable interaction with the song audio tag
+      function enableAudioPlayer() {
+        audioPlayer.style.pointerEvents = "auto"; // Re-enable pointer events
+        audioPlayer.style.opacity = "1"; // Restore original opacity
+      }
+
       const playAd = () => {
+        videoAd.style.display = "block";
+        const randomAdUrl = getRandomAd();
         // Set the audio source to the ad audio
-        audioAd.src = "audio/spodcast_ad2.mp3";
+        audioAd.src = randomAdUrl;
         audioAd.play();
         audioAd.loop = false;
         playSongFromApi(track.external_urls.spotify, track);
         audioPlayer.pause();
+        disableAudioPlayer();
   
         // When the ad finishes, switch to the song
         audioAd.onended = function() {
+          videoAd.style.display = "none"
           audioPlayer.play();
           audioPlayer.loop = true;
+          enableAudioPlayer();
         };
       }
       playAd();
