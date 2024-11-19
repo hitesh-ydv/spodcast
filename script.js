@@ -234,6 +234,8 @@ function displayTracks(tracks) {
         audioPlayer.style.opacity = "1"; // Restore original opacity
       }
       const playAd = () => {
+        const videoPlayer = document.getElementById('video-player');
+        videoPlayer.play();
         videoAd.style.display = "block";
         const randomAdUrl = getRandomAd();
         // Set the audio source to the ad audio
@@ -612,7 +614,8 @@ function displayRecommendations(tracks) {
       const audioAd = document.getElementById("audio-ad");
       const audioPlayer = document.getElementById("audio-player");
       let adAudioUrls = ["audio/spodcast_ad.mp3", "audio/spodcast_ad2.mp3","audio/spodcast_ad3.mp3"];
-      const videoAd = document.getElementById('video-ad')
+      const videoAd = document.getElementById('video-ad');
+      const videoPlayer = document.getElementById('video-player');
 
       function getRandomAd() {
         const randomIndex = Math.floor(Math.random() * adAudioUrls.length);
@@ -632,6 +635,7 @@ function displayRecommendations(tracks) {
 
       const playAd = () => {
         videoAd.style.display = "block";
+        videoPlayer.play();
         const randomAdUrl = getRandomAd();
         // Set the audio source to the ad audio
         audioAd.src = randomAdUrl;
