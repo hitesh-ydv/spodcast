@@ -214,6 +214,7 @@ function displayTracks(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
+      audioPlayer.src = '';
       const audioAd = document.getElementById("audio-ad");
       const audioPlayer = document.getElementById("audio-player");
       let adAudioUrls = ["audio/spodcast_ad.mp3", "audio/spodcast_ad2.mp3","audio/spodcast_ad3.mp3"];
@@ -611,6 +612,7 @@ function displayRecommendations(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
+      audioPlayer.src = '';
       const audioAd = document.getElementById("audio-ad");
       const audioPlayer = document.getElementById("audio-player");
       let adAudioUrls = ["audio/spodcast_ad.mp3", "audio/spodcast_ad2.mp3","audio/spodcast_ad3.mp3"];
