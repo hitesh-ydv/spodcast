@@ -1214,7 +1214,7 @@ if ('serviceWorker' in navigator) {
 
 
 async function fetchLyrics(trackId) {
-  const apiUrl = https://api.paxsenix.biz.id/lyrics/spotify?id=${trackId};
+  const apiUrl = `https://api.paxsenix.biz.id/lyrics/spotify?id=${trackId}`;
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
