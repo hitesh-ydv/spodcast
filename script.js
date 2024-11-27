@@ -41,7 +41,7 @@ async function playSongFromApi(songId, track) {
       
       createSongDetails(track, streamUrl);
       fetchSongCanvas(track.id)
-       setupLyrics(track.id);
+      setupLyrics(track.id);
       
       
       if(track){
@@ -1241,30 +1241,6 @@ function parseLyrics(lyricsText) {
   return lyrics;
 }
 
-async function translateLyrics(text, targetLanguage) {
-  const apiUrl = `https://api.paxsenix.biz.id/tools/gtranslate?text=${encodeURIComponent(
-    text
-  )}&lang=${targetLanguage}`;
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    return data.text; // Translated text
-  } catch (error) {
-    console.error("Error translating lyrics:", error);
-    return text; // Fallback to original text
-  }
-}
-
-async function translateFullLyrics(lyrics, targetLanguage) {
-  const translated = await Promise.all(
-    lyrics.map(async (line) => {
-      const translatedText = await translateLyrics(line.text, targetLanguage);
-      return { ...line, text: translatedText };
-    })
-  );
-  return translated;
-}
-
 function syncLyrics(audio, lyrics, container) {
   audio.addEventListener("timeupdate", () => {
     const currentTime = audio.currentTime;
@@ -1304,7 +1280,8 @@ function syncLyrics(audio, lyrics, container) {
   });
 }
 
-async function setupLyrics(trackId, targetLanguage = "en") {
+
+async function setupLyrics(trackId) {
   const lyricsText = await fetchLyrics(trackId); // Fetch lyrics from API
   if (!lyricsText) return;
 
@@ -1312,15 +1289,13 @@ async function setupLyrics(trackId, targetLanguage = "en") {
   const lyricsContainer = document.getElementById("lyrics-container");
   const audioPlayer = document.getElementById("audio-player");
 
-  // Translate lyrics if needed
-  const translatedLyrics =
-    targetLanguage === "en"
-      ? lyrics
-      : await translateFullLyrics(lyrics, targetLanguage);
+  // Display lyrics in the container
+  lyricsContainer.innerHTML = lyrics
+    .map((line, index) => <div class="lyric-line" id="lyric-${index}">${line.text}</div>)
+    .join("");
 
-  // Display translated lyrics in the container
-  lyricsContainer.innerHTML = translatedLyrics
-    .map((line, index) => <div class="lyric-line" id=`lyric-${index}`>${line.text}</div>).join(""));
-  syncLyrics(audioPlayer, translatedLyrics, lyricsContainer);
-}
+  // Sync lyrics with the audio player
+  syncLyrics(audioPlayer, lyrics, lyricsContainer);
+
+} 
 
