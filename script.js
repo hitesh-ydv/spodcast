@@ -1321,7 +1321,7 @@ async function setupLyrics(trackId, targetLanguage = "en") {
   // Display translated lyrics in the container
   lyricsContainer.innerHTML = translatedLyrics
     .map(
-      (line, index) => <div class="lyric-line" id=`lyric-${index}`>${line.text}</div>
+      (line, index) => <div class="lyric-line" id=`lyric-${index}`>`${line.text}`</div>
     )
     .join("");
 
