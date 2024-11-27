@@ -1212,6 +1212,3 @@ if ('serviceWorker' in navigator) {
 } 
 
 
-
-} 
-
