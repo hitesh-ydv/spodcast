@@ -41,6 +41,7 @@ async function playSongFromApi(songId, track) {
       
       createSongDetails(track, streamUrl);
       fetchSongCanvas(track.id)
+       setupLyrics(track.id);
       
       
       if(track){
