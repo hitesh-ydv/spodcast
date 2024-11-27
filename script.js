@@ -16,34 +16,8 @@ let defaultArtistId = '6DARBhWbfcS9E4yJzcliqQ';
 // Default song ID to use when recommended tracks = 0 or on the first visit
 const defaultSongId = "0biuGbhZwYnuUwMOi4fvaN";
 
-        // Function to detect the user's platform
-        function getPlatform() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-            // Detect iOS
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                return 'iOS';
-            }
-
-            // Detect Android
-            if (/android/i.test(userAgent)) {
-                return 'Android';
-            }
-
-            // Default to Windows or other
-            return 'Windows';
-        }
-
-
 async function playSongFromApi(songId, track) {
-  const platform = getPlatform();
-  let apiUrl;
-
-if (platform === 'iOS') {
-                apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify3`; // iOS-specific API
-            } else if (platform === 'Android' || platform === 'Windows') {
-                apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify3`; // Android & Windows API
-            }
+  let apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify3`;
             
   const audioPlayer = document.getElementById("audio-player");
 
