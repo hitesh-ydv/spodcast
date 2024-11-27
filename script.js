@@ -1238,3 +1238,119 @@ if ('serviceWorker' in navigator) {
 } 
 
 
+async function fetchLyrics(trackId) {
+  const apiUrl = https://api.paxsenix.biz.id/lyrics/spotify?id=${trackId};
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data.lyrics; // Assuming the lyrics come under the 'lyrics' key
+  } catch (error) {
+    console.error("Error fetching lyrics:", error);
+    return null;
+  }
+}
+
+function parseLyrics(lyricsText) {
+  const lines = lyricsText.split("\n");
+  const lyrics = lines.map((line) => {
+    const match = line.match(/\[(\d+):(\d+\.\d+)](.+)/);
+    if (match) {
+      const minutes = parseInt(match[1], 10);
+      const seconds = parseFloat(match[2]);
+      const time = minutes * 60 + seconds; // Convert to total seconds
+      const text = match[3].trim();
+      return { time, text };
+    }
+    return null;
+  }).filter((line) => line); // Remove null values
+  return lyrics;
+}
+
+async function translateLyrics(text, targetLanguage) {
+  const apiUrl = `https://api.paxsenix.biz.id/tools/gtranslate?text=${encodeURIComponent(
+    text
+  )}&lang=${targetLanguage}`;
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data.text; // Translated text
+  } catch (error) {
+    console.error("Error translating lyrics:", error);
+    return text; // Fallback to original text
+  }
+}
+
+async function translateFullLyrics(lyrics, targetLanguage) {
+  const translated = await Promise.all(
+    lyrics.map(async (line) => {
+      const translatedText = await translateLyrics(line.text, targetLanguage);
+      return { ...line, text: translatedText };
+    })
+  );
+  return translated;
+}
+
+function syncLyrics(audio, lyrics, container) {
+  audio.addEventListener("timeupdate", () => {
+    const currentTime = audio.currentTime;
+
+    // Find the current lyric based on playback time
+    const currentIndex = lyrics.findIndex(
+      (line, index) =>
+        currentTime >= line.time &&
+        (index === lyrics.length - 1 || currentTime < lyrics[index + 1].time)
+    );
+
+    if (currentIndex !== -1) {
+      const allLines = container.querySelectorAll(".lyric-line");
+
+      // Highlight the current lyric
+      allLines.forEach((line, index) => {
+        if (index === currentIndex) {
+          line.classList.add("active");
+
+          // Scroll the active line to the center
+          const lineOffsetTop = line.offsetTop; // Top position of the line relative to the container
+          const lineHeight = line.clientHeight;
+          const containerHeight = container.clientHeight;
+          const scrollPosition =
+            lineOffsetTop - containerHeight / 2 + lineHeight / 2;
+
+          // Adjust the scroll position of the container
+          container.scrollTo({
+            top: scrollPosition,
+            behavior: "smooth",
+          });
+        } else {
+          line.classList.remove("active");
+        }
+      });
+    }
+  });
+}
+
+async function setupLyrics(trackId, targetLanguage = "en") {
+  const lyricsText = await fetchLyrics(trackId); // Fetch lyrics from API
+  if (!lyricsText) return;
+
+  const lyrics = parseLyrics(lyricsText); // Parse the lyrics
+  const lyricsContainer = document.getElementById("lyrics-container");
+  const audioPlayer = document.getElementById("audio-player");
+
+  // Translate lyrics if needed
+  const translatedLyrics =
+    targetLanguage === "en"
+      ? lyrics
+      : await translateFullLyrics(lyrics, targetLanguage);
+
+  // Display translated lyrics in the container
+  lyricsContainer.innerHTML = translatedLyrics
+    .map(
+      (line, index) => <div class="lyric-line" id="lyric-${index}">${line.text}</div>
+    )
+    .join("");
+
+  // Sync lyrics with the audio player
+  syncLyrics(audioPlayer, translatedLyrics, lyricsContainer);
+}
+
