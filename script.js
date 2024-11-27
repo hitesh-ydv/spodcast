@@ -40,7 +40,8 @@ async function playSongFromApi(songId, track) {
 
       
       createSongDetails(track, streamUrl);
-      fetchSongCanvas(track.id)
+      fetchSongCanvas(track.id);
+      setupLyrics(track.id);
       
       
       if(track){
@@ -1216,6 +1217,7 @@ async function fetchLyrics(trackId) {
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
+    console.log(data.lyrics)
     return data.lyrics; // Assuming the lyrics come under the 'lyrics' key
   } catch (error) {
     console.error("Error fetching lyrics:", error);
@@ -1237,30 +1239,6 @@ function parseLyrics(lyricsText) {
     return null;
   }).filter((line) => line); // Remove null values
   return lyrics;
-}
-
-async function translateLyrics(text, targetLanguage) {
-  const apiUrl = `https://api.paxsenix.biz.id/tools/gtranslate?text=${encodeURIComponent(
-    text
-  )}&lang=${targetLanguage}`;
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    return data.text; // Translated text
-  } catch (error) {
-    console.error("Error translating lyrics:", error);
-    return text; // Fallback to original text
-  }
-}
-
-async function translateFullLyrics(lyrics, targetLanguage) {
-  const translated = await Promise.all(
-    lyrics.map(async (line) => {
-      const translatedText = await translateLyrics(line.text, targetLanguage);
-      return { ...line, text: translatedText };
-    })
-  );
-  return translated;
 }
 
 function syncLyrics(audio, lyrics, container) {
@@ -1301,6 +1279,7 @@ function syncLyrics(audio, lyrics, container) {
     }
   });
 }
+
 
 async function setupLyrics(trackId, targetLanguage = "en") {
   const lyricsText = await fetchLyrics(trackId); // Fetch lyrics from API
