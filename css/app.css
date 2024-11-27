@@ -317,3 +317,94 @@ form {
 .recently-played {
   display: none;
 }
+
+.lyrics-outer{
+  padding: 16px;
+  z-index: 207;
+}
+
+#lyrics-container-wrapper {
+  position: relative; /* Set the desired height */
+  overflow: hidden;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  z-index: 205; /* Hide overflowing content / / Background color */
+}
+
+.lyrics-title{
+  background-color: #1F1F1F;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  z-index: 250;
+  padding: 0px 16px;
+}
+
+.lyrics-title h3{
+  color: white;
+  font-weight: 510;
+
+}
+
+#lyrics-container {
+  max-height: 200px; /* Ensure a minimum height */
+  overflow: hidden;  /* Enable vertical scrolling */
+  text-align: center;
+  padding: 8px;
+  background-color: #1F1F1F;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+#lyrics-container-wrapper::before,
+#lyrics-container-wrapper::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 70px; /* Adjust for the size of the fade */
+  pointer-events: none; /* Allow scrolling through the gradients */
+  z-index: 1;
+}
+
+#lyrics-container-wrapper::before {
+  top: 0;
+  background: linear-gradient(to bottom, #1F1F1F, rgba(0, 0, 0, 0));
+}
+
+/* Bottom gradient */
+#lyrics-container-wrapper::after {
+  bottom: 0;
+  background: linear-gradient(to top, #1F1F1F, rgba(0, 0, 0, 0) );
+}
+
+#lyrics-container::-webkit-scrollbar{
+  display: none;
+}
+
+.lyric-line {
+  font-size: 16px;
+  padding: 5px;
+  color: #aaa;
+  transition: color 0.3s ease;
+}
+
+.lyric-line.active {
+  font-weight: 550;
+  color: #1db954; /* Spotify green */
+  transition: color 0.3s ease;
+}
+
+
+#top-title {
+  background-color: transparent;
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
+}
+#top-title.scrolled {
+  background-color: #121212;
+  color: white;
+}
