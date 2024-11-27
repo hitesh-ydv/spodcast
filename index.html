@@ -77,7 +77,7 @@
           </div>
         </div>
         <div class="right-header">
-          <button><i class="fa-regular fa-bell"></i></button>
+          <button id="updates-btn"><i class="fa-regular fa-bell"></i></button>
           <button id="main-setting"><i class="ri-settings-3-fill"></i></button>
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtFL3hHOcebX98uMeb30FkBUmmBMu_WKLgLw&s"
@@ -174,8 +174,11 @@
             <div class="div-padding" id="div-padding">
               <div class="loading-outer" id="loading-outer"><div id="loading-spinner" style="display: none"></div></div>
               <div class="song-thumb" id="song-thumb"></div>
-              <div class="canvas-outer" id="canvas-outer" style="display: none;"></div>
-              <video id="canvas-player" playsinline autoplay loop muted style="display: none;"></video>
+              <div class="canvas-outer" id="canvas-outer" style="display: none;">
+                <video id="canvas-player" autoplay loop muted style="display: none;"></video>
+              </div>
+              
+              
               <div class="video-ad" id="video-ad">
                 <video src="icons/Untitled design.mp4" id="video-player" loop autoplay playsinline></video>
                 <h3>Spodcast</h3>
@@ -184,6 +187,7 @@
 
               
             </div>
+          </div>
         </div>
 
         <div class="wrapper3" id="wrapper3">
@@ -236,7 +240,7 @@
       </div>
 
       <div class="footer" id="footer">
-        <audio id="audio-player" controls loop preload="auto"></audio>
+        <audio id="audio-player" controls loop></audio>
         <audio id="audio-ad"></audio>
 
         <span id="header-cell"
@@ -289,6 +293,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="script.js"></script>
-    <script src="sw.js"></script>
   </body>
 </html>
