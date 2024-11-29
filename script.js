@@ -1156,7 +1156,7 @@ document.body.classList.remove('loaded');
 
 // Check if both the songs and artists have been loaded
 function checkAllDataLoaded() {
-  if (isArtistsLoaded) {
+  if (!isArtistsLoaded) {
     hideLoadingScreen();
   }
 }
