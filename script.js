@@ -752,9 +752,7 @@ window.addEventListener("DOMContentLoaded", () => {
   displayLikedSongs();
   displayLikedSongs2(); // Display liked songs in both containers
   updateAllLikeIcons();
-  fetchArtistRecommendations();
   loadRecentlyPlayedFromLocalStorage();
-  fetchArtistRecommendations();
 
   displayRecommendations(recommendedSongs);
   // Display liked songs in both containers
