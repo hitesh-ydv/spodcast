@@ -1147,7 +1147,7 @@ function loadRecentlyPlayedFromLocalStorage() {
 
 
 let isSongsLoaded = false;
-let isArtistsLoaded = true;
+let isArtistsLoaded = false;
 
 // Show the loading screen when the page starts loading
 document.body.classList.remove('loaded');
@@ -1155,7 +1155,7 @@ document.body.classList.remove('loaded');
 
 // Check if both the songs and artists have been loaded
 function checkAllDataLoaded() {
-  if (isArtistsLoaded) {
+  if (isSongsLoaded) {
     hideLoadingScreen();
   }
 }
