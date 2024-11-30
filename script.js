@@ -752,7 +752,6 @@ window.addEventListener("DOMContentLoaded", () => {
   displayLikedSongs2(); // Display liked songs in both containers
   updateAllLikeIcons();
   loadRecentlyPlayedFromLocalStorage();
-
   displayRecommendations(recommendedSongs);
   // Display liked songs in both containers
   document.body.scrollTop = 0;
@@ -1146,10 +1145,9 @@ function loadRecentlyPlayedFromLocalStorage() {
 
 
 
-let isSongsLoaded = false;
-let isArtistsLoaded = false;
+let isSongsLoaded = true;
+let isArtistsLoaded = true;
 
-// Show the loading screen when the page starts loading
 document.body.classList.remove('loaded');
 
 
