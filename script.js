@@ -486,9 +486,7 @@ async function fetchRecommendations(trackId = defaultSongId) {
 
   const data = await response.json();
   displayRecommendations(data.tracks);
-  localStorage.setItem("recommendedSongs", JSON.stringify(data.tracks));
-  isSongsLoaded = true;
-  checkAllDataLoaded(); 
+  localStorage.setItem("recommendedSongs", JSON.stringify(data.tracks)); 
 }
 
 
@@ -506,9 +504,7 @@ async function fetchArtistRecommendations(trackId = defaultArtistId) {
   );
 
   const data = await response.json();
-  displayArtists(data.artists);
-  isArtistsLoaded = true;
-  checkAllDataLoaded(); 
+  displayArtists(data.artists); 
 }
 
 // Function to Fetch Recommended Tracks Based on Selected Track or Default Song
@@ -1144,23 +1140,7 @@ function loadRecentlyPlayedFromLocalStorage() {
   });
 }
 
-
-
-let isSongsLoaded = true;
-let isArtistsLoaded = true;
-
 document.body.classList.remove('loaded');
-
-
-// Check if both the songs and artists have been loaded
-function checkAllDataLoaded() {
-    hideLoadingScreen();
-}
-
-// Hide the loading screen
-function hideLoadingScreen() {
-  document.body.classList.remove('loaded');
-}
 
 
 
