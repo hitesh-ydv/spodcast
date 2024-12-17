@@ -1006,6 +1006,7 @@ body.loaded #loading-screen {
   height: 100%;
   border-radius: 0px;
   padding: 10px;
+  padding-bottom: 100px;
   background-color: black;
   position: relative;
 }
