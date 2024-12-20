@@ -319,7 +319,7 @@ form {
 }
 
 .lyrics-outer{
-  padding: 16px;
+  padding: 16px 16px;
   z-index: 207;
 }
 
@@ -339,7 +339,7 @@ form {
   justify-content: space-between;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
-  z-index: 2500000;
+  z-index: 5000;
   padding: 0px 16px;
 }
 
