@@ -40,7 +40,6 @@ async function playSongFromApi(songId, track) {
 
       
       createSongDetails(track, streamUrl);
-      fetchSongCanvas(track.id);
       setupLyrics(track.id);
       
       
@@ -195,6 +194,7 @@ function displayTracks(tracks) {
       audioPlayer.src = '';
       let adAudioUrls = ["audio/spodcast_ad.mp3", "audio/spodcast_ad2.mp3","audio/spodcast_ad3.mp3"];
       const videoAd = document.getElementById('video-ad')
+      document.getElementById('lyrics-outer').style.display = "none";
 
       function getRandomAd() {
         const randomIndex = Math.floor(Math.random() * adAudioUrls.length);
@@ -453,10 +453,11 @@ function displayLikedSongs2() {
 
 
 
-function darkenColor(color, factor = 1) {
+function darkenColor(color, factor = 0.5) {
   // Darken the RGB values by the specified factor
   return color.map(value => Math.floor(value * factor));
 }
+
 // Function to Save Current Song to Local Storage
 function saveCurrentSong(track, streamUrl) {
   const songData = {
@@ -632,6 +633,7 @@ function displayRecommendations(tracks) {
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
+      document.getElementById('lyrics-outer').style.display = "none";
     });
 
     container.appendChild(card);
@@ -1191,7 +1193,13 @@ async function fetchLyrics(trackId) {
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
-    return data.lyrics; // Assuming the lyrics come under the 'lyrics' key
+    if(data.lyrics){
+      document.getElementById('lyrics-outer').style.display = "block";
+      return data.lyrics;
+      
+    }else{
+      document.getElementById('lyrics-outer').style.display = "none";
+    }
   } catch (error) {
     console.error("Error fetching lyrics:", error);
     return null;
