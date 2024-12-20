@@ -886,7 +886,7 @@ body.loaded #loading-screen {
 }
 
 
-@media (max-width: 425px){
+@media (max-width: 450px){
   .right-header{
     display: none;
   }
@@ -1005,7 +1005,6 @@ body.loaded #loading-screen {
   min-width: 100%;
   height: 100%;
   border-radius: 0px;
-  padding: 10px;
   padding-bottom: 100px;
   background-color: black;
   position: relative;
@@ -1518,6 +1517,18 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 
 .video-ad h3{
   margin-bottom: 5px;
+}
+
+#lyrics-outer{
+  padding: 16px 26px;
+}
+
+.div-padding {
+  padding: 0px 26px 16px;
+}
+
+.top-title {
+  padding: 0px 26px;
 }
 
 }
