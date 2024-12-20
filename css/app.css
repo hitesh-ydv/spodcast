@@ -393,8 +393,8 @@ form {
 }
 
 .lyric-line.active {
-  font-weight: 550;
-  color: #1db954; /* Spotify green */
+  font-weight: 535;
+  color: white;
   transition: color 0.3s ease;
 }
 
