@@ -393,7 +393,7 @@ form {
 }
 
 .lyric-line.active {
-  font-weight: 510;
+  font-weight: 500;
   color: white;
   transition: color 0.4s ease;
 }
