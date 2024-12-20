@@ -389,20 +389,20 @@ form {
   font-size: 16px;
   padding: 5px;
   color: #aaa;
-  transition: color 0.3s ease;
+  transition: color 0.4s ease;
 }
 
 .lyric-line.active {
-  font-weight: 535;
+  font-weight: 510;
   color: white;
-  transition: color 0.3s ease;
+  transition: color 0.4s ease;
 }
 
 
 #top-title {
   background-color: transparent;
   color: white;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.5s, color 0.5s;
 }
 #top-title.scrolled {
   background-color: #121212;
