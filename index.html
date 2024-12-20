@@ -30,9 +30,9 @@
     <div class="main" id="main" style="display: none">
       <div class="header" id="header">
         <div class="left-header">
-            <a href="index.html">
-	    <img src="https://cdn-icons-png.flaticon.com/128/5968/5968959.png"/>
-	    </a>
+          <a href="index.html"
+            ><img src="https://cdn-icons-png.flaticon.com/128/5968/5968959.png"
+          /></a>
         </div>
         <div class="middle-header">
           <button class="btn-home" id="btn-home">
@@ -175,23 +175,23 @@
               <div class="loading-outer" id="loading-outer"><div id="loading-spinner" style="display: none"></div></div>
               <div class="song-thumb" id="song-thumb"></div>
               <div class="canvas-outer" id="canvas-outer" style="display: none;">
-                <video id="canvas-player" autoplay loop muted style="display: none;"></video>
+                <video id="canvas-player" autoplay loop muted style="display: none;" playinline></video>
               </div>
               
               
               <div class="video-ad" id="video-ad">
-                <video src="icons/Untitled design.mp4" id="video-player" loop autoplay playsinline></video>
+                <video src="icons/Untitled design.mp4" id="video-player" loop autoplay playsinline webkit-playsinline ></video>
                 <h3>Spodcast</h3>
                 <p>Advertisement</p>
               </div>
 
               
             </div>
-            <div class="lyrics-outer">
+            <div class="lyrics-outer" id="lyrics-outer" style="display: none;">
               <div class="lyrics-title">
                 <h3>Lyrics</h3>
                 <div>
-                  <select id="language-selector">
+                  <select id="language-selector" style="display: none;">
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
                     <option value="hi">Hindi</option>
@@ -302,9 +302,10 @@
         </form>
       </div>
     
-    </div>   
+    </div>    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="script.js"></script>
+    <script src="sw.js"></script>
   </body>
 </html>
