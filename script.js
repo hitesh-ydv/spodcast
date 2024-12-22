@@ -1336,7 +1336,7 @@ const topTitle = document.getElementById('top-title');
 
 // Add scroll event listener
 rightContainer.addEventListener('scroll', () => {
-    if (rightContainer.scrollTop > 0) {
+    if (rightContainer.scrollTop > 30) {
         topTitle.classList.add('scrolled');
     } else {
         topTitle.classList.remove('scrolled');
