@@ -194,6 +194,8 @@ function displayTracks(tracks) {
 
     card.addEventListener("click", () => {
       currentIndex = index;
+      let showLyrics = document.getElementById('show-lyrics');
+      showLyrics.style.display = "flex";
       const audioAd = document.getElementById("audio-ad");
       const audioPlayer = document.getElementById("audio-player");
       audioPlayer.src = '';
@@ -486,12 +488,12 @@ function saveCurrentSong(track, streamUrl) {
 }
 
 
-
+const albumId = '2HKS1DAJvHmsYs2ORrMQE1';
 // Function to Fetch Recommended Tracks Based on Selected Track or Default Song
-async function fetchRecommendations(trackId = defaultSongId) {
+async function fetchRecommendations(trackId) {
   const token = await getAccessToken();
   const response = await fetch(
-    `https://api.spotify.com/v1/recommendations?seed_tracks=${trackId}&market=IN`,
+    `https://api.spotify.com/v1/albums/${albumId}/tracks`,
     {
       method: "GET",
       headers: {
@@ -501,8 +503,8 @@ async function fetchRecommendations(trackId = defaultSongId) {
   );
 
   const data = await response.json();
-  displayRecommendations(data.tracks);
-  localStorage.setItem("recommendedSongs", JSON.stringify(data.tracks)); 
+  displayRecommendations(data.items)
+  console.log(data)
 }
 
 
@@ -573,7 +575,7 @@ function displayRecommendations(tracks) {
     card.classList.add("track-card");
 
     const image = document.createElement("img");
-    image.src = track.album.images[0]?.url || "default-image-url";
+    image.src = track.images[0].url;
     image.alt = track.name;
 
     const songName = document.createElement("h3");
@@ -1342,3 +1344,9 @@ rightContainer.addEventListener('scroll', () => {
         topTitle.classList.remove('scrolled');
     }
 });
+
+let showLyricsBtn = document.getElementById('show-lyrics-btn');
+let showLyrics = document.getElementById('show-lyrics');
+showLyricsBtn.addEventListener("click",() => {
+     showLyrics.style.display = "none";
+})
