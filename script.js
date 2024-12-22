@@ -90,7 +90,7 @@ async function playSongFromApi(songId, track) {
          const gradientBackground = `linear-gradient(to bottom, ${rgbColor} 20%, rgb(0,0,0) 115%)`;
           
           // Set the background color of the right section
-          document.getElementById('right-section').style.background = gradientBackground;
+          document.getElementById('right-section').style.background = rgbColor;
         };
       
         img.onerror = function() {
