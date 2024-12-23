@@ -20,7 +20,7 @@ let songQueue = []; // Array to hold fetched songs
 const defaultSongId = "0biuGbhZwYnuUwMOi4fvaN";
 
 async function playSongFromApi(songId, track) {
-  let apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify3`;
+  let apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify2`;
             
   const audioPlayer = document.getElementById("audio-player");
 
