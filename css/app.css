@@ -321,12 +321,14 @@ form {
 .lyrics-outer{
   padding: 16px 16px;
   z-index: 207;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+
   
 }
 
 #lyrics-container-wrapper {
   position: relative; /* Set the desired height */
-  overflow: hidden;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   z-index: 205; /* Hide overflowing content / / Background color */
@@ -341,22 +343,28 @@ form {
   border-top-left-radius: 8px;
   z-index: 5000;
   padding: 12px 16px 0px;
+
 }
 
 .lyrics-title h3{
   color: white;
   font-weight: 510;
+  
 
 }
 
 #lyrics-container {
-  max-height: 200px; /* Ensure a minimum height */
-  overflow: hidden;  /* Enable vertical scrolling */
+  max-height: 200px;
   text-align: center;
   padding: 8px;
   background-color: #1F1F1F;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  padding-top: 30px;
 }
 
 #lyrics-container-wrapper::before,
@@ -383,19 +391,6 @@ form {
 
 #lyrics-container::-webkit-scrollbar{
   display: none;
-}
-
-.lyric-line {
-  font-size: 16px;
-  padding: 5px;
-  color: #aaa;
-  transition: color 0.3s ease;
-}
-
-.lyric-line.active {
-  font-weight: 500;
-  color: white; /* Spotify green */
-  transition: color 0.3s ease;
 }
 
 .show-lyrics{
