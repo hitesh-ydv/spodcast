@@ -44,6 +44,7 @@ async function playSongFromApi(songId, track) {
       
       createSongDetails(track, streamUrl);
       fetchAndDisplayLyrics(track.id);
+      fetchAndDisplayArtist(track.artists.primary[0].id);
       
       
       if(track){
@@ -148,7 +149,6 @@ async function fetchTracks(query) {
   );
 
   const data = await response.json();
-  console.log(data.data.results);
   
   displayTracks(data.data.results);
 }
@@ -684,6 +684,61 @@ function createSongDetails(track, streamUrl) {
 
 
 
+async function fetchAndDisplayArtist(artistId) {
+  const apiUrl = `https://saavn.dev/api/artists/${artistId}`;
+
+  try {
+    // Fetch artist data from the API
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    // Extract artist details
+    const artist = data?.data;
+    console.log(artist);
+    if (!artist) {
+      console.error("Artist not found.");
+      return;
+    }
+
+    const { name, image, followerCount, fanCount } = artist;
+
+    // Display artist details
+    const artistContainer = document.getElementById("about-artist");
+    artistContainer.innerHTML = ""; // Clear previous content
+
+    // Create and append artist image
+    const artistImage = document.createElement("img");
+    artistImage.src = image[2].url;
+    artistImage.alt = `${name}'s image`;
+    artistContainer.appendChild(artistImage);
+
+    // Create and append artist name
+    const artistName = document.createElement("h3");
+    artistName.textContent = name;
+    artistContainer.appendChild(artistName);
+
+    // Create and append followers count
+    const artistFollowers = document.createElement("p");
+    artistFollowers.textContent = `Followers: ${followerCount}`;
+    artistContainer.appendChild(artistFollowers);
+
+    const artistFan = document.createElement("p");
+    artistFan.textContent = `FanCounts: ${fanCount}`;
+    artistContainer.appendChild(artistFan);
+
+    const followBtn = document.createElement("button");
+    followBtn.textContent = "Follow"
+    artistContainer.appendChild(followBtn);
+
+  } catch (error) {
+    console.error("Error fetching artist data:", error);
+  }
+}
+
+
+
+
+
 // Function to Check First Visit
 function isFirstVisit() {
   return !localStorage.getItem("visited");
@@ -1167,7 +1222,6 @@ async function fetchAndDisplayLyrics(trackId) {
     // Fetch song data from the API
     const response = await fetch(apiUrl);
     const data = await response.json();
-    console.log(data.data[0].lyrics.lyrics)
 
     // Extract the lyrics from the response
     const lyrics = data.data[0]?.lyrics?.lyrics;
