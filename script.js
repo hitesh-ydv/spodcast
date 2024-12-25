@@ -20,7 +20,7 @@ let songQueue = []; // Array to hold fetched songs
 const defaultSongId = "0biuGbhZwYnuUwMOi4fvaN";
 
 async function playSongFromApi(songId, track) {
-  let apiUrl = `https://api.paxsenix.biz.id/dl/spotify?url=${songId}&serv=spotify`;
+  let apiUrl = `https://saavn.dev/api/songs/${songId}`;
             
   const audioPlayer = document.getElementById("audio-player");
 
@@ -35,19 +35,19 @@ async function playSongFromApi(songId, track) {
     const response = await fetch(apiUrl);
     if (response.ok) {
       const data = await response.json();
-      const streamUrl = data.directUrl;
+      const streamUrl = data.data[0].downloadUrl[2].url;
 
       loadingSpinner.style.display = "none";
       loadingSpinner2.style.display = "none";
       audioPlayer.src = streamUrl;
-
+      audioPlayer.play();
       
       createSongDetails(track, streamUrl);
-      setupLyrics(track.id);
+      fetchAndDisplayLyrics(track.id);
       
       
       if(track){
-        document.title = `${track.name} • ${track.artists[0].name}`;
+        document.title = `${track.name} • ${track.artists.primary[0].name}`;
       }
 
       audioPlayer.addEventListener('play', () => {
@@ -74,7 +74,7 @@ async function playSongFromApi(songId, track) {
         const colorThief = new ColorThief();
         const img = new Image();
         img.crossOrigin = "Anonymous"; // Ensure the image is fetched with CORS support
-        img.src = track.album.images[0].url;
+        img.src = track.image[2].url;
       
         img.onload = function() {
           // Extract the dominant color
@@ -136,9 +136,9 @@ async function getAccessToken() {
 async function fetchTracks(query) {
   const token = await getAccessToken();
   const response = await fetch(
-    `https://api.spotify.com/v1/search?q=${encodeURIComponent(
+    `https://saavn.dev/api/search/songs?query=${encodeURIComponent(
       query
-    )}&type=track&market=IN`,
+    )}`,
     {
       method: "GET",
       headers: {
@@ -148,8 +148,9 @@ async function fetchTracks(query) {
   );
 
   const data = await response.json();
+  console.log(data.data.results);
   
-  displayTracks(data.tracks.items);
+  displayTracks(data.data.results);
 }
 
 
@@ -158,21 +159,19 @@ function displayTracks(tracks) {
   const container = document.getElementById("tracks-container");
   container.innerHTML = "";
   songQueue = tracks;
-  console.log(songQueue);
 
   tracks.forEach((track, index) => {
     const card = document.createElement("div");
     card.classList.add("track-card");
 
     const image = document.createElement("img");
-    image.src = track.album.images[0]?.url || "default-image-url";
-    image.alt = track.name;
+    image.src = track.image[2].url;
 
     const songName = document.createElement("h3");
     songName.textContent = track.name;
 
     const artists = document.createElement("p");
-    artists.textContent = track.artists.map((artist) => artist.name).join(", ");
+    artists.textContent = track.artists.primary.map((artist) => artist.name).join(", ");
 
     const likeIcon = document.createElement("i");
     likeIcon.classList.add("ri-add-circle-line", "liked-icon");
@@ -198,51 +197,8 @@ function displayTracks(tracks) {
       showLyrics.style.display = "flex";
       const audioAd = document.getElementById("audio-ad");
       const audioPlayer = document.getElementById("audio-player");
-      audioPlayer.src = '';
-      let adAudioUrls = ["audio/spodcast_ad.mp3", "audio/spodcast_ad2.mp3","audio/spodcast_ad3.mp3"];
-      const videoAd = document.getElementById('video-ad')
-      document.getElementById('lyrics-outer').style.display = "none";
 
-      function getRandomAd() {
-        const randomIndex = Math.floor(Math.random() * adAudioUrls.length);
-        return adAudioUrls[randomIndex];
-      }  
-      function disableAudioPlayer() {
-        audioPlayer.style.pointerEvents = "none"; // Disable pointer events
-        audioPlayer.style.opacity = "0.5"; // Optional: dim the audio tag for visual feedback
-      }
-      
-      // Function to enable interaction with the song audio tag
-      function enableAudioPlayer() {
-        audioPlayer.style.pointerEvents = "auto"; // Re-enable pointer events
-        audioPlayer.style.opacity = "1"; // Restore original opacity
-      }
-      const playAd = () => {
-        const videoPlayer = document.getElementById('video-player');
-        videoPlayer.play();
-        videoAd.style.display = "block";
-        const randomAdUrl = getRandomAd();
-        // Set the audio source to the ad audio
-        audioAd.src = randomAdUrl;
-        audioAd.play();
-        audioAd.loop = false;
-        audioPlayer.src = '';
-        playSongFromApi(track.external_urls.spotify, track);
-        audioPlayer.pause();
-        disableAudioPlayer();
-  
-        // When the ad finishes, switch to the song
-        audioAd.onended = function() {
-          videoAd.style.display = "none"
-          audioPlayer.play();
-          audioPlayer.loop = true;
-          enableAudioPlayer();
-        };
-      }
-      playAd();
-
-      fetchRecommendations(track.id);
-      fetchArtistRecommendations(track.artists[0].id)
+      playSongFromApi(track.id, track);
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
@@ -479,9 +435,9 @@ function darkenColor(color, factor = 0.5) {
 function saveCurrentSong(track, streamUrl) {
   const songData = {
     id: track.id,
-    name: track.name,
-    artists: track.artists.map((artist) => artist.name).join(", "),
-    image: track.album.images[0]?.url || "default-image-url",
+    name: track.album.name,
+    artists: track.artists.primary.map((artist) => artist.name).join(", "),
+    image: track.image[2].url,
     audioUrl: streamUrl,
   };
   localStorage.setItem("currentSong", JSON.stringify(songData));
@@ -503,7 +459,6 @@ async function fetchRecommendations(trackId) {
   );
 
   const data = await response.json();
-  displayRecommendations(data.items)
   console.log(data)
 }
 
@@ -522,7 +477,6 @@ async function fetchArtistRecommendations(trackId = defaultArtistId) {
   );
 
   const data = await response.json();
-  displayArtists(data.artists); 
 }
 
 // Function to Fetch Recommended Tracks Based on Selected Track or Default Song
@@ -703,8 +657,7 @@ function createSongDetails(track, streamUrl) {
   songThumb.innerHTML = "";
 
   const image = document.createElement("img");
-  image.src = track.album.images[0].url;
-  image.alt = track.name;
+  image.src = track.image[2].url;
 
   const detailsDiv = document.createElement("div");
   detailsDiv.classList.add("song-details2");
@@ -714,7 +667,7 @@ function createSongDetails(track, streamUrl) {
 
   const artists = document.createElement("p");
   artists.classList.add('current-song-artist');
-  artists.textContent = track.artists.map((artist) => artist.name).join(", ");
+  artists.textContent = track.artists.primary.map((artist) => artist.name).join(", ");
 
   detailsDiv.appendChild(songName);
   detailsDiv.appendChild(artists);
@@ -1091,7 +1044,7 @@ function createSongCard(track) {
   
   // Create song image
   const img = document.createElement('img');
-  img.src = track.album.images[0].url;
+  img.src = track.image[2].url;
   songCard.appendChild(img);
   
   // Create song details container
@@ -1105,14 +1058,14 @@ function createSongCard(track) {
 
   // Create artist name
   const artistName = document.createElement('p');
-  artistName.textContent = track.artists.map((artist) => artist.name).join(", ");
+  artistName.textContent = track.artists.primary.map((artist) => artist.name).join(", ");
   songDetails.appendChild(artistName);
 
   songCard.addEventListener('click', () => {
     if (isOpen) {
       toggleListenWrapper(); // Close the update-wrapper
     }
-    playSongFromApi(track.external_urls.spotify, track);
+    playSongFromApi(track.id, track);
     showPopup();
     openBottomSheet();
     rightSection.style.display = "block";
@@ -1207,127 +1160,42 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-async function fetchLyrics(trackId) {
-  const apiUrl = `https://api.paxsenix.biz.id/lyrics/spotify?id=${trackId}`;
+async function fetchAndDisplayLyrics(trackId) {
+  const apiUrl = `https://saavn.dev/api/songs/${trackId}?lyrics=true`;
+
   try {
+    // Fetch song data from the API
     const response = await fetch(apiUrl);
     const data = await response.json();
-    if(data.lyrics){
-      document.getElementById('lyrics-outer').style.display = "block";
-      return data.lyrics;
-      
+    console.log(data.data[0].lyrics.lyrics)
+
+    // Extract the lyrics from the response
+    const lyrics = data.data[0]?.lyrics?.lyrics;
+    if (!lyrics) {
+      console.error("Lyrics not found.");
+      return;
     }else{
-      document.getElementById('lyrics-outer').style.display = "none";
+      document.getElementById("lyrics-outer").style.display = "block";
     }
+
+    // Display lyrics
+    const lyricsContainer = document.getElementById("lyrics-container");
+    lyricsContainer.innerHTML = ""; // Clear previous content
+
+    // Split and format lyrics
+    const lines = lyrics.split(/<br\s*\/?>/);
+    lines.forEach((line) => {
+      const lineElement = document.createElement("p");
+      lineElement.style.color = "#aaa";
+      lineElement.innerHTML = line.trim();
+      lyricsContainer.appendChild(lineElement);
+    });
   } catch (error) {
     console.error("Error fetching lyrics:", error);
-    return null;
   }
 }
 
-function parseLyrics(lyricsText) {
-  const lines = lyricsText.split("\n");
-  const lyrics = lines.map((line) => {
-    const match = line.match(/\[(\d+):(\d+\.\d+)](.+)/);
-    if (match) {
-      const minutes = parseInt(match[1], 10);
-      const seconds = parseFloat(match[2]);
-      const time = minutes * 60 + seconds; // Convert to total seconds
-      const text = match[3].trim();
-      return { time, text };
-    }
-    return null;
-  }).filter((line) => line); // Remove null values
-  return lyrics;
-}
 
-async function translateLyrics(text, targetLanguage) {
-  const apiUrl = `https://api.paxsenix.biz.id/tools/gtranslate?text=${encodeURIComponent(
-    text
-  )}&lang=${targetLanguage}`;
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    return data.text; // Translated text
-  } catch (error) {
-    console.error("Error translating lyrics:", error);
-    return text; // Fallback to original text
-  }
-}
-
-async function translateFullLyrics(lyrics, targetLanguage) {
-  const translated = await Promise.all(
-    lyrics.map(async (line) => {
-      const translatedText = await translateLyrics(line.text, targetLanguage);
-      return { ...line, text: translatedText };
-    })
-  );
-  return translated;
-}
-
-function syncLyrics(audio, lyrics, container) {
-  audio.addEventListener("timeupdate", () => {
-    const currentTime = audio.currentTime;
-
-    // Find the current lyric based on playback time
-    const currentIndex = lyrics.findIndex(
-      (line, index) =>
-        currentTime >= line.time &&
-        (index === lyrics.length - 1 || currentTime < lyrics[index + 1].time)
-    );
-
-    if (currentIndex !== -1) {
-      const allLines = container.querySelectorAll(".lyric-line");
-
-      // Highlight the current lyric
-      allLines.forEach((line, index) => {
-        if (index === currentIndex) {
-          line.classList.add("active");
-
-          // Scroll the active line to the center
-          const lineOffsetTop = line.offsetTop; // Top position of the line relative to the container
-          const lineHeight = line.clientHeight;
-          const containerHeight = container.clientHeight;
-          const scrollPosition =
-            lineOffsetTop - containerHeight / 2 + lineHeight / 2;
-
-          // Adjust the scroll position of the container
-          container.scrollTo({
-            top: scrollPosition,
-            behavior: "smooth",
-          });
-        } else {
-          line.classList.remove("active");
-        }
-      });
-    }
-  });
-}
-
-async function setupLyrics(trackId, targetLanguage = "en") {
-  const lyricsText = await fetchLyrics(trackId); // Fetch lyrics from API
-  if (!lyricsText) return;
-
-  const lyrics = parseLyrics(lyricsText); // Parse the lyrics
-  const lyricsContainer = document.getElementById("lyrics-container");
-  const audioPlayer = document.getElementById("audio-player");
-
-  // Translate lyrics if needed
-  const translatedLyrics =
-    targetLanguage === "en"
-      ? lyrics
-      : await translateFullLyrics(lyrics, targetLanguage);
-
-  // Display translated lyrics in the container
-  lyricsContainer.innerHTML = translatedLyrics
-    .map(
-      (line, index) => `<div class="lyric-line" id="lyric-${index}">${line.text}</div>`
-    )
-    .join("");
-
-  // Sync lyrics with the audio player
-  syncLyrics(audioPlayer, translatedLyrics, lyricsContainer);
-}
 
 
 
