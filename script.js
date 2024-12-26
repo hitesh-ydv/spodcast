@@ -1274,7 +1274,6 @@ showLyricsBtn.addEventListener("click",() => {
 })
 
 
-document.addEventListener("DOMContentLoaded", () => {
   const openButton = document.getElementById("header-cell");
   const bottomSheet = document.getElementById("wrapper2");
   const sheetContent = document.getElementById("right-section");
@@ -1342,4 +1341,3 @@ document.addEventListener("DOMContentLoaded", () => {
           e.stopPropagation(); // Stop the event from affecting the bottom sheet
       }
   });
-});
