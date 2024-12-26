@@ -380,6 +380,7 @@ body,html{
   border-radius: 8px;
   min-height: 400px;
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .div-right-top {
@@ -1017,6 +1018,7 @@ body.loaded #loading-screen {
   padding-bottom: 100px;
   background-color: black;
   position: relative;
+  overscroll-behavior: contain;
 }
 
 #loading-outer{
