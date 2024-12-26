@@ -1273,6 +1273,7 @@ showLyricsBtn.addEventListener("click",() => {
      showLyrics.style.display = "none";
 })
 
+document.addEventListener("DOMContentLoaded", () => {
 
   const openButton = document.getElementById("header-cell");
   const bottomSheet = document.getElementById("wrapper2");
@@ -1283,12 +1284,7 @@ showLyricsBtn.addEventListener("click",() => {
   let isAtTop = false; // Check if the content is scrolled to the top
   let translateY = 0; // Current transform translateY value
 
-  // Open the bottom sheet
-  openButton.addEventListener("click", () => {
-      bottomSheet.classList.add("open");
-      translateY = 0; // Reset translateY to fully open
-      bottomSheet.style.transform = `translateY(${translateY}px)`;
-  });
+
 
   // Close the bottom sheet
   const closeSheet = () => {
@@ -1341,3 +1337,4 @@ showLyricsBtn.addEventListener("click",() => {
           e.stopPropagation(); // Stop the event from affecting the bottom sheet
       }
   });
+});
