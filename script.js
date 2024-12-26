@@ -1305,7 +1305,7 @@ showLyricsBtn.addEventListener("click",() => {
         const diffY = currentY - startY;
 
         if (diffY > 0) {
-            // Dragging down
+             e.preventDefault();
             translateY = diffY;
             bottomSheet.style.transform = `translateY(${translateY}px)`;
         }
