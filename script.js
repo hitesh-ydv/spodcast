@@ -1274,14 +1274,14 @@ let isDragging = false;
 // Open bottom sheet
 const openBottomSheet = () => {
   bottomSheet.style.transform = "translateY(0)";
-  bottomSheet.style.transition = "transform 0.3s ease";
+  bottomSheet.style.transition = "transform 0.2s ease";
   sheetContent.scrollTop = 0; // Reset scroll
 };
 
 // Close bottom sheet
 const closeBottomSheet = () => {
   bottomSheet.style.transform = "translateY(100%)";
-  bottomSheet.style.transition = "transform 0.3s ease";
+  bottomSheet.style.transition = "transform 0.2s ease";
 };
 
 // Handle close button
@@ -1335,7 +1335,7 @@ bottomSheet.addEventListener("touchend", () => {
     } else {
       // Reset position if drag distance is small
       bottomSheet.style.transform = "translateY(0)";
-      bottomSheet.style.transition = "transform 0.3s ease";
+      bottomSheet.style.transition = "transform 0.2s ease";
     }
     isDragging = false;
     translateY = 0;
