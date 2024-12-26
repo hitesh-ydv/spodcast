@@ -51,21 +51,6 @@ async function playSongFromApi(songId, track) {
         document.title = `${track.name} • ${track.artists.primary[0].name}`;
       }
 
-      audioPlayer.addEventListener('play', () => {
-        videoElement.play();
-
-
-      });
-
-      // Pause video when audio pauses
-      audioPlayer.addEventListener('pause', () => {
-        videoElement.pause();
-      });
-
-      // Pause video when audio ends
-      audioPlayer.addEventListener('ended', () => {
-        videoElement.pause();
-      });
 
       document.getElementById('dYnaPI').style.fill = '#1db954';
       setBackgroundColorFromImage(track);
@@ -154,6 +139,15 @@ async function fetchTracks(query) {
 }
 
 
+const audioPlayer = document.getElementById("audio-player");
+audioPlayer.addEventListener('ended', () => {
+  currentSongIndex++;
+  playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+  console.log(currentSongIndex);
+});
+
+
+
 // Function to Display Tracks
 function displayTracks(tracks) {
   const container = document.getElementById("tracks-container");
@@ -192,13 +186,15 @@ function displayTracks(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
-      currentIndex = index;
+      currentSongIndex = index;
       let showLyrics = document.getElementById('show-lyrics');
       showLyrics.style.display = "flex";
+      if (currentSongIndex < songQueue.length) {
+        playSongFromApi(songQueue[currentSongIndex].id, track);
+      } else {
+        console.log("End of queue, fetching more recommendations...");
+      }
 
-
-
-      playSongFromApi(track.id, track);
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
@@ -209,15 +205,7 @@ function displayTracks(tracks) {
 }
 
 
-// Function to play the next song
-function playNextSong() {
-  currentIndex++;
-  if (currentIndex < songQueue.length) {
-    playSong(songQueue[currentIndex]);
-  } else {
-    console.log("End of queue, fetching more recommendations...");
-  }
-}
+
 
 // Function to toggle song like (centralized)
 function toggleLikeSong(track) {
@@ -694,7 +682,6 @@ async function fetchAndDisplayArtist(artistId) {
 
     // Extract artist details
     const artist = data?.data;
-    console.log(artist);
     if (!artist) {
       console.error("Artist not found.");
       return;
@@ -1274,14 +1261,14 @@ let isDragging = false;
 // Open bottom sheet
 const openBottomSheet = () => {
   bottomSheet.style.transform = "translateY(0)";
-  bottomSheet.style.transition = "transform 0.2s ease";
+  bottomSheet.style.transition = "transform 0.3s ease";
   sheetContent.scrollTop = 0; // Reset scroll
 };
 
 // Close bottom sheet
 const closeBottomSheet = () => {
   bottomSheet.style.transform = "translateY(100%)";
-  bottomSheet.style.transition = "transform 0.2s ease";
+  bottomSheet.style.transition = "transform 0.3s ease";
 };
 
 // Handle close button
@@ -1329,13 +1316,13 @@ bottomSheet.addEventListener("touchmove", (e) => {
 // Handle touchend event
 bottomSheet.addEventListener("touchend", () => {
   if (isDragging) {
-    if (translateY > 50) {
+    if (translateY > 150) {
       // Close sheet if dragged down significantly
       closeBottomSheet();
     } else {
       // Reset position if drag distance is small
       bottomSheet.style.transform = "translateY(0)";
-      bottomSheet.style.transition = "transform 0.2s ease";
+      bottomSheet.style.transition = "transform 0.3s ease";
     }
     isDragging = false;
     translateY = 0;
