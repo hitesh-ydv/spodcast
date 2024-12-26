@@ -463,7 +463,7 @@ body,html{
   width: 100%;
   background-size: cover;
   border-radius: 6px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   z-index: 201;
 }
 
@@ -508,6 +508,7 @@ body,html{
 .song-details{
   width: 100%;
 }
+
 
 #about-artist {
   height: 300px;
@@ -1002,8 +1003,12 @@ body.loaded #loading-screen {
       background-color: transparent; /* Spotify green */
       z-index: 5000;
       transform: translateY(100%); /* Initially hidden */
+      transition: transform 0.2s ease;
 }
 
+.wrapper2 .open {
+  transform: translateY(0); /* Fully visible */
+}
 
 .right-section{
   min-width: 100%;
