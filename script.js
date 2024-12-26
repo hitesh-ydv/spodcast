@@ -1264,31 +1264,27 @@ showLyricsBtn.addEventListener("click", () => {
 
 
 const bottomSheet = document.getElementById("wrapper2");
-const sheetContent = document.getElementById("right-section"); // Corrected selector
-const closeButton = document.getElementById("right-cont-close"); // Close button inside the sheet
+const sheetContent = document.getElementById("right-section");
+const closeButton = document.getElementById("right-cont-close");
+
 let startY = 0;
 let translateY = 0;
 let isDragging = false;
 
-// Open the bottom sheet
+// Open bottom sheet
 const openBottomSheet = () => {
   bottomSheet.style.transform = "translateY(0)";
-  bottomSheet.style.transition = "transform 0.3s ease"; // Smooth transition
-  sheetContent.scrollTop = 0; // Reset scroll to top
+  bottomSheet.style.transition = "transform 0.3s ease";
+  sheetContent.scrollTop = 0; // Reset scroll
 };
 
-// Close the bottom sheet
+// Close bottom sheet
 const closeBottomSheet = () => {
-  bottomSheet.style.transform = `translateY(100%)`;
-  bottomSheet.style.transition = "transform 0.3s ease"; // Smooth transition
+  bottomSheet.style.transform = "translateY(100%)";
+  bottomSheet.style.transition = "transform 0.3s ease";
 };
 
-// Open bottom sheet on header click
-document.getElementById("header-cell").addEventListener("click", () => {
-  openBottomSheet();
-});
-
-// Handle close button click
+// Handle close button
 closeButton.addEventListener("click", () => {
   closeBottomSheet();
 });
@@ -1296,48 +1292,68 @@ closeButton.addEventListener("click", () => {
 // Handle touchstart event
 bottomSheet.addEventListener("touchstart", (e) => {
   startY = e.touches[0].clientY;
-  isDragging = true;
-  bottomSheet.style.transition = "none"; // Disable transition during dragging
+
+  if (sheetContent.scrollTop === 0) {
+    isDragging = true;
+    bottomSheet.style.transition = "none"; // Disable transition for smooth dragging
+  }
 });
 
 // Handle touchmove event
 bottomSheet.addEventListener("touchmove", (e) => {
-  if (!isDragging) return;
-
   const currentY = e.touches[0].clientY;
   const diffY = currentY - startY;
 
-  // Handle drag-down gesture
-  if (diffY > 0 && sheetContent.scrollTop === 0) {
-    // Prevent pull-to-refresh
-    if (e.cancelable) e.preventDefault();
+  if (isDragging) {
+    if (diffY > 0) {
+      // Dragging down
+      translateY = diffY;
+      bottomSheet.style.transform = `translateY(${translateY}px)`;
 
-    // Dragging down
-    translateY = diffY;
-    bottomSheet.style.transform = `translateY(${translateY}px)`;
+      if (e.cancelable) {
+        e.preventDefault(); // Prevent scrolling during dragging
+      }
+    }
+  } else {
+    if (sheetContent.scrollTop === 0 && diffY > 0) {
+      // Switch to dragging if user pulls down at the top
+      isDragging = true;
+      startY = currentY;
+      if (e.cancelable) {
+        e.preventDefault(); // Prevent pull-to-refresh
+      }
+    }
   }
 });
 
 // Handle touchend event
 bottomSheet.addEventListener("touchend", () => {
-  isDragging = false;
-
-  // Close the sheet if dragged down significantly, otherwise reset
-  if (translateY > 150) {
-    closeBottomSheet();
-  } else {
-    bottomSheet.style.transform = "translateY(0)";
-    bottomSheet.style.transition = "transform 0.3s ease"; // Smooth reset
+  if (isDragging) {
+    if (translateY > 150) {
+      // Close sheet if dragged down significantly
+      closeBottomSheet();
+    } else {
+      // Reset position if drag distance is small
+      bottomSheet.style.transform = "translateY(0)";
+      bottomSheet.style.transition = "transform 0.3s ease";
+    }
+    isDragging = false;
+    translateY = 0;
   }
-  translateY = 0;
 });
 
-// Allow independent scrolling inside the bottom sheet
+// Allow content scrolling inside the bottom sheet
 sheetContent.addEventListener("touchmove", (e) => {
-  // Stop propagation only if content is scrollable
   if (sheetContent.scrollTop > 0) {
-    e.stopPropagation(); // Allow scrolling inside content
-  } else {
-    if (e.cancelable) e.preventDefault(); // Prevent pull-to-refresh
+    // Allow normal scrolling
+    e.stopPropagation();
+  } else if (e.cancelable && e.touches[0].clientY > startY) {
+    // Prevent pull-to-refresh when at the top and scrolling down
+    e.preventDefault();
   }
+});
+
+// Open bottom sheet on some action (e.g., a song click)
+document.getElementById("header-cell").addEventListener("click", () => {
+  openBottomSheet();
 });
