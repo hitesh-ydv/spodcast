@@ -1272,3 +1272,74 @@ let showLyrics = document.getElementById('show-lyrics');
 showLyricsBtn.addEventListener("click",() => {
      showLyrics.style.display = "none";
 })
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const openButton = document.getElementById("header-cell");
+  const bottomSheet = document.getElementById("wrapper2");
+  const sheetContent = document.getElementById("right-section");
+  let startY = 0; // Starting Y-coordinate of the touch
+  let currentY = 0; // Current Y-coordinate of the touch
+  let isDragging = false;
+  let isAtTop = false; // Check if the content is scrolled to the top
+  let translateY = 0; // Current transform translateY value
+
+  // Open the bottom sheet
+  openButton.addEventListener("click", () => {
+      bottomSheet.classList.add("open");
+      translateY = 0; // Reset translateY to fully open
+      bottomSheet.style.transform = `translateY(${translateY}px)`;
+  });
+
+  // Close the bottom sheet
+  const closeSheet = () => {
+      translateY = window.innerHeight; // Move the sheet out of view
+      bottomSheet.style.transform = `translateY(${translateY}px)`;
+      bottomSheet.classList.remove("open");
+  };
+
+  // Handle touchstart event
+  bottomSheet.addEventListener("touchstart", (e) => {
+      startY = e.touches[0].clientY;
+      isDragging = true;
+
+      // Check if the content is scrolled to the top
+      isAtTop = sheetContent.scrollTop === 0;
+  });
+
+  // Handle touchmove event
+  bottomSheet.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+
+      currentY = e.touches[0].clientY;
+      const diffY = currentY - startY;
+
+      // Allow dragging only if content is at the top
+      if (isAtTop && diffY > 0) {
+          translateY = diffY; // Update translateY based on drag distance
+          bottomSheet.style.transform = `translateY(${translateY}px)`;
+          e.preventDefault(); // Prevent browser default pull-to-refresh
+      }
+  });
+
+  // Handle touchend event
+  bottomSheet.addEventListener("touchend", () => {
+      isDragging = false;
+
+      // Close the sheet if dragged down significantly
+      if (translateY > 100) {
+          closeSheet();
+      } else {
+          translateY = 0; // Reset to fully open if not dragged down enough
+          bottomSheet.style.transform = `translateY(${translateY}px)`;
+      }
+  });
+
+  // Enable content scrolling independently
+  sheetContent.addEventListener("touchmove", (e) => {
+      // Allow content scrolling when not at the top
+      if (sheetContent.scrollTop > 0) {
+          e.stopPropagation(); // Stop the event from affecting the bottom sheet
+      }
+  });
+});
