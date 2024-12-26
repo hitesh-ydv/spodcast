@@ -195,8 +195,8 @@ function displayTracks(tracks) {
       currentIndex = index;
       let showLyrics = document.getElementById('show-lyrics');
       showLyrics.style.display = "flex";
-      const audioAd = document.getElementById("audio-ad");
-      const audioPlayer = document.getElementById("audio-player");
+
+      
 
       playSongFromApi(track.id, track);
       showPopup();
@@ -898,25 +898,13 @@ rightContClose.addEventListener("click", () => {
 
 const songThumb = document.getElementById("song-thumb")
 
-const headerCell = document.getElementById('header-cell');
-headerCell.addEventListener('click', () => {
-  headerCell.style.display = "none";
-  if(songThumb.innerHTML){
-    const popup = document.getElementById('wrapper2');
-    popup.style.display = 'block';
-    openBottomSheet();
-  }else{
-    alert("No song found!")
- }
-})
-
 
 
 const wrapper2 = document.getElementById('wrapper2');
 let isOpen = false;
 
 // Function to open the bottom sheet
-function openBottomSheet() {
+function openBottomSheet2() {
   if (isOpen) return; // Prevents multiple clicks
 
   // Set display to block so the element is visible before animating
@@ -936,7 +924,7 @@ function openBottomSheet() {
 }
 
 // Function to close the bottom sheet
-function closeBottomSheet() {
+function closeBottomSheet2() {
   if (!isOpen) return; // Prevents closing if already closed
 
   // Animate from top to bottom
@@ -1273,68 +1261,73 @@ showLyricsBtn.addEventListener("click",() => {
      showLyrics.style.display = "none";
 })
 
-document.addEventListener("DOMContentLoaded", () => {
 
-  const openButton = document.getElementById("header-cell");
   const bottomSheet = document.getElementById("wrapper2");
-  const sheetContent = document.getElementById("right-section");
-  let startY = 0; // Starting Y-coordinate of the touch
-  let currentY = 0; // Current Y-coordinate of the touch
-  let isDragging = false;
-  let isAtTop = false; // Check if the content is scrolled to the top
-  let translateY = 0; // Current transform translateY value
+  const sheetContent = document.getAnimations("right-section");
+  const closeButton = document.getElementById("right-cont-close"); // Close button inside the sheet
+  let startY = 0;
+    let translateY = 0;
+    let isDragging = false;
 
+    // Open the bottom sheet
+    const openBottomSheet = () => {
+        bottomSheet.style.transform = "translateY(0)";
+        bottomSheet.style.transition = "transform 0.3s ease"; // Smooth transition
+    };
 
+    // Close the bottom sheet
+    const closeBottomSheet = () => {
+        bottomSheet.style.transform = `translateY(100%)`;
+        bottomSheet.style.transition = "transform 0.3s ease"; // Smooth transition
+    };
 
-  // Close the bottom sheet
-  const closeSheet = () => {
-      translateY = window.innerHeight; // Move the sheet out of view
-      bottomSheet.style.transform = `translateY(${translateY}px)`;
-      bottomSheet.classList.remove("open");
-  };
+    // Handle close button click
+    closeButton.addEventListener("click", () => {
+        closeBottomSheet();
+    });
 
-  // Handle touchstart event
-  bottomSheet.addEventListener("touchstart", (e) => {
-      startY = e.touches[0].clientY;
-      isDragging = true;
+    document.getElementById('header-cell').addEventListener("click", () => {
+      openBottomSheet();
+    })
 
-      // Check if the content is scrolled to the top
-      isAtTop = sheetContent.scrollTop === 0;
-  });
+    // Handle touchstart event
+    bottomSheet.addEventListener("touchstart", (e) => {
+        startY = e.touches[0].clientY;
+        isDragging = true;
+        bottomSheet.style.transition = "none"; // Disable transition during dragging
+    });
 
-  // Handle touchmove event
-  bottomSheet.addEventListener("touchmove", (e) => {
-      if (!isDragging) return;
+    // Handle touchmove event
+    bottomSheet.addEventListener("touchmove", (e) => {
+        if (!isDragging) return;
 
-      currentY = e.touches[0].clientY;
-      const diffY = currentY - startY;
+        const currentY = e.touches[0].clientY;
+        const diffY = currentY - startY;
 
-      // Allow dragging only if content is at the top
-      if (isAtTop && diffY > 0) {
-          translateY = diffY; // Update translateY based on drag distance
-          bottomSheet.style.transform = `translateY(${translateY}px)`;
-          e.preventDefault(); // Prevent browser default pull-to-refresh
-      }
-  });
+        if (diffY > 0) {
+            // Dragging down
+            translateY = diffY;
+            bottomSheet.style.transform = `translateY(${translateY}px)`;
+        }
+    });
 
-  // Handle touchend event
-  bottomSheet.addEventListener("touchend", () => {
-      isDragging = false;
+    // Handle touchend event
+    bottomSheet.addEventListener("touchend", () => {
+        isDragging = false;
 
-      // Close the sheet if dragged down significantly
-      if (translateY > 100) {
-          closeSheet();
-      } else {
-          translateY = 0; // Reset to fully open if not dragged down enough
-          bottomSheet.style.transform = `translateY(${translateY}px)`;
-      }
-  });
+        // Close the sheet if dragged down significantly, otherwise reset
+        if (translateY > 150) {
+            closeBottomSheet();
+        } else {
+            bottomSheet.style.transform = "translateY(0)";
+            bottomSheet.style.transition = "transform 0.3s ease"; // Smooth reset
+        }
+        translateY = 0;
+    });
 
-  // Enable content scrolling independently
-  sheetContent.addEventListener("touchmove", (e) => {
-      // Allow content scrolling when not at the top
-      if (sheetContent.scrollTop > 0) {
-          e.stopPropagation(); // Stop the event from affecting the bottom sheet
-      }
-  });
-});
+    // Allow independent scrolling inside the bottom sheet
+    sheetContent.addEventListener("touchmove", (e) => {
+        if (sheetContent.scrollTop > 0) {
+            e.stopPropagation();
+        }
+    });
