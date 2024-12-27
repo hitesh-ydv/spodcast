@@ -100,14 +100,18 @@ async function playSongFromApi(songId, track) {
   }
 }
 
+let audioPlayer2 = document.getElementById("audio-player");
 document.addEventListener("keydown", (event) => {
   // Check if the pressed key is the spacebar
   if (event.code === "Space") {
-    event.preventDefault(); // Prevent the page from scrolling
-    if (!audioPlayer.paused) {
-      audioPlayer.pause();
-    } else {
-      audioPlayer.play();
+    // Prevent default behavior only if not typing in an input field
+    if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
+      event.preventDefault(); // Prevent the page from scrolling
+      if (!audioPlayer2.paused) {
+        audioPlayer2.pause();
+      } else {
+        audioPlayer2.play();
+      }
     }
   }
 });
