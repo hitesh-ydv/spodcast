@@ -64,9 +64,22 @@
 
 .tracks-container {
   display: flex;
-  flex-wrap: wrap;
   gap: 6px;
   padding: 0px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.artist-outer{
+  display: block;
+}
+
+#artist-container .track-card img{
+  border-radius: 50%;
+}
+
+.tracks-container::-webkit-scrollbar{
+  display: none;
 }
 
 .track-card {
