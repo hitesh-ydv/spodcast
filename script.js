@@ -100,6 +100,17 @@ async function playSongFromApi(songId, track) {
   }
 }
 
+document.addEventListener("keydown", (event) => {
+  // Check if the pressed key is the spacebar
+  if (event.code === "Space") {
+    event.preventDefault(); // Prevent the page from scrolling
+    if (!audioPlayer.paused) {
+      audioPlayer.pause();
+    } else {
+      audioPlayer.play();
+    }
+  }
+});
 
 // Function to Get Access Token
 async function getAccessToken() {
@@ -122,15 +133,9 @@ async function getAccessToken() {
 async function fetchTracks(query) {
   const token = await getAccessToken();
   const response = await fetch(
-    `https://saavn.dev/api/search/songs?query=${encodeURIComponent(
+    `https://jiosavan-api-with-playlist.vercel.app/api/search/songs?query=${encodeURIComponent(
       query
-    )}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    )}&limit=20`
   );
 
   const data = await response.json();
@@ -317,14 +322,13 @@ function displayLikedSongs() {
     songInfo.classList.add("song-details");
 
     const image = document.createElement("img");
-    image.src = track.album.images[0]?.url || "default-image-url";
-    image.alt = track.name;
+    image.src = track.image[2].url;
 
     const songName = document.createElement("h4");
     songName.textContent = track.name;
 
     const artists = document.createElement("p");
-    artists.textContent = track.artists.map((artist) => artist.name).join(", ");
+    artists.textContent = track.artists.primary.map((artist) => artist.name).join(", ");
 
     const deleteIcon = document.createElement("i");
     deleteIcon.classList.add("ri-delete-bin-line", "delete-icon");
@@ -340,7 +344,7 @@ function displayLikedSongs() {
     card.appendChild(deleteIcon);
 
     card.addEventListener("click", () => {
-      playSongFromApi(track.external_urls.spotify, track);
+      playSongFromApi(track.id, track);
       showPopup();
       rightSection.style.display = "block";
     });
@@ -372,14 +376,14 @@ function displayLikedSongs2() {
     songInfo.classList.add("song-details");
 
     const image = document.createElement("img");
-    image.src = track.album.images[0]?.url || "default-image-url";
+    image.src = track.image[2].url;
     image.alt = track.name;
 
     const songName = document.createElement("h4");
     songName.textContent = track.name;
 
     const artists = document.createElement("p");
-    artists.textContent = track.artists.map((artist) => artist.name).join(", ");
+    artists.textContent = track.artists.primary.map((artist) => artist.name).join(", ");
 
     const deleteIcon = document.createElement("i");
     deleteIcon.classList.add("ri-delete-bin-line", "delete-icon");
@@ -398,7 +402,7 @@ function displayLikedSongs2() {
     card.appendChild(deleteIcon);
 
     card.addEventListener("click", () => {
-      playSongFromApi(track.external_urls.spotify, track);
+      playSongFromApi(track.id, track);
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block"; // Play song from liked songs when clicked
@@ -435,24 +439,18 @@ function saveCurrentSong(track, streamUrl) {
 const albumId = '2HKS1DAJvHmsYs2ORrMQE1';
 // Function to Fetch Recommended Tracks Based on Selected Track or Default Song
 async function fetchRecommendations(trackId) {
-  const token = await getAccessToken();
   const response = await fetch(
-    `https://api.spotify.com/v1/albums/${albumId}/tracks`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+    `https://jiosavan-api-with-playlist.vercel.app/api/songs/jx2G3Mjl/suggestions` );
 
   const data = await response.json();
   console.log(data)
+  displayRecommendations(data.data);
+  displayArtists(data.data);
 }
 
 
 // Function to Fetch Recommended Tracks Based on Selected Track or Default Song
-async function fetchArtistRecommendations(trackId = defaultArtistId) {
+async function fetchArtistRecommendations(trackId) {
   const token = await getAccessToken();
   const response = await fetch(
     `https://api.spotify.com/v1/artists/${trackId}/related-artists`,
@@ -484,6 +482,7 @@ async function fetchArtist(trackId) {
   console.log(data)
 }
 
+
 // Display artists in the artist-container with images and names
 function displayArtists(artists) {
   const artistContainer = document.getElementById('artist-container');
@@ -494,10 +493,10 @@ function displayArtists(artists) {
     artistCard.classList.add('track-card');
 
     artistCard.innerHTML = `
-      <img src="${artist.images[0].url}">
+      <img src="${artist.artists.primary[0].image[2].url}">
       <div class="song-details">
-        <h3>${artist.name}</h3>
-        <p>${artist.type.toUpperCase()}</p>
+        <h3>${artist.artists.primary[0].name}</h3>
+        <p>${artist.artists.primary[0].type.toUpperCase()}</p>
       </div>
     `;
     artistContainer.appendChild(artistCard);
@@ -512,19 +511,19 @@ function displayRecommendations(tracks) {
   const container = document.getElementById("recommendations-container");
   container.innerHTML = "";
 
-  tracks.forEach((track) => {
+  tracks.forEach((track, index) => {
     const card = document.createElement("div");
     card.classList.add("track-card");
 
     const image = document.createElement("img");
-    image.src = track.images[0].url;
+    image.src = track.image[2].url;
     image.alt = track.name;
 
     const songName = document.createElement("h3");
     songName.textContent = track.name;
 
     const artists = document.createElement("p");
-    artists.textContent = track.artists.map((artist) => artist.name).join(", ");
+    artists.textContent = track.artists.primary.map((artist) => artist.name).join(", ");
 
     const likeIcon = document.createElement("i");
     likeIcon.classList.add("ri-add-circle-line", "liked-icon");
@@ -544,55 +543,13 @@ function displayRecommendations(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
-      const audioAd = document.getElementById("audio-ad");
-      const audioPlayer = document.getElementById("audio-player");
-      audioPlayer.src = '';
-      let adAudioUrls = ["audio/spodcast_ad.mp3", "audio/spodcast_ad2.mp3", "audio/spodcast_ad3.mp3"];
-      const videoAd = document.getElementById('video-ad');
-      const videoPlayer = document.getElementById('video-player');
-
-      function getRandomAd() {
-        const randomIndex = Math.floor(Math.random() * adAudioUrls.length);
-        return adAudioUrls[randomIndex];
-      }
-
-      function disableAudioPlayer() {
-        audioPlayer.style.pointerEvents = "none"; // Disable pointer events
-        audioPlayer.style.opacity = "0.5"; // Optional: dim the audio tag for visual feedback
-      }
-
-      // Function to enable interaction with the song audio tag
-      function enableAudioPlayer() {
-        audioPlayer.style.pointerEvents = "auto"; // Re-enable pointer events
-        audioPlayer.style.opacity = "1"; // Restore original opacity
-      }
-
-      const playAd = () => {
-        videoAd.style.display = "block";
-        videoPlayer.play();
-        const randomAdUrl = getRandomAd();
-        // Set the audio source to the ad audio
-        audioAd.src = randomAdUrl;
-        audioAd.play();
-        audioAd.loop = false;
-        playSongFromApi(track.external_urls.spotify, track);
-        audioPlayer.pause();
-        disableAudioPlayer();
-
-        // When the ad finishes, switch to the song
-        audioAd.onended = function () {
-          videoAd.style.display = "none"
-          audioPlayer.play();
-          audioPlayer.loop = true;
-          enableAudioPlayer();
-        };
-      }
-      playAd();
-
+      currentSongIndex = index;
+      let showLyrics = document.getElementById('show-lyrics');
+      showLyrics.style.display = "flex";
+      playSongFromApi(track.id, track);
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
-      document.getElementById('lyrics-outer').style.display = "none";
     });
 
     container.appendChild(card);
@@ -758,12 +715,13 @@ let mainDiv = document.getElementById('main');
 
 // Call handleInitialUI function on page load
 window.addEventListener("DOMContentLoaded", () => {
+  fetchRecommendations();
   handleInitialUI();
   displayLikedSongs();
   displayLikedSongs2(); // Display liked songs in both containers
   updateAllLikeIcons();
   loadRecentlyPlayedFromLocalStorage();
-  displayRecommendations(recommendedSongs);
+
   // Display liked songs in both containers
   document.body.scrollTop = 0;
   if (navigator.onLine) {
@@ -854,20 +812,6 @@ function hidePopup() {
   localStorage.setItem("popupShown", "true");
 }
 
-
-function showPopupform() {
-  const popup = document.getElementById("wrapper");
-  popup.style.display = "flex";
-}
-
-// Check if the popup has been shown before
-window.addEventListener("DOMContentLoaded", () => {
-  const popupShown = localStorage.getItem("popupShown");
-
-  // Add event listener to the OK button
-  const okButton = document.getElementById("ok-button");
-  okButton.addEventListener("click", hidePopup);
-});
 
 
 let x = window.matchMedia("(max-width: 425px)")
@@ -1225,11 +1169,6 @@ async function fetchAndDisplayLyrics(trackId) {
 }
 
 
-
-
-
-
-
 const rightContainer = document.getElementById('right-section');
 const topTitle = document.getElementById('top-title');
 
@@ -1344,3 +1283,4 @@ sheetContent.addEventListener("touchmove", (e) => {
 document.getElementById("header-cell").addEventListener("click", () => {
   openBottomSheet();
 });
+
