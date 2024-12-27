@@ -75,7 +75,7 @@
   transition: transform 0.2s;
   cursor: pointer;
   flex: 1;
-  min-width: 140px;
+  min-width: 170px;
   min-height: 220px;
   transition: all 0.2s;
 }
