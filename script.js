@@ -35,7 +35,7 @@ async function playSongFromApi(songId, track) {
     const response = await fetch(apiUrl);
     if (response.ok) {
       const data = await response.json();
-      const streamUrl = data.data[0].downloadUrl[4].url;
+      const streamUrl = data.data[0].downloadUrl[2].url;
 
       loadingSpinner.style.display = "none";
       loadingSpinner2.style.display = "none";
@@ -192,7 +192,7 @@ function displayTrackCards(songs) {
   const trackCardContainer = document.getElementById("track-card-container");
   trackCardContainer.innerHTML = ""; // Clear previous content
 
-  songs.forEach((song) => {
+  songs.forEach((song, index) => {
     const trackCard = document.createElement("div");
     trackCard.className = "track-card-album";
 
@@ -204,7 +204,9 @@ function displayTrackCards(songs) {
           </div>
       `;
     trackCard.addEventListener("click", () => {
-      playSongFromApi(song.id, song);
+      songQueue = songs;
+      currentSongIndex = index;
+        playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
@@ -252,8 +254,13 @@ function displayAlbums(artists) {
 const audioPlayer = document.getElementById("audio-player");
 audioPlayer.addEventListener('ended', () => {
   currentSongIndex++;
-  playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
-  console.log(currentSongIndex);
+  
+  if (currentSongIndex < songQueue.length) {
+    playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+  } else {
+    currentSongIndex = 0;
+    playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+  }
 });
 
 
@@ -262,7 +269,6 @@ audioPlayer.addEventListener('ended', () => {
 function displayTracks(tracks) {
   const container = document.getElementById("tracks-container");
   container.innerHTML = "";
-  songQueue = tracks;
 
   tracks.forEach((track, index) => {
     const card = document.createElement("div");
@@ -300,14 +306,12 @@ function displayTracks(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
+      songQueue = tracks;
+      console.log(songQueue);
       currentSongIndex = index;
       let showLyrics = document.getElementById('show-lyrics');
       showLyrics.style.display = "flex";
-      if (currentSongIndex < songQueue.length) {
-        playSongFromApi(songQueue[currentSongIndex].id, track);
-      } else {
-        console.log("End of queue, fetching more recommendations...");
-      }
+      playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
 
       showPopup();
       openBottomSheet();
@@ -646,10 +650,11 @@ function displayRecommendations(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
+      songQueue = tracks;
       currentSongIndex = index;
       let showLyrics = document.getElementById('show-lyrics');
       showLyrics.style.display = "flex";
-      playSongFromApi(track.id, track);
+      playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
