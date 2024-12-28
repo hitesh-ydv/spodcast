@@ -116,6 +116,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+
 // Function to Get Access Token
 async function getAccessToken() {
   const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -169,6 +170,8 @@ function displayTracks(tracks) {
 
     const image = document.createElement("img");
     image.src = track.image[2].url;
+    image.classList.add('skeleton');
+    image.setAttribute('loading', 'lazy');
 
     const songName = document.createElement("h3");
     songName.textContent = track.name;
@@ -447,7 +450,7 @@ async function fetchRecommendations(trackId) {
     `https://jiosavan-api-with-playlist.vercel.app/api/songs/jx2G3Mjl/suggestions` );
 
   const data = await response.json();
-  console.log(data)
+  document.getElementById('recommend-outer').style.display = 'block';
   displayRecommendations(data.data);
   displayArtists(data.data);
 }
@@ -497,7 +500,7 @@ function displayArtists(artists) {
     artistCard.classList.add('track-card');
 
     artistCard.innerHTML = `
-      <img src="${artist.artists.primary[0].image[2].url}">
+      <img src="${artist.artists.primary[0].image[2].url}" class="skeleton" loading="lazy">
       <div class="song-details">
         <h3>${artist.artists.primary[0].name}</h3>
         <p>${artist.artists.primary[0].type.toUpperCase()}</p>
@@ -520,13 +523,17 @@ function displayRecommendations(tracks) {
     card.classList.add("track-card");
 
     const image = document.createElement("img");
+    image.classList.add('skeleton');
+    image.setAttribute('loading', 'lazy');
     image.src = track.image[2].url;
     image.alt = track.name;
 
     const songName = document.createElement("h3");
     songName.textContent = track.name;
+    songName.classList.add('skeleton-text');
 
     const artists = document.createElement("p");
+    artists.classList.add('skeleton-text');
     artists.textContent = track.artists.primary.map((artist) => artist.name).join(", ");
 
     const likeIcon = document.createElement("i");
@@ -687,40 +694,10 @@ async function fetchAndDisplayArtist(artistId) {
 
 
 
-// Function to Check First Visit
-function isFirstVisit() {
-  return !localStorage.getItem("visited");
-}
-
-
-// Function to Check if No Recommended Songs
-function hasNoRecommendedSongs() {
-  return recommendedSongs.length === 0;
-}
-
-
-
-// Function to handle UI based on first visit or no recommendations
-function handleInitialUI() {
-  const recommendTitle = document.getElementById("recommend-title");
-  const homeSection = document.getElementById("home-section");
-
-  if (isFirstVisit() || hasNoRecommendedSongs()) {
-    fetchRecommendations(defaultSongId);
-    homeSection.style.display = "block";
-  } else {
-    homeSection.style.display = "block";
-  }
-
-  localStorage.setItem("visited", "true");
-}
-
 let mainDiv = document.getElementById('main');
 
-// Call handleInitialUI function on page load
 window.addEventListener("DOMContentLoaded", () => {
   fetchRecommendations();
-  handleInitialUI();
   displayLikedSongs();
   displayLikedSongs2(); // Display liked songs in both containers
   updateAllLikeIcons();
