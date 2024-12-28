@@ -90,6 +90,13 @@
   border-radius: 50%;
 }
 
+#artist-for{
+  color: white;
+  margin-left: 8px;
+  margin-bottom: 8px;
+  font-size: 22px;
+}
+
 .tracks-container::-webkit-scrollbar{
   display: none;
 }
@@ -552,3 +559,86 @@ body {
   width: 100%;
   border-radius: .125rem;
 }
+
+
+.album-container{
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  padding-top: 50px;
+  align-items: center;
+  gap: 20px;
+  color: white;
+  margin-bottom: 20px;
+
+}
+
+.album-container img{
+  width: 150px;
+  border-radius: 50%;
+}
+
+.album-container p{
+  color: #b2b2b2;
+}
+
+.track-card-album {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  cursor: pointer;
+  position: relative;
+  max-height: 64px;
+}
+
+.track-card-album:hover {
+  background-color: #232323;
+}
+
+.track-card-album img {
+  width: 48px;
+  height: 48px;
+  margin-right: 10px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.track-card-album h3 {
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.track-card-album p {
+  margin: 2px 0;
+  color: #b2b2b2;
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.track-card-container::-webkit-scrollbar{
+  display: none;
+}
+
+.albums-inner i{
+  color: white;
+  padding: 3px;
+  font-size: 40px;
+  cursor: pointer;
+  border: 1px soild #aaa;
+  background-color: #232323;
+  border-radius: 50%;
+  margin-bottom: 40px;
+}
+
