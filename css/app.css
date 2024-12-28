@@ -77,16 +77,13 @@
   margin-bottom: 20px;
 }
 
-.tracks-outer #tracks-container h3{
-  font-size: 14.5px;
-}
 
-.tracks-outer #tracks-container p{
-  font-size: 13.5px;
-}
 
 .artist-outer{
   display: block;
+}
+#artist-container .track-card{
+  width: 160px;
 }
 
 #artist-container .track-card img{
@@ -103,7 +100,7 @@
   transition: transform 0.2s;
   cursor: pointer;
   flex: 1;
-  min-width: 170px;
+  min-width: 160px;
   min-height: 220px;
   transition: all 0.2s;
 }
