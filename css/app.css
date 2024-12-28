@@ -77,6 +77,14 @@
   margin-bottom: 20px;
 }
 
+.tracks-outer #tracks-container h3{
+  font-size: 14.5px;
+}
+
+.tracks-outer #tracks-container p{
+  font-size: 13.5px;
+}
+
 .artist-outer{
   display: block;
 }
