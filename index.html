@@ -114,11 +114,31 @@
             </div>
           </div>
           <div class="search-section" id="search-section">
+
             <div class="tracks-outer" id="tracks-outer">
-              <h3 id="search-for" class="recommend-h3"></h3>
+              <h3 id="search-for" class="recommend-h3" style="display: none;"></h3>
               <div id="tracks-container" class="tracks-container">
                 <!-- Search result songs will be appended here -->
               </div>
+            </div>
+
+            <div class="track-outer" id="artist-outer" >
+              <h3 id="artist-for" class="recommend-h3">Albums</h3>
+              <div class="tracks-container" id="album-search-container">
+
+              </div>
+            </div>
+
+            <div class="albums-inner" id="album-inner" style="display: none;">
+              <i class="ri-arrow-left-s-line" id="album-close-btn"></i>
+              <div class="album-container">
+                <img id="album-image" alt="Album Image">
+                <div>
+                  <h2 id="album-name"></h2>
+                  <p id="album-artists"></p>
+                </div>
+              </div>
+              <div class="track-card-container" id="track-card-container"></div>
             </div>
           </div>
           <div class="setting-section" id="setting-section"></div>
@@ -263,7 +283,7 @@
       </form>
     </div>
 
-    <div id="popup" class="popup-container">
+    <div id="popup" class="popup-container" style="display: none;">
       <div class="popup">
         <h2>Enter Your Name</h2>
         <input type="text" id="userName" placeholder="Enter your name">
