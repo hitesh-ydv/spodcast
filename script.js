@@ -171,7 +171,9 @@ function displayTracks(tracks) {
     const image = document.createElement("img");
     image.src = track.image[2].url;
     image.classList.add('skeleton');
-    image.setAttribute('loading', 'lazy');
+    image.classList.add('lazy');
+    image.classList.add('placeholder');
+    image.dataset.src = track.image[2].url;
 
     const songName = document.createElement("h3");
     songName.textContent = track.name;
@@ -214,9 +216,28 @@ function displayTracks(tracks) {
 
     container.appendChild(card);
   });
+
+  applyLazyLoading();
 }
 
 
+// Function to apply lazy loading using IntersectionObserver
+function applyLazyLoading() {
+  const lazyImages = document.querySelectorAll('.lazy');
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src; // Set the actual image source
+        img.classList.remove('placeholder'); // Remove placeholder styling
+        observer.unobserve(img); // Stop observing this image
+      }
+    });
+  });
+
+  lazyImages.forEach(img => observer.observe(img));
+}
 
 
 // Function to toggle song like (centralized)
@@ -524,7 +545,9 @@ function displayRecommendations(tracks) {
 
     const image = document.createElement("img");
     image.classList.add('skeleton');
-    image.setAttribute('loading', 'lazy');
+    image.classList.add('lazy');
+    image.classList.add('placeholder');
+    image.dataset.src = track.image[2].url;
     image.src = track.image[2].url;
     image.alt = track.name;
 
@@ -565,6 +588,7 @@ function displayRecommendations(tracks) {
 
     container.appendChild(card);
   });
+  applyLazyLoading();
 }
 
 
