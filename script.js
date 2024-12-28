@@ -35,7 +35,7 @@ async function playSongFromApi(songId, track) {
     const response = await fetch(apiUrl);
     if (response.ok) {
       const data = await response.json();
-      const streamUrl = data.data[0].downloadUrl[2].url;
+      const streamUrl = data.data[0].downloadUrl[4].url;
 
       loadingSpinner.style.display = "none";
       loadingSpinner2.style.display = "none";
