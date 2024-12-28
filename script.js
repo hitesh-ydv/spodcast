@@ -153,7 +153,7 @@ async function fetchTracks(query) {
 async function fetchAlbums(query) {
   const token = await getAccessToken();
   const response = await fetch(
-    `https://jiosavan-api-with-playlist.vercel.app/api/search/albums?query=${encodeURIComponent(
+    `https://jiosavan-api-with-playlist.vercel.app/api/search/playlists?query=${encodeURIComponent(
       query
     )}&limit=20`
   );
@@ -168,7 +168,7 @@ async function fetchAlbums(query) {
 async function fetchAlbumsTracks(albumId) {
   const token = await getAccessToken();
   const response = await fetch(
-    `https://jiosavan-api-with-playlist.vercel.app/api/albums?id=${albumId}`
+    `https://jiosavan-api-with-playlist.vercel.app/api/playlists?id=${albumId}&limit=50`
   );
 
   const data = await response.json();
@@ -185,7 +185,7 @@ function displayAlbumDetails(data) {
   albumImage.src = data.image[2].url;
   albumImage.alt = data.name;
   albumName.textContent = data.name;
-  albumArtists.textContent = data.artists.primary.map((artist) => artist.name).join(", ");
+  albumArtists.textContent = data.artists.map((artist) => artist.name).join(", ");
 }
 
 function displayTrackCards(songs) {
@@ -197,6 +197,7 @@ function displayTrackCards(songs) {
     trackCard.className = "track-card-album";
 
     trackCard.innerHTML = `
+          <h4>${index + 1}. </h4>
           <img src="${song.image[2].url}" loading="lazy">
           <div>
             <h3>${song.name}</h3>
