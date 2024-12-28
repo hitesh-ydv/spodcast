@@ -593,6 +593,13 @@ body {
   max-height: 64px;
 }
 
+.track-card-album h4{
+  margin-right: 14px;
+  margin-left: 5px;
+  color: #b2b2b2;
+  font-weight: 500;
+}
+
 .track-card-album:hover {
   background-color: #232323;
 }
