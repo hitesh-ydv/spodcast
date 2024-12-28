@@ -20,7 +20,7 @@ let songQueue = []; // Array to hold fetched songs
 const defaultSongId = "0biuGbhZwYnuUwMOi4fvaN";
 
 async function playSongFromApi(songId, track) {
-  let apiUrl = `https://saavn.dev/api/songs/${songId}`;
+  let apiUrl = `https://jiosavan-api-with-playlist.vercel.app/api/songs/${songId}`;
 
   const audioPlayer = document.getElementById("audio-player");
 
@@ -146,6 +146,106 @@ async function fetchTracks(query) {
   const data = await response.json();
 
   displayTracks(data.data.results);
+  document.getElementById('search-for').style.display = 'block';
+}
+
+// Function to Fetch Tracks Based on Search Query
+async function fetchAlbums(query) {
+  const token = await getAccessToken();
+  const response = await fetch(
+    `https://jiosavan-api-with-playlist.vercel.app/api/search/albums?query=${encodeURIComponent(
+      query
+    )}&limit=20`
+  );
+
+  const data = await response.json();
+  document.getElementById("artist-outer").style.display = "block";
+  displayAlbums(data.data.results);
+}
+
+
+// Function to Fetch Tracks Based on Search Query
+async function fetchAlbumsTracks(albumId) {
+  const token = await getAccessToken();
+  const response = await fetch(
+    `https://jiosavan-api-with-playlist.vercel.app/api/albums?id=${albumId}`
+  );
+
+  const data = await response.json();
+  console.log(data)
+  displayAlbumDetails(data.data);
+  displayTrackCards(data.data.songs);
+}
+
+function displayAlbumDetails(data) {
+  const albumImage = document.getElementById("album-image");
+  const albumName = document.getElementById("album-name");
+  const albumArtists = document.getElementById("album-artists");
+
+  albumImage.src = data.image[2].url;
+  albumImage.alt = data.name;
+  albumName.textContent = data.name;
+  albumArtists.textContent = data.artists.primary.map((artist) => artist.name).join(", ");
+}
+
+function displayTrackCards(songs) {
+  const trackCardContainer = document.getElementById("track-card-container");
+  trackCardContainer.innerHTML = ""; // Clear previous content
+
+  songs.forEach((song) => {
+    const trackCard = document.createElement("div");
+    trackCard.className = "track-card-album";
+
+    trackCard.innerHTML = `
+          <img src="${song.image[2].url}" loading="lazy">
+          <div>
+            <h3>${song.name}</h3>
+            <p>${song.artists.primary.map((artist) => artist.name).join(", ")}</p>
+          </div>
+      `;
+    trackCard.addEventListener("click", () => {
+      playSongFromApi(song.id, song);
+      showPopup();
+      openBottomSheet();
+      rightSection.style.display = "block";
+    })
+    trackCardContainer.appendChild(trackCard);
+  });
+}
+
+
+document.getElementById('album-close-btn').addEventListener("click", () => {
+  document.getElementById('artist-outer').style.display = 'block';
+  document.getElementById('tracks-outer').style.display = 'block';
+  document.getElementById('album-inner').style.display = 'none';
+})
+
+// Display artists in the artist-container with images and names
+function displayAlbums(artists) {
+  const artistContainer = document.getElementById('album-search-container');
+  artistContainer.innerHTML = ''; // Clear existing artists
+
+  artists.forEach(artist => {
+    const artistCard = document.createElement('div');
+    artistCard.classList.add('track-card');
+
+    artistCard.innerHTML = `
+      <img src="${artist.image[2].url}" class="skeleton" loading="lazy">
+      <div class="song-details">
+        <h3>${artist.name}</h3>
+        <p>${artist.type.toUpperCase()}</p>
+      </div>
+    `;
+    artistCard.addEventListener("click", () => {
+      fetchAlbumsTracks(artist.id)
+      document.getElementById('middle-section').scrollTop = 0;
+      document.getElementById('artist-outer').style.display = 'none';
+      document.getElementById('tracks-outer').style.display = 'none';
+      document.getElementById('album-inner').style.display = 'block';
+
+    })
+    artistContainer.appendChild(artistCard);
+  });
 }
 
 
@@ -468,7 +568,7 @@ const albumId = '2HKS1DAJvHmsYs2ORrMQE1';
 // Function to Fetch Recommended Tracks Based on Selected Track or Default Song
 async function fetchRecommendations(trackId) {
   const response = await fetch(
-    `https://jiosavan-api-with-playlist.vercel.app/api/songs/jx2G3Mjl/suggestions` );
+    `https://jiosavan-api-with-playlist.vercel.app/api/songs/jx2G3Mjl/suggestions`);
 
   const data = await response.json();
   document.getElementById('recommend-outer').style.display = 'block';
@@ -477,38 +577,7 @@ async function fetchRecommendations(trackId) {
 }
 
 
-// Function to Fetch Recommended Tracks Based on Selected Track or Default Song
-async function fetchArtistRecommendations(trackId) {
-  const token = await getAccessToken();
-  const response = await fetch(
-    `https://api.spotify.com/v1/artists/${trackId}/related-artists`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
 
-  const data = await response.json();
-}
-
-// Function to Fetch Recommended Tracks Based on Selected Track or Default Song
-async function fetchArtist(trackId) {
-  const token = await getAccessToken();
-  const response = await fetch(
-    `https://api.spotify.com/v1/artists/${artistId}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${getAccessToken}`,
-      },
-    }
-  );
-
-  const data = await response.json();
-  console.log(data)
-}
 
 
 // Display artists in the artist-container with images and names
@@ -755,16 +824,19 @@ document.getElementById("search-input").addEventListener("keyup", (event) => {
   if (query.length > 0) {
     document.getElementById("recommend-title").style.display = "none";
     fetchTracks(query);
+    fetchAlbums(query);
     document.getElementById("search-section").style.display = "block";
     const searchFor = document.getElementById("search-for");
-    searchFor.textContent = `Search from '${query}'`;
+    searchFor.textContent = `Songs`;
   } else {
     document.getElementById("recommend-title").style.display = "flex";
     document.getElementById("search-section").style.display = "none";
+
   }
 });
 
 let btnnHome = document.getElementById("btn-nhome");
+document.getElementById("artist-outer").style.display = "none";
 
 btnnHome.addEventListener("click", () => {
   document.getElementById("search-section").style.display = "none";
