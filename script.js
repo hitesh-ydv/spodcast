@@ -185,7 +185,7 @@ function displayAlbumDetails(data) {
   albumImage.src = data.image[2].url;
   albumImage.alt = data.name;
   albumName.textContent = data.name;
-  albumArtists.textContent = data.artists.map((artist) => artist.name).join(", ");
+  albumArtists.textContent = "PLAYLIST";
 }
 
 function displayTrackCards(songs) {
@@ -211,6 +211,7 @@ function displayTrackCards(songs) {
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
+      
     })
     trackCardContainer.appendChild(trackCard);
   });
@@ -221,6 +222,7 @@ document.getElementById('album-close-btn').addEventListener("click", () => {
   document.getElementById('artist-outer').style.display = 'block';
   document.getElementById('tracks-outer').style.display = 'block';
   document.getElementById('album-inner').style.display = 'none';
+  document.getElementById('main-header').style.display = 'flex';
 })
 
 // Display artists in the artist-container with images and names
@@ -245,6 +247,7 @@ function displayAlbums(artists) {
       document.getElementById('artist-outer').style.display = 'none';
       document.getElementById('tracks-outer').style.display = 'none';
       document.getElementById('album-inner').style.display = 'block';
+      document.getElementById('main-header').style.display = 'none';
 
     })
     artistContainer.appendChild(artistCard);
