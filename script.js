@@ -175,7 +175,7 @@ async function fetchAlbumsTracks(albumId) {
   );
 
   const data = await response.json();
-  document.getElementById('album-container').style.display = "block";
+  document.getElementById('album-container').style.display = "flex";
   displayAlbumDetails(data.data);
   displayTrackCards(data.data.songs);
 }
