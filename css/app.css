@@ -575,7 +575,6 @@ body {
 
 .album-container img{
   width: 150px;
-  border-radius: 50%;
 }
 
 .album-container p{
@@ -641,11 +640,21 @@ body {
 .albums-inner i{
   color: white;
   padding: 3px;
-  font-size: 40px;
+  font-size: 30px;
   cursor: pointer;
-  border: 1px soild #aaa;
+  border: 1px solid #aaa;
   background-color: #232323;
   border-radius: 50%;
-  margin-bottom: 40px;
+  margin-top: 40px;
 }
 
+
+.album-inner-icon{
+  width: 100%;
+  position: sticky;
+  top: 0px;
+  left: 0px;
+  background-color: #121212;
+  z-index: 50;
+  padding: 14px 4px;
+}
