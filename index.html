@@ -78,7 +78,7 @@
         <div class="liked-songs-container" id="liked-songs-container"></div>
       </div>
       <div class="middle-section" id="middle-section">
-        <div class="main-header">
+        <div class="main-header" id="main-header">
           <div class="main-header-icons">
             <span id="header-img">H</span>
             <span id="header-all">All</span>
@@ -123,14 +123,16 @@
             </div>
 
             <div class="track-outer" id="artist-outer" >
-              <h3 id="artist-for" class="recommend-h3">Albums</h3>
+              <h3 id="artist-for" class="recommend-h3">PLaylists</h3>
               <div class="tracks-container" id="album-search-container">
 
               </div>
             </div>
 
             <div class="albums-inner" id="album-inner" style="display: none;">
-              <i class="ri-arrow-left-s-line" id="album-close-btn"></i>
+              <div class="album-inner-icon" id="album-inner-icon">
+                <i class="ri-arrow-left-s-line" id="album-close-btn"></i>
+              </div>
               <div class="album-container">
                 <img id="album-image" alt="Album Image">
                 <div>
@@ -259,7 +261,7 @@
     </div>
 
     <div class="footer" id="footer">
-      <audio id="audio-player" preload="auto" controls></audio>
+      <audio id="audio-player" controls></audio>
       <audio id="audio-ad"></audio>
 
       <span id="header-cell"><svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16"
