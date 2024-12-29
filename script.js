@@ -149,6 +149,9 @@ async function fetchTracks(query) {
   document.getElementById('search-for').style.display = 'block';
 }
 
+
+
+
 // Function to Fetch Tracks Based on Search Query
 async function fetchAlbums(query) {
   const token = await getAccessToken();
@@ -172,7 +175,7 @@ async function fetchAlbumsTracks(albumId) {
   );
 
   const data = await response.json();
-  console.log(data)
+  document.getElementById('album-container').style.display = "block";
   displayAlbumDetails(data.data);
   displayTrackCards(data.data.songs);
 }
@@ -183,6 +186,8 @@ function displayAlbumDetails(data) {
   const albumArtists = document.getElementById("album-artists");
 
   albumImage.src = data.image[2].url;
+  albumImage.classList.add('skeleton');
+  albumImage.classList.add('skeleton-img');
   albumImage.alt = data.name;
   albumName.textContent = data.name;
   albumArtists.textContent = "PLAYLIST";
@@ -198,7 +203,7 @@ function displayTrackCards(songs) {
 
     trackCard.innerHTML = `
           <h4>${index + 1}. </h4>
-          <img src="${song.image[2].url}" loading="lazy">
+          <img src="${song.image[2].url}" class="skeleton skeleton-img">
           <div>
             <h3>${song.name}</h3>
             <p>${song.artists.primary.map((artist) => artist.name).join(", ")}</p>
@@ -223,6 +228,17 @@ document.getElementById('album-close-btn').addEventListener("click", () => {
   document.getElementById('tracks-outer').style.display = 'block';
   document.getElementById('album-inner').style.display = 'none';
   document.getElementById('main-header').style.display = 'flex';
+  const trackCardContainer = document.getElementById("track-card-container");
+  trackCardContainer.innerHTML = "";
+  const albumImage = document.getElementById("album-image");
+  const albumName = document.getElementById("album-name");
+  const albumArtists = document.getElementById("album-artists");
+
+  albumImage.src = '';
+  albumImage.alt = '';
+  albumName.textContent = '';
+  albumArtists.textContent = '';
+
 })
 
 // Display artists in the artist-container with images and names
@@ -235,7 +251,7 @@ function displayAlbums(artists) {
     artistCard.classList.add('track-card');
 
     artistCard.innerHTML = `
-      <img src="${artist.image[2].url}" class="skeleton" loading="lazy">
+      <img src="${artist.image[2].url}" class="skeleton skeleton-img" loading="lazy">
       <div class="song-details">
         <h3>${artist.name}</h3>
         <p>${artist.type.toUpperCase()}</p>
