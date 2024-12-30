@@ -203,7 +203,7 @@ function displayTrackCards(songs) {
 
     trackCard.innerHTML = `
           <h4>${index + 1}. </h4>
-          <img src="${song.image[2].url}" class="skeleton skeleton-img">
+          <img src="${song.image[2].url}" class="skeleton skeleton-img" loading="lazy">
           <div>
             <h3>${song.name}</h3>
             <p>${song.artists.primary.map((artist) => artist.name).join(", ")}</p>
@@ -326,13 +326,12 @@ function displayTracks(tracks) {
     card.appendChild(likeIcon);
 
     card.addEventListener("click", () => {
-      songQueue = tracks;
-      console.log(songQueue);
+
       currentSongIndex = index;
       let showLyrics = document.getElementById('show-lyrics');
       showLyrics.style.display = "flex";
-      playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
-
+      playSongFromApi(track.id, track);
+      fetchSearchTracksRecommendations(track.id)
       showPopup();
       openBottomSheet();
       rightSection.style.display = "block";
@@ -598,6 +597,16 @@ async function fetchRecommendations(trackId) {
   document.getElementById('recommend-outer').style.display = 'block';
   displayRecommendations(data.data);
   displayArtists(data.data);
+}
+
+// Function to Fetch Recommended Tracks Based on Selected Track or Default Song
+async function fetchSearchTracksRecommendations(trackId) {
+  const response = await fetch(
+    `https://jiosavan-api-with-playlist.vercel.app/api/songs/${trackId}/suggestions?limit=20`);
+
+  const data = await response.json();
+  songQueue = data.data;
+  console.log(songQueue)
 }
 
 
