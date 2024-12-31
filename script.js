@@ -22,7 +22,7 @@ const defaultSongId = "0biuGbhZwYnuUwMOi4fvaN";
 async function playSongFromApi(songId, track) {
   let apiUrl = `https://jiosavan-api-with-playlist.vercel.app/api/songs/${songId}`;
 
-  const audioPlayer = document.getElementById("audio-player");
+  let audioPlayer = document.getElementById("audio-player");
 
   try {
     const loadingSpinner = document.getElementById("loading-spinner");
@@ -35,12 +35,14 @@ async function playSongFromApi(songId, track) {
     const response = await fetch(apiUrl);
     if (response.ok) {
       const data = await response.json();
-      const streamUrl = data.data[0].downloadUrl[4].url;
+      const streamUrl = data.data[0].downloadUrl[2].url;
 
       loadingSpinner.style.display = "none";
       loadingSpinner2.style.display = "none";
       audioPlayer.src = streamUrl;
+      enableAudioPlayer();
       audioPlayer.play();
+      playPauseBtn.className = "ri-pause-line";
 
       createSongDetails(track, streamUrl);
       fetchAndDisplayLyrics(track.id);
@@ -135,39 +137,6 @@ async function getAccessToken() {
 
 
 // Function to Fetch Tracks Based on Search Query
-async function fetchTracks(query) {
-  const token = await getAccessToken();
-  const response = await fetch(
-    `https://jiosavan-api-with-playlist.vercel.app/api/search/songs?query=${encodeURIComponent(
-      query
-    )}&limit=20`
-  );
-
-  const data = await response.json();
-
-  displayTracks(data.data.results);
-  document.getElementById('search-for').style.display = 'block';
-}
-
-
-
-
-// Function to Fetch Tracks Based on Search Query
-async function fetchAlbums(query) {
-  const token = await getAccessToken();
-  const response = await fetch(
-    `https://jiosavan-api-with-playlist.vercel.app/api/search/playlists?query=${encodeURIComponent(
-      query
-    )}&limit=20`
-  );
-
-  const data = await response.json();
-  document.getElementById("artist-outer").style.display = "block";
-  displayAlbums(data.data.results);
-}
-
-
-// Function to Fetch Tracks Based on Search Query
 async function fetchAlbumsTracks(albumId) {
   const token = await getAccessToken();
   const response = await fetch(
@@ -241,6 +210,21 @@ document.getElementById('album-close-btn').addEventListener("click", () => {
 
 })
 
+
+// Function to Fetch Tracks Based on Search Query
+async function fetchAlbums(query) {
+  const token = await getAccessToken();
+  const response = await fetch(
+    `https://jiosavan-api-with-playlist.vercel.app/api/search/playlists?query=${encodeURIComponent(
+      query
+    )}&limit=20`
+  );
+
+  const data = await response.json();
+  document.getElementById("artist-outer").style.display = "block";
+  displayAlbums(data.data.results);
+}
+
 // Display artists in the artist-container with images and names
 function displayAlbums(artists) {
   const artistContainer = document.getElementById('album-search-container');
@@ -271,7 +255,7 @@ function displayAlbums(artists) {
 }
 
 
-const audioPlayer = document.getElementById("audio-player");
+var audioPlayer = document.getElementById("audio-player");
 audioPlayer.addEventListener('ended', () => {
   currentSongIndex++;
   
@@ -282,6 +266,24 @@ audioPlayer.addEventListener('ended', () => {
     playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
   }
 });
+
+
+
+
+// Function to Fetch Tracks Based on Search Query
+async function fetchTracks(query) {
+  const token = await getAccessToken();
+  const response = await fetch(
+    `https://jiosavan-api-with-playlist.vercel.app/api/search/songs?query=${encodeURIComponent(
+      query
+    )}&limit=20`
+  );
+
+  const data = await response.json();
+
+  displayTracks(data.data.results);
+  document.getElementById('search-for').style.display = 'block';
+}
 
 
 
@@ -587,8 +589,7 @@ function saveCurrentSong(track, streamUrl) {
 }
 
 
-const albumId = '2HKS1DAJvHmsYs2ORrMQE1';
-// Function to Fetch Recommended Tracks Based on Selected Track or Default Song
+
 async function fetchRecommendations(trackId) {
   const response = await fetch(
     `https://jiosavan-api-with-playlist.vercel.app/api/songs/jx2G3Mjl/suggestions`);
@@ -606,7 +607,6 @@ async function fetchSearchTracksRecommendations(trackId) {
 
   const data = await response.json();
   songQueue = data.data;
-  console.log(songQueue)
 }
 
 
@@ -845,7 +845,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const savedSong = JSON.parse(localStorage.getItem("currentSong"));
   if (savedSong) {
     createSongDetails(savedSong, savedSong.audioUrl);
-    const audioPlayer = document.getElementById("audio-player");
+    let audioPlayer = document.getElementById("audio-player");
     audioPlayer.src = savedSong.audioUrl;
   }
 });
@@ -1395,3 +1395,98 @@ document.getElementById("header-cell").addEventListener("click", () => {
   openBottomSheet();
 });
 
+
+
+var audioPlayer = document.getElementById("audio-player");
+const playPauseBtn = document.getElementById("play-pause-btn");
+const prevBtn = document.getElementById("prev-btn");
+const nextBtn = document.getElementById("next-btn");
+const progressBar = document.getElementById("progress-bar");
+const currentTimeElem = document.getElementById("current-time");
+const totalDurationElem = document.getElementById("total-duration");
+
+function disableAudioPlayer() {
+  audioPlayer.style.pointerEvents = "none"; // Disable pointer events
+  playPauseBtn.style.pointerEvents = "none"; // Disable pointer events
+  prevBtn.style.pointerEvents = "none"; // Disable pointer events
+  nextBtn.style.pointerEvents = "none"; // Disable pointer events
+  progressBar.style.opacity = "none"; // Optional: dim the audio tag for visual feedback
+  currentTimeElem.style.pointerEvents = "none"; // Disable pointer events
+  totalDurationElem.style.opacity = "none"; // Optional: dim the audio tag for visual feedback
+  audioPlayer.style.pointerEvents = "0.5"; // Disable pointer events
+  playPauseBtn.style.pointerEvents = "0.5";
+  prevBtn.style.pointerEvents = "0.5"; // Disable pointer events
+  nextBtn.style.pointerEvents = "0.5"; // Disable pointer events
+  progressBar.style.opacity = "0.5"; // Optional: dim the audio tag for visual feedback
+  currentTimeElem.style.pointerEvents = "0.5"; // Disable pointer events
+  totalDurationElem.style.opacity = "0.5"; // Optional: dim the audio tag for visual feedback
+}
+
+function enableAudioPlayer() {
+  audioPlayer.style.pointerEvents = "auto"; // Disable pointer events
+  playPauseBtn.style.pointerEvents = "auto"; // Disable pointer events
+  prevBtn.style.pointerEvents = "auto"; // Disable pointer events
+  nextBtn.style.pointerEvents = "auto"; // Disable pointer events
+  progressBar.style.opacity = "auto"; // Optional: dim the audio tag for visual feedback
+  currentTimeElem.style.pointerEvents = "auto"; // Disable pointer events
+  totalDurationElem.style.opacity = "auto"; // Optional: dim the audio tag for visual feedback
+  audioPlayer.style.pointerEvents = "1"; // Disable pointer events
+  playPauseBtn.style.pointerEvents = "1";
+  prevBtn.style.pointerEvents = "1"; // Disable pointer events
+  nextBtn.style.pointerEvents = "1"; // Disable pointer events
+  progressBar.style.opacity = "1"; // Optional: dim the audio tag for visual feedback
+  currentTimeElem.style.pointerEvents = "1"; // Disable pointer events
+  totalDurationElem.style.opacity = "1";
+}
+
+disableAudioPlayer();
+
+// Play or pause the song
+playPauseBtn.addEventListener("click", () => {
+  if (audioPlayer.paused) {
+    audioPlayer.play();
+    playPauseBtn.className = "ri-pause-line";
+  } else {
+    audioPlayer.pause();
+    playPauseBtn.className = "ri-play-fill";
+  }
+});
+
+// Play the previous song
+prevBtn.addEventListener("click", () => {
+    currentSongIndex--;
+    playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+});
+
+
+// Play the next song
+nextBtn.addEventListener("click", () => {
+  if (currentSongIndex < songQueue.length - 1) {
+    currentSongIndex++;
+    playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+  }
+});
+
+// Update the progress bar as the song plays
+audioPlayer.addEventListener("timeupdate", () => {
+  const currentTime = audioPlayer.currentTime;
+  const duration = audioPlayer.duration;
+
+  progressBar.value = (currentTime / duration) * 100 || 0;
+  currentTimeElem.textContent = formatTime(currentTime);
+  totalDurationElem.textContent = formatTime(duration);
+});
+
+// Seek functionality
+progressBar.addEventListener("input", () => {
+  const duration = audioPlayer.duration;
+  const seekTime = (progressBar.value / 100) * duration;
+  audioPlayer.currentTime = seekTime;
+});
+
+// Format time in mm:ss
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+}
