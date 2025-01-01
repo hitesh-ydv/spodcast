@@ -1823,13 +1823,14 @@ box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 .footer-icon{
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 3px;
 }
 
 .footer-icon i{
   color: white;
   font-size: 28px;
   cursor: pointer;
+  padding: 5px;
 }
 
 .footer-details .track-card-album h3{
