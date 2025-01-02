@@ -186,9 +186,6 @@ function displayTrackCards(songs) {
       currentSongIndex = index;
       playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
       showPopup();
-      openBottomSheet();
-      rightSection.style.display = "block";
-
     })
     trackCardContainer.appendChild(trackCard);
   });
@@ -338,8 +335,6 @@ function displayTracks(tracks) {
       playSongFromApi(track.id, track);
       fetchSearchTracksRecommendations(track.id)
       showPopup();
-      openBottomSheet();
-      rightSection.style.display = "block";
     });
 
     container.appendChild(card);
@@ -560,7 +555,6 @@ function displayLikedSongs2() {
     card.addEventListener("click", () => {
       playSongFromApi(track.id, track);
       showPopup();
-      openBottomSheet();
       rightSection.style.display = "block"; // Play song from liked songs when clicked
     });
 
@@ -688,7 +682,6 @@ function displayRecommendations(tracks) {
       showLyrics.style.display = "flex";
       playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
       showPopup();
-      openBottomSheet();
       rightSection.style.display = "block";
     });
 
@@ -778,6 +771,8 @@ function createSongDetails2(track, streamUrl) {
 
   const image = document.createElement("img");
   image.src = track.image[1].url;
+  image.classList.add('skeleton');
+  image.classList.add('skeleton-img');
 
   const detailsDiv = document.createElement("div");
 
@@ -1184,7 +1179,6 @@ function createSongCard(track) {
     }
     playSongFromApi(track.id, track);
     showPopup();
-    openBottomSheet();
     rightSection.style.display = "block";
   })
 
@@ -1448,6 +1442,20 @@ const progressBar2 = document.getElementById("progress-bar2");
 const currentTimeElem2 = document.getElementById("current-time2");
 const totalDurationElem2 = document.getElementById("total-duration2");
 
+// Stop propagation of scroll events when adjusting the range slider
+progressBar2.addEventListener('mousedown', (event) => {
+  event.stopPropagation(); // Prevents parent scroll from triggering
+});
+
+progressBar2.addEventListener('touchstart', (event) => {
+  event.stopPropagation(); // Prevents parent scroll for touch devices
+});
+
+// Optional: Prevent default behavior of scrolling the page while dragging
+progressBar2.addEventListener('mousemove', (event) => {
+  event.stopPropagation();
+});
+
 function disableAudioPlayer() {
   audioPlayer.style.pointerEvents = "none"; // Disable pointer events
   playPauseBtn.style.pointerEvents = "none"; // Disable pointer events
@@ -1598,6 +1606,7 @@ audioPlayer.addEventListener("timeupdate", () => {
   const duration = audioPlayer.duration;
 
   progressBar.value = (currentTime / duration) * 100 || 0;
+  progressBar.style.background = `linear-gradient(to right, white ${progressBar2.value}%, #535353 ${progressBar.value}%)`;
   currentTimeElem.textContent = formatTime(currentTime);
   totalDurationElem.textContent = formatTime(duration);
 });
@@ -1607,6 +1616,7 @@ audioPlayer3.addEventListener("timeupdate", () => {
   const duration2 = audioPlayer3.duration;
 
   progressBar2.value = (currentTime2 / duration2) * 100 || 0;
+  progressBar2.style.background = `linear-gradient(to right, white ${progressBar2.value}%, #535353 ${progressBar2.value}%)`;
   currentTimeElem2.textContent = formatTime(currentTime2);
   totalDurationElem2.textContent = formatTime(duration2);
 });
@@ -1640,3 +1650,20 @@ function playerSetItem() {
     document.getElementById('player-container2').style.display = 'none';
   }
 }
+
+const rangeInput = document.querySelector('.progress-bar2');
+
+function updateRangeBackground() {
+  const value = rangeInput.value;
+  const max = rangeInput.max;
+  const percentage = (value / max) * 100; // Calculate percentage
+  // Update the gradient to match the filled portion
+  rangeInput.style.background = `linear-gradient(to right, white ${percentage}%, #535353 ${percentage}%)`;
+}
+
+// Initialize the filled track on page load
+updateRangeBackground();
+
+// Update the filled track when the user interacts with the slider
+rangeInput.addEventListener('input', updateRangeBackground);
+
