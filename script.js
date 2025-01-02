@@ -30,6 +30,7 @@ async function playSongFromApi(songId, track) {
     loadingSpinner.style.display = "block";
     loadingSpinner2.style.display = 'flex'
     const videoElement = document.getElementById('canvas-player');
+    document.getElementById('footer-outer').style.display = 'block';
 
 
     const response = await fetch(apiUrl);
@@ -1616,7 +1617,7 @@ audioPlayer3.addEventListener("timeupdate", () => {
   const duration2 = audioPlayer3.duration;
 
   progressBar2.value = (currentTime2 / duration2) * 100 || 0;
-  progressBar2.style.background = `linear-gradient(to right, white ${progressBar2.value}%, #535353 ${progressBar2.value}%)`;
+  progressBar2.style.background = `linear-gradient(to right, white ${progressBar2.value}%, rgba(0, 0, 0, 0.4) ${progressBar2.value}%)`;
   currentTimeElem2.textContent = formatTime(currentTime2);
   totalDurationElem2.textContent = formatTime(duration2);
 });
