@@ -14,6 +14,8 @@ let defaultArtistId = '6DARBhWbfcS9E4yJzcliqQ';
 
 let currentSongIndex = 0;
 let songQueue = []; // Array to hold fetched songs
+var isShuffle = false;
+var playedSongs = new Set();
 
 
 // Default song ID to use when recommended tracks = 0 or on the first visit
@@ -255,17 +257,33 @@ function displayAlbums(artists) {
   });
 }
 
+let isRepeat = false;
 
 var audioPlayer = document.getElementById("audio-player");
-audioPlayer.addEventListener('ended', () => {
-  currentSongIndex++;
+audioPlayer.addEventListener("ended", () => {
+  if (isShuffle) {
+    // Shuffle mode: Pick a random song that hasn't been played
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * songQueue.length);
+    } while (playedSongs.has(randomIndex) && playedSongs.size < songQueue.length);
 
-  if (currentSongIndex < songQueue.length) {
-    playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+    playedSongs.add(randomIndex); // Mark this song as played
+
+    if (playedSongs.size === songQueue.length) {
+      playedSongs.clear(); // Reset once all songs are played
+    }
+
+    currentSongIndex = randomIndex;
   } else {
-    currentSongIndex = 0;
-    playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+    // Sequential mode: Play the next song
+    currentSongIndex++;
+    if (currentSongIndex >= songQueue.length) {
+      currentSongIndex = 0; // Loop back to the start
+    }
   }
+
+  playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
 });
 
 
@@ -1429,6 +1447,13 @@ const nextBtn2 = document.getElementById("next-btn2");
 const progressBar2 = document.getElementById("progress-bar2");
 const currentTimeElem2 = document.getElementById("current-time2");
 const totalDurationElem2 = document.getElementById("total-duration2");
+const repeatIcon2 = document.getElementById("repeat-icon2");
+const suffleIco = document.getElementById("shuffle-ico2");
+
+suffleIco.addEventListener("click", () => {
+  isShuffle = !isShuffle;
+  playedSongs.clear();
+});
 
 // Stop propagation of scroll events when adjusting the range slider
 progressBar2.addEventListener('mousedown', (event) => {
@@ -1511,6 +1536,21 @@ function enableAudioPlayer2() {
 
 disableAudioPlayer();
 
+repeatIcon2.addEventListener('click', () => {
+  if (isRepeat) {
+    // Disable repeat
+    isRepeat = false;
+    repeatIcon2.className = 'ri-repeat-2-fill';
+    audioPlayer3.loop = false;
+  } else {
+    // Enable repeat
+    isRepeat = true;
+    repeatIcon2.className = 'ri-repeat-one-fill';
+    audioPlayer3.loop = true;
+  }
+});
+
+
 // Play or pause the song
 playPauseBtn.addEventListener("click", () => {
   if (audioPlayer.paused) {
@@ -1572,12 +1612,18 @@ nextBtn.addEventListener("click", () => {
   if (currentSongIndex < songQueue.length - 1) {
     currentSongIndex++;
     playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+  }else{
+    currentSongIndex = 0;
+    playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
   }
 });
 // Play the next song
 nextBtn2.addEventListener("click", () => {
   if (currentSongIndex < songQueue.length - 1) {
     currentSongIndex++;
+    playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+  }else{
+    currentSongIndex = 0;
     playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
   }
 });
