@@ -1453,6 +1453,7 @@ const suffleIco = document.getElementById("shuffle-ico2");
 suffleIco.addEventListener("click", () => {
   isShuffle = !isShuffle;
   playedSongs.clear();
+  suffleIco.style.color = isShuffle ? "#1DB954" : "#FFFFFF";
 });
 
 // Stop propagation of scroll events when adjusting the range slider
