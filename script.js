@@ -1712,6 +1712,7 @@ const timerOptions = document.querySelectorAll(".timer-option");
 let isTimerSelected = false;
 let timerId = null; // Store the timer ID for clearing later
 
+
 // Ensure "None" is selected initially
 document.addEventListener("DOMContentLoaded", () => {
   const noneOption = document.querySelector('.timer-option[data-time="0"]');
@@ -1726,7 +1727,7 @@ timerButton.addEventListener("click", (event) => {
 
 // Close Bottom Sheet
 closeTimerButton.addEventListener("click", () => {
-  timerSheet.classList.remove("active");
+  hideBottomSheet();
 });
 
 // Stop propagation for clicks inside the bottom sheet
@@ -1736,12 +1737,17 @@ timerSheet.addEventListener("click", (event) => {
 
 // Close Bottom Sheet when clicking outside
 document.addEventListener("click", () => {
-  timerSheet.classList.remove("active");
+  hideBottomSheet();
 });
+
+// Close Bottom Sheet Function
+function hideBottomSheet() {
+  timerSheet.classList.remove("active");
+}
 
 // Timer logic
 timerOptions.forEach((option) => {
-  option.addEventListener("click", (event) => {
+  option.addEventListener("click", () => {
     // Remove 'selected' class from all options
     timerOptions.forEach((opt) => opt.classList.remove("selected"));
 
@@ -1749,48 +1755,46 @@ timerOptions.forEach((option) => {
     option.classList.add("selected");
 
     // Handle "None" option
-    if (option.dataset.time === "0") {
-      // Clear the timer if it exists
-      if (timerId) {
-        clearTimeout(timerId);
-        timerId = null;
-      }
-      isTimerSelected = false;
-      timerButton.style.color = "white"; // Reset timer button color
+    const selectedTime = parseInt(option.dataset.time, 10);
+    if (selectedTime === 0) {
+      resetTimer();
     } else {
-      isTimerSelected = true;
-      timerButton.style.color = "#1db954"; // Spotify theme green
-
-      // Get the selected time in minutes
-      const minutes = parseInt(option.dataset.time, 10);
-
-      // Clear any existing timer
-      if (timerId) clearTimeout(timerId);
-
-      // Set a new timer to pause the audio
-      timerId = setTimeout(() => {
-        document.getElementById("audio-player").pause(); // Pause audio
-        playPauseBtn.className = "ri-play-fill";
-        playPauseBtn2.className = "ri-play-fill";
-        footerPlay.className = "ri-play-fill";
-
-        isTimerSelected = false;
-        timerButton.style.color = "white"; // Reset button color
-        timerOptions.forEach((opt) => opt.classList.remove("selected")); // Reset selection
-        const noneOption = document.querySelector('.timer-option[data-time="0"]');
-        noneOption.classList.add("selected"); // Default to "None"
-      }, minutes * 60 * 1000); // Convert minutes to milliseconds
+      setTimer(selectedTime);
     }
-
   });
 });
 
-// Reset timer button color if no timer option selected
-document.addEventListener("click", () => {
-  if (!isTimerSelected) {
-    timerButton.style.color = "white";
+// Reset Timer Function
+function resetTimer() {
+  if (timerId) {
+    clearTimeout(timerId);
+    timerId = null;
   }
-});
+  isTimerSelected = false;
+  timerButton.style.color = "white"; // Reset timer button color
+}
+
+// Set Timer Function
+function setTimer(minutes) {
+  isTimerSelected = true;
+  timerButton.style.color = "#1db954"; // Spotify theme green
+
+  // Clear any existing timer
+  if (timerId) clearTimeout(timerId);
+
+  // Set a new timer to pause the audio
+  timerId = setTimeout(() => {
+    audioPlayer.pause(); // Pause audio
+    playPauseBtn.className = "ri-play-fill";
+    playPauseBtn2.className = "ri-play-fill";
+    footerPlay.className = "ri-play-fill";
+
+    resetTimer();
+    const noneOption = document.querySelector('.timer-option[data-time="0"]');
+    noneOption.classList.add("selected"); // Default to "None"
+  }, minutes * 60 * 1000); // Convert minutes to milliseconds
+}
+
 
 
 
