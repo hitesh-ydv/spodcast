@@ -186,8 +186,10 @@
                   <i class="ri-repeat-2-fill" id="repeat-icon2"></i>
                 </div>
                 <div class="device-timer" id="device-time">
-                  <i class="ri-smartphone-line"></i>
-                  <i class="ri-timer-line"></i>
+                  <div id="volume-control">
+                    <i id="volume-icon" class="ri-volume-up-line"></i>
+                  </div>
+                  <i class="ri-timer-line" id="timer-btn"></i>
                 </div>
               </div>
             </div>
@@ -198,7 +200,7 @@
               <!-- Artist details will be dynamically injected here -->
             </div>
           </div>
-          
+
           <div class="lyrics-outer" id="lyrics-outer" style="display: none;">
             <div class="lyrics-title">
               <h3>Lyrics</h3>
@@ -220,6 +222,23 @@
             </div>
 
           </div>
+
+          <!-- Bottom Sheet for Timer -->
+          <div id="timer-sheet" class="bottom-sheet">
+            <div class="timer-header">
+              <h3>Set Timer</h3>
+              <i id="close-timer" class="ri-close-line"></i> <!-- Close Icon -->
+            </div>
+            <div class="timer-options">
+              <p class="timer-option" data-time="0">None</p>
+              <p class="timer-option" data-time="5">5 min</p>
+              <p class="timer-option" data-time="10">10 min</p>
+              <p class="timer-option" data-time="15">15 min</p>
+              <p class="timer-option" data-time="20">20 min</p>
+              <p class="timer-option" data-time="25">25 min</p>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -323,7 +342,7 @@
       </form>
     </div>
 
-    <div id="popup" class="popup-container">
+    <div id="popup" class="popup-container" style="display: none;">
       <div class="popup">
         <h2>Enter Your Name</h2>
         <input type="text" id="userName" placeholder="Enter your name">
