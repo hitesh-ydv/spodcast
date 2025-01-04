@@ -756,6 +756,8 @@ function createSongDetails(track, streamUrl) {
 
   const image = document.createElement("img");
   image.src = track.image[2].url;
+  image.classList.add('skeleton');
+  image.classList.add('skeleton-img');
 
   const detailsDiv = document.createElement("div");
   detailsDiv.classList.add("song-details2");
@@ -778,6 +780,7 @@ function createSongDetails(track, streamUrl) {
   createMarqueeEffect(artists, songThumb);
 
   saveCurrentSong(track, streamUrl);
+
 }
 
 
@@ -1613,7 +1616,7 @@ nextBtn.addEventListener("click", () => {
   if (currentSongIndex < songQueue.length - 1) {
     currentSongIndex++;
     playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
-  }else{
+  } else {
     currentSongIndex = 0;
     playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
   }
@@ -1623,7 +1626,7 @@ nextBtn2.addEventListener("click", () => {
   if (currentSongIndex < songQueue.length - 1) {
     currentSongIndex++;
     playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
-  }else{
+  } else {
     currentSongIndex = 0;
     playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
   }
@@ -1702,3 +1705,118 @@ updateRangeBackground();
 // Update the filled track when the user interacts with the slider
 rangeInput.addEventListener('input', updateRangeBackground);
 
+const timerButton = document.getElementById("timer-btn");
+const timerSheet = document.getElementById("timer-sheet");
+const closeTimerButton = document.getElementById("close-timer");
+const timerOptions = document.querySelectorAll(".timer-option");
+let isTimerSelected = false;
+let timerId = null; // Store the timer ID for clearing later
+
+// Ensure "None" is selected initially
+document.addEventListener("DOMContentLoaded", () => {
+  const noneOption = document.querySelector('.timer-option[data-time="0"]');
+  noneOption.classList.add("selected");
+});
+
+// Show Bottom Sheet
+timerButton.addEventListener("click", (event) => {
+  timerSheet.classList.add("active");
+  event.stopPropagation(); // Prevent propagation to document click listener
+});
+
+// Close Bottom Sheet
+closeTimerButton.addEventListener("click", () => {
+  timerSheet.classList.remove("active");
+});
+
+// Stop propagation for clicks inside the bottom sheet
+timerSheet.addEventListener("click", (event) => {
+  event.stopPropagation();
+});
+
+// Close Bottom Sheet when clicking outside
+document.addEventListener("click", () => {
+  timerSheet.classList.remove("active");
+});
+
+// Timer logic
+timerOptions.forEach((option) => {
+  option.addEventListener("click", (event) => {
+    // Remove 'selected' class from all options
+    timerOptions.forEach((opt) => opt.classList.remove("selected"));
+
+    // Add 'selected' class to the clicked option
+    option.classList.add("selected");
+
+    // Handle "None" option
+    if (option.dataset.time === "0") {
+      // Clear the timer if it exists
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+      isTimerSelected = false;
+      timerButton.style.color = "white"; // Reset timer button color
+    } else {
+      isTimerSelected = true;
+      timerButton.style.color = "#1db954"; // Spotify theme green
+
+      // Get the selected time in minutes
+      const minutes = parseInt(option.dataset.time, 10);
+
+      // Clear any existing timer
+      if (timerId) clearTimeout(timerId);
+
+      // Set a new timer to pause the audio
+      timerId = setTimeout(() => {
+        document.getElementById("audio-player").pause(); // Pause audio
+        playPauseBtn.className = "ri-play-fill";
+        playPauseBtn2.className = "ri-play-fill";
+        footerPlay.className = "ri-play-fill";
+
+        isTimerSelected = false;
+        timerButton.style.color = "white"; // Reset button color
+        timerOptions.forEach((opt) => opt.classList.remove("selected")); // Reset selection
+        const noneOption = document.querySelector('.timer-option[data-time="0"]');
+        noneOption.classList.add("selected"); // Default to "None"
+      }, minutes * 60 * 1000); // Convert minutes to milliseconds
+    }
+
+  });
+});
+
+// Reset timer button color if no timer option selected
+document.addEventListener("click", () => {
+  if (!isTimerSelected) {
+    timerButton.style.color = "white";
+  }
+});
+
+
+
+const volumeIcon = document.getElementById("volume-icon");
+
+let volumeState = "up"; // Initial volume state: up, down, or mute
+
+// Set initial volume to 100%
+audioPlayer.volume = 1;
+
+// Volume control logic
+volumeIcon.addEventListener("click", () => {
+  if (volumeState === "up") {
+    // Change to volume down
+    volumeState = "down";
+    audioPlayer.volume = 0.5; // Set volume to 50%
+    volumeIcon.className = "ri-volume-down-line"; // Update icon
+  } else if (volumeState === "down") {
+    // Change to mute
+    volumeState = "mute";
+    audioPlayer.volume = 0; // Set volume to 0%
+    volumeIcon.className = "ri-volume-mute-line"; // Update icon
+  } else if (volumeState === "mute") {
+    // Change back to volume up
+    volumeState = "up";
+    audioPlayer.volume = 1; // Set volume to 100%
+    volumeIcon.className = "ri-volume-up-line"; // Update icon
+  }
+});
