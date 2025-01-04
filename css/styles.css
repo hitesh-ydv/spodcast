@@ -1693,7 +1693,7 @@ body.loaded #loading-screen {
 
 .div-padding {
   padding: 0px 26px 0px;
-  margin-bottom: 20px;
+  margin-bottom: 6px;
 }
 
 .top-title {
@@ -1721,7 +1721,7 @@ body.loaded #loading-screen {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-size: 24px;
 }
 
@@ -1736,10 +1736,12 @@ body.loaded #loading-screen {
 }
 
 .player-controls2 i:nth-child(1) {
-  font-size: 30px;
+  font-size: 28px;
+  padding: 6px;
 }
 .player-controls2 i:nth-child(5) {
-  font-size: 30px;
+  font-size: 28px;
+  padding: 6px;
 }
 
 .play-div2 i:nth-child(1){
@@ -1922,7 +1924,7 @@ body.loaded #loading-screen {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 110%;
+  height: 113%;
 }
 
 .artist-outer-sec{
@@ -1935,10 +1937,88 @@ body.loaded #loading-screen {
 
 .device-timer{
   color: white;
-  font-size: 30px;
+  font-size: 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
+#timer-btn{
+  cursor: pointer;
+  padding: 4px;
+}
+
+.bottom-sheet {
+  position: fixed;
+  bottom: -100%; /* Hidden initially */
+  left: 0;
+  width: 100%;
+  height: 55%;
+  background: #1f1f1f;
+  color: white;
+  padding: 10px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 12px 12px 0 0;
+  overflow: hidden; /* No scrolling */
+  transition: bottom 0.3s ease-in-out; /* Smooth transition */
+  z-index: 500000;
+}
+
+.bottom-sheet.active {
+  bottom: 0; /* Slide into view */
+}
+
+.timer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #fff;
+  padding: 5px 10px 0px;
+}
+
+.timer-header h3 {
+  margin: 0;
+  font-weight: 500;
+}
+
+.timer-header i {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.timer-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  padding: 0px 10px;
+}
+
+.timer-option {
+  padding: 10px;
+  background: #282828;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.timer-option.selected {
+  background: #1db954; /* Spotify Green */
+  color: white;
+}
+
+.timer-option:hover {
+  background: #1db954; /* Spotify Green */
+}
+
+#volume-icon {
+  font-size: 28px; /* Icon size */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for the icon change */
+  padding: 4px;
+}
+
 
 }
