@@ -581,57 +581,7 @@ body {
   color: #b2b2b2;
 }
 
-.track-card-album {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  border-radius: 6px;
-  transition: all 0.2s;
-  cursor: pointer;
-  position: relative;
-  max-height: 64px;
-}
 
-.track-card-album h4{
-  margin-right: 14px;
-  margin-left: 5px;
-  color: #b2b2b2;
-  font-weight: 500;
-}
-
-.track-card-album:hover {
-  background-color: #232323;
-}
-
-.track-card-album img {
-  width: 48px;
-  height: 48px;
-  margin-right: 10px;
-  border-radius: 6px;
-  object-fit: cover;
-}
-
-.track-card-album h3 {
-  color: white;
-  font-weight: 500;
-  font-size: 16px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  margin-top: 4px;
-}
-
-.track-card-album p {
-  margin: 2px 0;
-  color: #b2b2b2;
-  font-size: 15px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  margin-bottom: 8px;
-}
 
 .track-card-container::-webkit-scrollbar{
   display: none;
