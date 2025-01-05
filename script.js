@@ -4,6 +4,7 @@ let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
 let recommendedSongs = JSON.parse(localStorage.getItem("recommendedSongs")) || [];
 let currentSong = JSON.parse(localStorage.getItem("currentSong")) || null;
 let rightSection = document.getElementById("right-section");
+let righColor = document.getElementById("right-color");
 
 rightSection.style.display = "none";
 
@@ -80,10 +81,10 @@ async function playSongFromApi(songId, track) {
           // Convert RGB array to CSS color
           const rgbColor = `rgb(${darkColor[0]}, ${darkColor[1]}, ${darkColor[2]})`;
 
-          const gradientBackground = `linear-gradient(to bottom, ${rgbColor} 20%, rgb(0,0,0) 115%)`;
+          const gradientBackground = `linear-gradient(to bottom, ${rgbColor} 60%, rgb(18,18,18) 40%)`;
 
           // Set the background color of the right section
-          document.getElementById('right-section').style.background = rgbColor;
+          document.getElementById('right-color').style.background = gradientBackground;
           document.getElementById('footer').style.background = rgbColor;
         };
 
@@ -562,7 +563,7 @@ function displayLikedSongs2() {
       toggleLikeSong(track);
       if (!track) {
         document.getElementById('liked-outer').style.display = 'none';
-      }  // Remove the song from liked songs
+      }
     });
 
     card.appendChild(image);
@@ -1402,7 +1403,7 @@ bottomSheet.addEventListener("touchmove", (e) => {
 // Handle touchend event
 bottomSheet.addEventListener("touchend", () => {
   if (isDragging) {
-    if (translateY > 150) {
+    if (translateY > 50) {
       // Close sheet if dragged down significantly
       closeBottomSheet();
     } else {
