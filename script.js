@@ -4,7 +4,6 @@ let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
 let recommendedSongs = JSON.parse(localStorage.getItem("recommendedSongs")) || [];
 let currentSong = JSON.parse(localStorage.getItem("currentSong")) || null;
 let rightSection = document.getElementById("right-section");
-let righColor = document.getElementById("right-color");
 
 rightSection.style.display = "none";
 
@@ -81,10 +80,10 @@ async function playSongFromApi(songId, track) {
           // Convert RGB array to CSS color
           const rgbColor = `rgb(${darkColor[0]}, ${darkColor[1]}, ${darkColor[2]})`;
 
-          const gradientBackground = `linear-gradient(to bottom, ${rgbColor} 60%, rgb(18,18,18) 40%)`;
+          const gradientBackground = `linear-gradient(to bottom, ${rgbColor} 20%, rgb(0,0,0) 115%)`;
 
           // Set the background color of the right section
-          document.getElementById('right-color').style.background = gradientBackground;
+          document.getElementById('right-section').style.background = rgbColor;
           document.getElementById('footer').style.background = rgbColor;
         };
 
