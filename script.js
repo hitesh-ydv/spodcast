@@ -820,7 +820,7 @@ function createSongDetails2(track, streamUrl) {
 
 
 async function fetchAndDisplayArtist(artistId) {
-  const apiUrl = `https://saavn.dev/api/artists/${artistId}`;
+  const apiUrl = `https://jiosavan-api-with-playlist.vercel.app/api/artists/${artistId}`;
 
   try {
     // Fetch artist data from the API
@@ -1297,7 +1297,7 @@ if ('serviceWorker' in navigator) {
 }
 
 async function fetchAndDisplayLyrics(trackId) {
-  const apiUrl = `https://saavn.dev/api/songs/${trackId}?lyrics=true`;
+  const apiUrl = `https://jiosavan-api-with-playlist.vercel.app/api/songs/${trackId}?lyrics=true`;
 
   try {
     // Fetch song data from the API
@@ -1840,11 +1840,10 @@ function updateMediaSession(track) {
       artist: track.artists.primary[0].name,
       album: "Album",
       artwork: [
-        { src: track.image[2].url, sizes: "500x500", type: "image/webp" },
+        { src: track.image[2].url, sizes: "500x500", type: "image/webp" }, 
       ]
     });
 
-    // Play/Pause Action
     navigator.mediaSession.setActionHandler("play", () => {
       audioPlayer.play();
       playPauseBtn2.className = "ri-pause-line";
@@ -1874,26 +1873,5 @@ function updateMediaSession(track) {
       playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
     });
 
-
   }
 }
-
-
-// Update progress bar
-function updateProgressBar() {
-  if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
-    const currentTime = audioPlayer.currentTime;
-    const duration = audioPlayer.duration;
-
-    if (duration) {
-      // Update progress bar simulation
-      navigator.mediaSession.metadata.progress = {
-        currentTime,
-        duration,
-      };
-    }
-  }
-}
-
-// Attach timeupdate event to track progress
-audioPlayer.addEventListener("timeupdate", updateProgressBar);
