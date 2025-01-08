@@ -996,7 +996,8 @@ body.loaded #loading-screen {
 }
 
 .ri-pause-large-line{
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 20px;
 }
 
 
@@ -1811,6 +1812,7 @@ body.loaded #loading-screen {
 
 .ri-pause-large-line{
   margin-top: 4px;
+  font-size: 30px;
 }
 
 

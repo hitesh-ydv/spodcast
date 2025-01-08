@@ -33,6 +33,7 @@ async function playSongFromApi(songId, track) {
     loadingSpinner2.style.display = 'flex'
     const videoElement = document.getElementById('canvas-player');
     document.getElementById('footer-outer').style.display = 'block';
+    console.log(track)
 
 
     const response = await fetch(apiUrl);
@@ -51,6 +52,7 @@ async function playSongFromApi(songId, track) {
 
       createSongDetails(track, streamUrl);
       createSongDetails2(track, streamUrl);
+      updateMediaSession(track);
       fetchAndDisplayLyrics(track.id);
       fetchAndDisplayArtist(track.artists.primary[0].id);
 
@@ -1824,3 +1826,38 @@ volumeIcon.addEventListener("click", () => {
     volumeIcon.className = "ri-volume-up-line"; // Updatri-pause-large-line
   }
 })
+
+
+
+
+function updateMediaSession(track) {
+
+      // Update Media Metadata
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: track.name,
+          artist: track.artists.primary[0].name,
+          album: "Album",
+          artwork: [
+            { src: track.image[0].url, sizes: "500x500", type: "image/webp" },
+          ]
+        });
+
+        // Play/Pause Action
+        navigator.mediaSession.setActionHandler("play", () => {
+          audioPlayer.play();
+          playPauseBtn2.className = "ri-play-fill";
+          playPauseBtn.className = "ri-play-fill";
+          footerPlay.className = "ri-play-fill";
+        });
+
+        navigator.mediaSession.setActionHandler("pause", () => {
+          audioPlayer.pause();
+          playPauseBtn2.className = "ri-pause-line";
+          playPauseBtn.className = "ri-pause-line";
+          footerPlay.className = "ri-pause-line";
+        });
+
+
+      }
+    }
