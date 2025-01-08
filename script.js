@@ -1833,47 +1833,67 @@ volumeIcon.addEventListener("click", () => {
 
 function updateMediaSession(track) {
 
-      // Update Media Metadata
-      if ("mediaSession" in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: track.name,
-          artist: track.artists.primary[0].name,
-          album: "Album",
-          artwork: [
-            { src: track.image[2].url, sizes: "500x500", type: "image/webp" },
-          ]
-        });
+  // Update Media Metadata
+  if ("mediaSession" in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: track.name,
+      artist: track.artists.primary[0].name,
+      album: "Album",
+      artwork: [
+        { src: track.image[2].url, sizes: "500x500", type: "image/webp" },
+      ]
+    });
 
-        // Play/Pause Action
-        navigator.mediaSession.setActionHandler("play", () => {
-          audioPlayer.play();
-          playPauseBtn2.className = "ri-pause-line";
-          playPauseBtn.className = "ri-pause-line";
-          footerPlay.className = "ri-pause-line";
-        });
+    // Play/Pause Action
+    navigator.mediaSession.setActionHandler("play", () => {
+      audioPlayer.play();
+      playPauseBtn2.className = "ri-pause-line";
+      playPauseBtn.className = "ri-pause-line";
+      footerPlay.className = "ri-pause-line";
+    });
 
-        navigator.mediaSession.setActionHandler("pause", () => {
-          audioPlayer.pause();
-          playPauseBtn2.className = "ri-play-fill";
-          playPauseBtn.className = "ri-play-fill";
-          footerPlay.className = "ri-play-fill";
-        });
+    navigator.mediaSession.setActionHandler("pause", () => {
+      audioPlayer.pause();
+      playPauseBtn2.className = "ri-play-fill";
+      playPauseBtn.className = "ri-play-fill";
+      footerPlay.className = "ri-play-fill";
+    });
 
-        navigator.mediaSession.setActionHandler("nexttrack", () => {
-          if (currentSongIndex < songQueue.length - 1) {
-            currentSongIndex++;
-            playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
-          } else {
-            currentSongIndex = 0;
-            playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
-          }
-        });
-
-        navigator.mediaSession.setActionHandler("previoustrack", () => {
-          currentSongIndex--;
-          playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
-        });
-
-
+    navigator.mediaSession.setActionHandler("nexttrack", () => {
+      if (currentSongIndex < songQueue.length - 1) {
+        currentSongIndex++;
+        playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+      } else {
+        currentSongIndex = 0;
+        playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
       }
+    });
+
+    navigator.mediaSession.setActionHandler("previoustrack", () => {
+      currentSongIndex--;
+      playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+    });
+
+
+  }
+}
+
+
+// Update progress bar
+function updateProgressBar() {
+  if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
+    const currentTime = audioPlayer.currentTime;
+    const duration = audioPlayer.duration;
+
+    if (duration) {
+      // Update progress bar simulation
+      navigator.mediaSession.metadata.progress = {
+        currentTime,
+        duration,
+      };
     }
+  }
+}
+
+// Attach timeupdate event to track progress
+audioPlayer.addEventListener("timeupdate", updateProgressBar);
