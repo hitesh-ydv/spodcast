@@ -1561,9 +1561,9 @@ repeatIcon2.addEventListener('click', () => {
 playPauseBtn.addEventListener("click", () => {
   if (audioPlayer.paused) {
     audioPlayer.play();
-    playPauseBtn.className = "ri-pause-large-line";
-    playPauseBtn2.className = "ri-pause-large-line";
-    footerPlay.className = "ri-pause-large-line";
+    playPauseBtn.className = "ri-pause-line";
+    playPauseBtn2.className = "ri-pause-line";
+    footerPlay.className = "ri-pause-line";
   } else {
     audioPlayer.pause();
     playPauseBtn.className = "ri-play-fill";
@@ -1575,9 +1575,9 @@ playPauseBtn.addEventListener("click", () => {
 playPauseBtn2.addEventListener("click", () => {
   if (audioPlayer3.paused) {
     audioPlayer3.play();
-    playPauseBtn2.className = "ri-pause-large-line";
-    playPauseBtn.className = "ri-pause-large-line";
-    footerPlay.className = "ri-pause-large-line";
+    playPauseBtn2.className = "ri-pause-line";
+    playPauseBtn.className = "ri-pause-line";
+    footerPlay.className = "ri-pause-line";
   } else {
     audioPlayer3.pause();
     playPauseBtn2.className = "ri-play-fill";

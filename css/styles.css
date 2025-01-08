@@ -995,7 +995,7 @@ body.loaded #loading-screen {
   color: black;
 }
 
-.ri-pause-large-line{
+.ri-pause-line{
   font-weight: 600;
   font-size: 20px;
 }
@@ -1810,7 +1810,7 @@ body.loaded #loading-screen {
   margin-left: 4px;
 }
 
-.ri-pause-large-line{
+.ri-pause-line{
   margin-top: 4px;
   font-size: 30px;
 }
