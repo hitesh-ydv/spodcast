@@ -87,6 +87,8 @@ async function playSongFromApi(songId, track) {
           // Set the background color of the right section
           document.getElementById('right-section').style.background = rgbColor;
           document.getElementById('footer').style.background = rgbColor;
+
+          updateThemeColor(rgbColor);
         };
 
         img.onerror = function () {
@@ -1874,4 +1876,16 @@ function updateMediaSession(track) {
     });
 
   }
+}
+
+
+function updateThemeColor(color) {
+  let themeMetaTag = document.querySelector('meta[name="theme-color"]');
+  if (!themeMetaTag) {
+    // If the tag doesn't exist, create it
+    themeMetaTag = document.createElement("meta");
+    themeMetaTag.setAttribute("name", "theme-color");
+    document.head.appendChild(themeMetaTag);
+  }
+  themeMetaTag.setAttribute("content", color);
 }
