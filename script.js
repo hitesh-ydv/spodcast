@@ -878,7 +878,6 @@ async function fetchAndDisplayArtist(artistId) {
 let mainDiv = document.getElementById('main');
 
 window.addEventListener("DOMContentLoaded", () => {
-  playerSetItem();
   fetchRecommendations();
   displayLikedSongs();
   displayLikedSongs2(); // Display liked songs in both containers
@@ -1684,15 +1683,6 @@ function formatTime(seconds) {
   return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
 }
 
-function playerSetItem() {
-  if (x.matches) {
-    document.getElementById('player-container2').style.display = 'flex';
-    document.getElementById('player-container').style.display = 'none';
-  } else {
-    document.getElementById('player-container').style.display = 'flex';
-    document.getElementById('player-container2').style.display = 'none';
-  }
-}
 
 const rangeInput = document.querySelector('.progress-bar2');
 
