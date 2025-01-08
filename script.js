@@ -562,7 +562,7 @@ function displayLikedSongs2() {
       toggleLikeSong(track);
       if (!track) {
         document.getElementById('liked-outer').style.display = 'none';
-      }
+      }  // Remove the song from liked songs
     });
 
     card.appendChild(image);
@@ -1402,7 +1402,7 @@ bottomSheet.addEventListener("touchmove", (e) => {
 // Handle touchend event
 bottomSheet.addEventListener("touchend", () => {
   if (isDragging) {
-    if (translateY > 50) {
+    if (translateY > 150) {
       // Close sheet if dragged down significantly
       closeBottomSheet();
     } else {
@@ -1559,9 +1559,9 @@ repeatIcon2.addEventListener('click', () => {
 playPauseBtn.addEventListener("click", () => {
   if (audioPlayer.paused) {
     audioPlayer.play();
-    playPauseBtn.className = "ri-pause-line";
-    playPauseBtn2.className = "ri-pause-line";
-    footerPlay.className = "ri-pause-line";
+    playPauseBtn.className = "ri-pause-large-line";
+    playPauseBtn2.className = "ri-pause-large-line";
+    footerPlay.className = "ri-pause-large-line";
   } else {
     audioPlayer.pause();
     playPauseBtn.className = "ri-play-fill";
@@ -1573,9 +1573,9 @@ playPauseBtn.addEventListener("click", () => {
 playPauseBtn2.addEventListener("click", () => {
   if (audioPlayer3.paused) {
     audioPlayer3.play();
-    playPauseBtn2.className = "ri-pause-line";
-    playPauseBtn.className = "ri-pause-line";
-    footerPlay.className = "ri-pause-line";
+    playPauseBtn2.className = "ri-pause-large-line";
+    playPauseBtn.className = "ri-pause-large-line";
+    footerPlay.className = "ri-pause-large-line";
   } else {
     audioPlayer3.pause();
     playPauseBtn2.className = "ri-play-fill";
@@ -1821,6 +1821,6 @@ volumeIcon.addEventListener("click", () => {
     // Change back to volume up
     volumeState = "up";
     audioPlayer.volume = 1; // Set volume to 100%
-    volumeIcon.className = "ri-volume-up-line"; // Update icon
+    volumeIcon.className = "ri-volume-up-line"; // Updatri-pause-large-line
   }
-});
+})

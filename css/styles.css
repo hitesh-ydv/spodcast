@@ -995,15 +995,15 @@ body.loaded #loading-screen {
   color: black;
 }
 
-.ri-pause-line{
+.ri-pause-large-line{
   font-weight: 700;
 }
 
 
 #player-container2 {
   padding: 0px 0px;
-  margin-bottom: 40px;
   display: none;
+  z-index: 587788;
 }
 
 @media (max-width: 450px){
@@ -1809,7 +1809,7 @@ body.loaded #loading-screen {
   margin-left: 4px;
 }
 
-.ri-pause-line{
+.ri-pause-large-line{
   margin-top: 4px;
 }
 
