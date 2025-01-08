@@ -1633,6 +1633,7 @@ nextBtn2.addEventListener("click", () => {
     playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
   }
 });
+
 footerFor.addEventListener("click", () => {
   if (currentSongIndex < songQueue.length - 1) {
     currentSongIndex++;
@@ -1839,23 +1840,38 @@ function updateMediaSession(track) {
           artist: track.artists.primary[0].name,
           album: "Album",
           artwork: [
-            { src: track.image[0].url, sizes: "500x500", type: "image/webp" },
+            { src: track.image[2].url, sizes: "500x500", type: "image/webp" },
           ]
         });
 
         // Play/Pause Action
         navigator.mediaSession.setActionHandler("play", () => {
           audioPlayer.play();
+          playPauseBtn2.className = "ri-pause-line";
+          playPauseBtn.className = "ri-pause-line";
+          footerPlay.className = "ri-pause-line";
+        });
+
+        navigator.mediaSession.setActionHandler("pause", () => {
+          audioPlayer.pause();
           playPauseBtn2.className = "ri-play-fill";
           playPauseBtn.className = "ri-play-fill";
           footerPlay.className = "ri-play-fill";
         });
 
-        navigator.mediaSession.setActionHandler("pause", () => {
-          audioPlayer.pause();
-          playPauseBtn2.className = "ri-pause-line";
-          playPauseBtn.className = "ri-pause-line";
-          footerPlay.className = "ri-pause-line";
+        navigator.mediaSession.setActionHandler("nexttrack", () => {
+          if (currentSongIndex < songQueue.length - 1) {
+            currentSongIndex++;
+            playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+          } else {
+            currentSongIndex = 0;
+            playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
+          }
+        });
+
+        navigator.mediaSession.setActionHandler("previoustrack", () => {
+          currentSongIndex--;
+          playSongFromApi(songQueue[currentSongIndex].id, songQueue[currentSongIndex]);
         });
 
 
