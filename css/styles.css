@@ -1006,7 +1006,7 @@ body.loaded #loading-screen {
   z-index: 587788;
 }
 
-@media (max-width: 450px){
+@media (max-width: 550px){
   .right-header{
     display: none;
   }
