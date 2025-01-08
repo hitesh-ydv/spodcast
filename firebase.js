@@ -1,6 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { getDatabase, ref, set, onDisconnect } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
+// Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAojJ8KcQWqDZx_UGT4adJSY02saI4UNFg",
     authDomain: "spodcast-17e6f.firebaseapp.com",
@@ -8,12 +10,14 @@ const firebaseConfig = {
     storageBucket: "spodcast-17e6f.firebasestorage.app",
     messagingSenderId: "302639795590",
     appId: "1:302639795590:web:83f2f109c38df2e6477007",
-    measurementId: "G-6GRTJSEG0K"
-  };
+    measurementId: "G-6GRTJSEG0K",
+    databaseURL: "https://spodcast-17e6f-default-rtdb.firebaseio.com" // Add Realtime Database URL
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const rtdb = getDatabase(app);
 
 // DOM Elements
 const popup = document.getElementById("popup");
@@ -34,6 +38,11 @@ if (savedUserName) {
     firstLetter2.textContent = savedUserName.charAt(0).toUpperCase();
     popup.style.display = "none";
     mainBody.style.display = "block";
+
+    // Mark the user as online in Firebase
+    const userRef = ref(rtdb, `onlineUsers/${savedUserName}`);
+    set(userRef, true);
+    onDisconnect(userRef).remove();
 }
 
 // Handle submit button click
@@ -51,12 +60,17 @@ submitNameButton.addEventListener("click", async () => {
     submitNameButton.disabled = true;
 
     try {
-        // Save user data to Firebase
+        // Save user data to Firestore
         const userDoc = doc(db, "users", userName);
         await setDoc(userDoc, { name: userName });
 
         // Save user name to local storage
         localStorage.setItem("userName", userName);
+
+        // Mark the user as online in Realtime Database
+        const userRef = ref(rtdb, `onlineUsers/${userName}`);
+        set(userRef, true);
+        onDisconnect(userRef).remove();
 
         // Update UI
         profileName.textContent = userName;
