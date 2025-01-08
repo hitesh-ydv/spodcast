@@ -1406,7 +1406,7 @@ bottomSheet.addEventListener("touchmove", (e) => {
 // Handle touchend event
 bottomSheet.addEventListener("touchend", () => {
   if (isDragging) {
-    if (translateY > 150) {
+    if (translateY > 70) {
       // Close sheet if dragged down significantly
       closeBottomSheet();
     } else {
