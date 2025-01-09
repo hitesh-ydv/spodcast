@@ -1879,3 +1879,28 @@ function updateThemeColor(color) {
   }
   themeMetaTag.setAttribute("content", color);
 }
+
+document.getElementById("log-out").addEventListener("click", () => {
+  // Clear all cookies
+  document.cookie.split(";").forEach((cookie) => {
+    const cookieName = cookie.split("=")[0].trim();
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
+
+  // Clear local storage and session storage
+  localStorage.clear();
+  sessionStorage.clear();
+
+  // Clear indexedDB (optional)
+  if (window.indexedDB) {
+    const dbs = indexedDB.databases ? indexedDB.databases() : Promise.resolve([]);
+    dbs.then((databases) => {
+      databases.forEach((db) => {
+        indexedDB.deleteDatabase(db.name);
+      });
+    });
+  }
+
+  // Refresh the page
+  location.reload();
+});

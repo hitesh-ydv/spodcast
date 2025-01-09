@@ -1016,6 +1016,20 @@ body.loaded #loading-screen {
   display: none;
 }
 
+#progress-bar{
+  margin: 0px 8px;
+  height: 6px;
+}
+
+#progress-bar::-webkit-slider-thumb{
+  width: 12px;
+  height: 12px;
+}
+
+.footer{
+  background-color: transparent;
+}
+
 @media (max-width: 450px){
   .right-header{
     display: none;
