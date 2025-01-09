@@ -88,6 +88,7 @@ async function playSongFromApi(songId, track) {
 
           // Set the background color of the right section
           document.getElementById('right-section').style.background = rgbColor;
+          let x = window.matchMedia("(max-width: 450px)")
           if (x.matches) {
             document.getElementById('footer').style.background = rgbColor;
           }
