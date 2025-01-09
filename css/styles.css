@@ -1030,6 +1030,37 @@ body.loaded #loading-screen {
   background-color: transparent;
 }
 
+.footer-details .track-card-album{
+  display: none;
+}
+
+.footer-icon{
+  display: none;
+}
+
+.ri-pause-line{
+  font-weight: 600;
+  font-size: 23px;
+}
+
+.player-controls{
+  display: flex;
+  align-items: center;
+}
+
+#liked-songs-container .liked-song-card h4{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+#liked-songs-container .liked-song-card p{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
 @media (max-width: 450px){
   .right-header{
     display: none;
@@ -1937,6 +1968,10 @@ body.loaded #loading-screen {
   margin: 0px;
 }
 
+.footer-details .track-card-album{
+  display: flex;
+}
+
 .footer-details .track-card-album h3{
    font-size: 14.5px;
    margin-top: 6px;
@@ -1998,10 +2033,12 @@ body.loaded #loading-screen {
 #timer-btn{
   cursor: pointer;
   padding: 4px;
+  z-index: 2000000;
 }
 
 .bottom-sheet {
   position: fixed;
+  display: block;
   bottom: -100%; /* Hidden initially */
   left: 0;
   width: 100%;
@@ -2018,6 +2055,7 @@ body.loaded #loading-screen {
 
 .bottom-sheet.active {
   bottom: 0; /* Slide into view */
+  display: block;
 }
 
 .timer-header {

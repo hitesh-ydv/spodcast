@@ -97,3 +97,4 @@ submitNameButton.addEventListener("click", async () => {
         submitNameButton.disabled = false;
     }
 });
+ 

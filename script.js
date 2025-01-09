@@ -44,8 +44,10 @@ async function playSongFromApi(songId, track) {
       loadingSpinner.style.display = "none";
       loadingSpinner2.style.display = "none";
       audioPlayer.src = streamUrl;
-      enableAudioPlayer();
       audioPlayer.play();
+      enableAudioPlayer();
+      enableAudioPlayer2();
+      
       playPauseBtn.className = "ri-pause-line";
       playPauseBtn2.className = "ri-pause-line";
       footerPlay.className = "ri-pause-line";
@@ -86,7 +88,10 @@ async function playSongFromApi(songId, track) {
 
           // Set the background color of the right section
           document.getElementById('right-section').style.background = rgbColor;
-          document.getElementById('footer').style.background = rgbColor;
+          if (x.matches) {
+            document.getElementById('footer').style.background = rgbColor;
+          }
+          
 
           updateThemeColor(rgbColor);
         };
@@ -947,7 +952,7 @@ function homeBtnTrigger() {
   document.getElementById("btn-home").style.display = "none";
   document.getElementById("btn-nhome").style.display = "block";
   document.getElementById("home-section").style.display = "none";
-  let x = window.matchMedia("(max-width: 425px)")
+  let x = window.matchMedia("(max-width: 450px)")
   let leftCont = document.getElementById('left--');
   if (x.matches) {
     leftCont.style.display = 'none';
@@ -1445,6 +1450,8 @@ const currentTimeElem = document.getElementById("current-time");
 const totalDurationElem = document.getElementById("total-duration");
 const footerPlay = document.getElementById("footer-play");
 const footerFor = document.getElementById("footer-for");
+const repeatIcon = document.getElementById("repeat-icon");
+const suffleIco = document.getElementById("shuffle-ico");
 
 var audioPlayer3 = document.getElementById("audio-player");
 const playPauseBtn2 = document.getElementById("play-pause-btn2");
@@ -1454,8 +1461,13 @@ const progressBar2 = document.getElementById("progress-bar2");
 const currentTimeElem2 = document.getElementById("current-time2");
 const totalDurationElem2 = document.getElementById("total-duration2");
 const repeatIcon2 = document.getElementById("repeat-icon2");
-const suffleIco = document.getElementById("shuffle-ico2");
+const suffleIco2 = document.getElementById("shuffle-ico2");
 
+suffleIco2.addEventListener("click", () => {
+  isShuffle = !isShuffle;
+  playedSongs.clear();
+  suffleIco2.style.color = isShuffle ? "#1DB954" : "#FFFFFF";
+});
 suffleIco.addEventListener("click", () => {
   isShuffle = !isShuffle;
   playedSongs.clear();
@@ -1542,6 +1554,7 @@ function enableAudioPlayer2() {
 }
 
 disableAudioPlayer();
+disableAudioPlayer2();
 
 repeatIcon2.addEventListener('click', () => {
   if (isRepeat) {
@@ -1553,6 +1566,19 @@ repeatIcon2.addEventListener('click', () => {
     // Enable repeat
     isRepeat = true;
     repeatIcon2.className = 'ri-repeat-one-fill';
+    audioPlayer3.loop = true;
+  }
+});
+repeatIcon.addEventListener('click', () => {
+  if (isRepeat) {
+    // Disable repeat
+    isRepeat = false;
+    repeatIcon.className = 'ri-repeat-2-fill';
+    audioPlayer3.loop = false;
+  } else {
+    // Enable repeat
+    isRepeat = true;
+    repeatIcon.className = 'ri-repeat-one-fill';
     audioPlayer3.loop = true;
   }
 });
@@ -1684,7 +1710,8 @@ function formatTime(seconds) {
 }
 
 
-const rangeInput = document.querySelector('.progress-bar2');
+const rangeInput2 = document.querySelector('.progress-bar2');
+const rangeInput = document.querySelector('.progress-bar');
 
 function updateRangeBackground() {
   const value = rangeInput.value;
@@ -1693,9 +1720,17 @@ function updateRangeBackground() {
   // Update the gradient to match the filled portion
   rangeInput.style.background = `linear-gradient(to right, white ${percentage}%, #535353 ${percentage}%)`;
 }
+function updateRangeBackground2() {
+  const value = rangeInput2.value;
+  const max = rangeInput2.max;
+  const percentage = (value / max) * 100; // Calculate percentage
+  // Update the gradient to match the filled portion
+  rangeInput2.style.background = `linear-gradient(to right, white ${percentage}%, #535353 ${percentage}%)`;
+}
 
 // Initialize the filled track on page load
 updateRangeBackground();
+updateRangeBackground2();
 
 // Update the filled track when the user interacts with the slider
 rangeInput.addEventListener('input', updateRangeBackground);
