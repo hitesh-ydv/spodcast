@@ -47,7 +47,7 @@ async function playSongFromApi(songId, track) {
       audioPlayer.play();
       enableAudioPlayer();
       enableAudioPlayer2();
-      
+
       playPauseBtn.className = "ri-pause-line";
       playPauseBtn2.className = "ri-pause-line";
       footerPlay.className = "ri-pause-line";
@@ -92,7 +92,7 @@ async function playSongFromApi(songId, track) {
           if (x.matches) {
             document.getElementById('footer').style.background = rgbColor;
           }
-          
+
 
           updateThemeColor(rgbColor);
         };
@@ -605,7 +605,7 @@ function darkenColor(color, factor = 0.5) {
 // Function to Save Current Song to Local Storage
 function saveCurrentSong(track, streamUrl) {
   const songData = {
-    id: track.id,
+    id: track,
     name: track.album.name,
     artists: track.artists.primary.map((artist) => artist.name).join(", "),
     image: track.image[2].url,
@@ -1868,7 +1868,7 @@ function updateMediaSession(track) {
       artist: track.artists.primary[0].name,
       album: "Album",
       artwork: [
-        { src: track.image[2].url, sizes: "500x500", type: "image/webp" }, 
+        { src: track.image[2].url, sizes: "500x500", type: "image/webp" },
       ]
     });
 
@@ -1940,3 +1940,19 @@ document.getElementById("log-out").addEventListener("click", () => {
   // Refresh the page
   location.reload();
 });
+
+
+// Load the saved song from local storage
+function loadSongFromLocalStorage() {
+  const savedSong = JSON.parse(localStorage.getItem("currentSong"));
+  if (savedSong) {
+    playSongFromApi(savedSong.id.id, savedSong.id);
+    audioPlayer.pause();
+    playPauseBtn.className = "ri-play-fill";
+    playPauseBtn2.className = "ri-play-fill";
+    footerPlay.className = "ri-play-fill";
+
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadSongFromLocalStorage);
