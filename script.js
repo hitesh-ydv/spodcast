@@ -45,8 +45,6 @@ async function playSongFromApi(songId, track) {
       loadingSpinner2.style.display = "none";
       audioPlayer.src = streamUrl;
       audioPlayer.play();
-      enableAudioPlayer();
-      enableAudioPlayer2();
 
       playPauseBtn.className = "ri-pause-line";
       playPauseBtn2.className = "ri-pause-line";
@@ -1554,9 +1552,6 @@ function enableAudioPlayer2() {
   totalDurationElem2.style.opacity = "1";
 }
 
-disableAudioPlayer();
-disableAudioPlayer2();
-
 repeatIcon2.addEventListener('click', () => {
   if (isRepeat) {
     // Disable repeat
@@ -1937,22 +1932,6 @@ document.getElementById("log-out").addEventListener("click", () => {
     });
   }
 
-  // Refresh the page
   location.reload();
 });
 
-
-// Load the saved song from local storage
-function loadSongFromLocalStorage() {
-  const savedSong = JSON.parse(localStorage.getItem("currentSong"));
-  if (savedSong) {
-    playSongFromApi(savedSong.id.id, savedSong.id);
-    audioPlayer.pause();
-    playPauseBtn.className = "ri-play-fill";
-    playPauseBtn2.className = "ri-play-fill";
-    footerPlay.className = "ri-play-fill";
-
-  }
-}
-
-document.addEventListener("DOMContentLoaded", loadSongFromLocalStorage);
