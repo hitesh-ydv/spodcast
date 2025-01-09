@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { getDatabase, ref, set, onDisconnect } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
 // Firebase Configuration
@@ -39,10 +39,14 @@ if (savedUserName) {
     popup.style.display = "none";
     mainBody.style.display = "block";
 
-    // Mark the user as online in Firebase
+    // Mark the user as online in Firebase and update last seen
     const userRef = ref(rtdb, `onlineUsers/${savedUserName}`);
     set(userRef, true);
     onDisconnect(userRef).remove();
+
+    // Update Firestore with the last seen timestamp
+    const userDoc = doc(db, "users", savedUserName);
+    updateDoc(userDoc, { lastSeen: serverTimestamp() });
 }
 
 // Handle submit button click
@@ -60,9 +64,12 @@ submitNameButton.addEventListener("click", async () => {
     submitNameButton.disabled = true;
 
     try {
-        // Save user data to Firestore
+        // Save user data to Firestore with last seen timestamp
         const userDoc = doc(db, "users", userName);
-        await setDoc(userDoc, { name: userName });
+        await setDoc(userDoc, { 
+            name: userName, 
+            lastSeen: serverTimestamp() 
+        });
 
         // Save user name to local storage
         localStorage.setItem("userName", userName);
