@@ -910,22 +910,36 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 
-// Search input event listener
-document.getElementById("search-input").addEventListener("keyup", (event) => {
+// Debounce function
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
+// Function to handle search logic
+function handleSearch(event) {
   let query = event.target.value;
   if (query.length > 0) {
     document.getElementById("recommend-title").style.display = "none";
-    fetchTracks(query);
-    fetchAlbums(query);
+    fetchTracks(query); // Fetch songs based on query
+    fetchAlbums(query); // Fetch albums based on query
     document.getElementById("search-section").style.display = "block";
     const searchFor = document.getElementById("search-for");
     searchFor.textContent = `Songs`;
   } else {
     document.getElementById("recommend-title").style.display = "flex";
     document.getElementById("search-section").style.display = "none";
-
   }
-});
+}
+
+// Add event listener with debouncing
+document.getElementById("search-input").addEventListener(
+  "keyup",
+  debounce(handleSearch, 500) // Delay of 300ms
+);
 
 let btnnHome = document.getElementById("btn-nhome");
 document.getElementById("artist-outer").style.display = "none";
